@@ -1,6 +1,8 @@
 <?php
 
+use App\Category;
 use Illuminate\Database\Seeder;
+use App\User;
 
 class CategoriesSeeder extends Seeder
 {
@@ -37,5 +39,6 @@ class CategoriesSeeder extends Seeder
             'name' => 'SQL injection',
             'description' => 'Es una vulnerabilidad que permite al atacante enviar o “inyectar” instrucciones SQL de forma maliciosa y malintencionada dentro del código SQL programado para la manipulación de bases de datos, de esta forma todos los datos almacenados estarían en peligro.'
         ]);
+        factory(Category::class, 10)->create();
     }
 }
