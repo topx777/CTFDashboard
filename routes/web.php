@@ -12,26 +12,28 @@
 */
 
 Route::get('/', function () {
-    return view('auth/login');
+    return view('welcome');
 });
 
 // Routes Admin
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('layout', function () {
-        return view('adminLayout.master');
+    // Route::get('layout', function () {
+    //     return view('adminLayout.master');
+    // });
+    Route::get('/home', function () {
+        return view('admin/home');
     });
 });
 
 // Routes Team
 Route::group(['prefix' => 'team'], function () {
-    Route::get('layout', function () {
-        return view('teamLayout.master');
+    // Route::get('layout', function () {
+    //     return view('teamLayout.master');
+    // });
+    Route::get('/dashboard', function () {
+        return view('team/dashboard');
     });
 });
 
 
-
-
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

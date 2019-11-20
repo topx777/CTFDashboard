@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -44,20 +44,66 @@ class LoginController extends Controller
         return 'username';
     }
 
-    public function authenticated(Request $request)
+    public function login(Request $request)
     {
         if ($request->ajax()) {
-            $credentials = $request->only('username', 'password');
             $response = [];
-
             try {
-                $response['auth'] = Auth::attempt($credentials);
-            } catch (Throwable $ex) {
-                $response['auth'] = false;
+                $this->validateLogin($request);
+
+                if ($this->hasTooManyLoginAttempts($request)) {
+
+                    $this->fireLockoutEvent($request);
+                    throw new \Exception("Demasiados intentos fallidos, de inicio de sesion");
+                }
+
+                if ($this->guard()->validate($this->credentials($request))) {
+                    if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+                        $response["auth"] = true;
+                        if (auth()->user()->admin == 1) {
+                            $this->redirectTo = '/admin/home';
+                        } else {
+                            $this->redirectTo = '/team/dashboard';
+                        }
+                        $response['intended'] = $this->redirectPath();
+                    } else {
+                        $this->incrementLoginAttempts($request);
+                        throw new \Exception("Usuario no activo");
+                    }
+                } else {
+                    $this->incrementLoginAttempts($request);
+                    throw new \Exception("Credenciales incorrectas");
+                }
+            } catch (\Throwable $ex) {
+                $response["auth"] = false;
+                $response["msgError"] = $ex->getMessage();
             } finally {
-                $response["intended"] = $this->redirectPath();
                 return response()->json($response);
             }
         }
     }
+
+    // public function authenticated(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $credentials = $request->only('username', 'password');
+    //         $response = [];
+    //         try {
+    //             $response['auth'] = Auth::attempt($credentials, $request->filled('remember'));
+    //             if (auth()->check()) {
+    //                 if (auth()->user()->admin == 1) {
+    //                     $this->redirectTo = '/home';
+    //                 } else {
+    //                     $this->redirectTo = '/dashboard';
+    //                 }
+    //             }
+    //         } catch (\Throwable $ex) {
+    //             $response['auth'] = false;
+    //             $response['errorMsg'] = $ex->getMessage();
+    //         } finally {
+    //             $response["intended"] = $this->redirectPath();
+    //             return response()->json($response);
+    //         }
+    //     }
+    // }
 }
