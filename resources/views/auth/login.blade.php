@@ -48,8 +48,9 @@
         <div class="card">
             <div class="body">
                 <h4>LOGIN CTF</h4>
-                <p class="lead"><small>Ingrese sus credenciales</small></p>
-                <div id="JSONresp" class="alert alert-danger" style="display: none;" role="alert">
+                <p class="lead"><small>Bienvenido</small></p>
+                <p>Ingrese sus credenciales</p>
+                <div id="JSONresp" class="alert alert-danger alert-dismissible fade" style="display: none;" role="alert">
                 </div>
                 <form class="form-auth-small m-t-20" id="loginForm" method="POST" action="{{ route('login') }}">
                     @csrf
@@ -68,9 +69,9 @@
                         </label>
                     </div>
                     <button type="submit" class="btn btn-secondary btn-round btn-block">INICIAR</button>
-                    <div class="bottom">
+                    {{-- <div class="bottom">
                         <span class="helper-text m-b-10"><i class="fa fa-lock"></i> <a href="#">¿Olvidaste tu contraseña?</a></span>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
         </div>
@@ -78,8 +79,8 @@
     <div id="particles-js"></div>
 </div>
 <!-- END WRAPPER -->
-    
-<script src="{{asset('bundles/libscripts.bundle.js')}}"></script>    
+
+<script src="{{asset('bundles/libscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
 <script>
@@ -102,14 +103,25 @@ $(document).on('submit', '#loginForm', function (e) {
             if (response.auth) {
                 window.location.href = response.intended;
             } else {
-                $('#JSONresp').show();
-                $('#JSONresp').text(response.msgError);
+                if(!$('#JSONresp').hasClass('show')) {
+                    $('#JSONresp').show();
+                    $('#JSONresp').addClass('show');
+                    $('#JSONresp').html('<strong>Error: </strong>' + response.msgError);
+                }
             }
         },
         error: function (err) {
             console.log(err);
         }
     });
+});
+
+$(document).on('keyup', '#loginForm input', function() {
+    if($('#JSONresp').hasClass('show')) {
+        $('#JSONresp').hide();
+        $('#JSONresp').removeClass('show');
+        $('#JSONresp').html('');
+    }
 });
 </script>
 </body>
