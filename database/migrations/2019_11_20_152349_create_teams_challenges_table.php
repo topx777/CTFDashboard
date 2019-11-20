@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeamsChallenges extends Migration
+class CreateTeamsChallengesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTeamsChallenges extends Migration
      */
     public function up()
     {
-        Schema::create('teams__challenges', function (Blueprint $table) {
+        Schema::create('teams_challenges', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('idTeam')->unsigned();
             $table->bigInteger('idChallenge')->unsigned();
@@ -32,6 +32,6 @@ class CreateTeamsChallenges extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teams__challenges');
+        Schema::dropIfExists('teams_challenges');
     }
 }
