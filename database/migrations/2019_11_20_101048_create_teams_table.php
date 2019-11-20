@@ -22,7 +22,7 @@ class CreateTeamsTable extends Migration
             $table->string('avatar', 255)->nullable();
             $table->string('couch', 55)->nullable();
             $table->timestamps();
-            $table->foregin('idUser')->references('id')->on('user');
+            $table->foreign('idUser')->references('id')->on('users');
         });
     }
 
