@@ -40,3 +40,6 @@ Route::group(['prefix' => 'team'], function() {
 
 
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
