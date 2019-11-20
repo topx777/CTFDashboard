@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\User; //la clase de donde esta el faker
 
 class UsersSeeder extends Seeder
 {
@@ -61,5 +62,7 @@ class UsersSeeder extends Seeder
             'password' => Hash::make('Luis123'),
             'admin' => true
         ]);
+        //la clase llamada y el monto que se creara
+        factory(User::class, 5)->create();
     }
 }
