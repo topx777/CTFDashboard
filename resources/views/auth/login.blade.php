@@ -4,7 +4,9 @@
 <head>
 <title>{{ config('app.name', 'CTFDashboard') }} - Login</title>
 <meta charset="utf-8">
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta name="description" content="Oculux Bootstrap 4x admin is super flexible, powerful, clean &amp; modern responsive admin dashboard with unlimited possibilities.">
@@ -47,10 +49,13 @@
             <div class="body">
                 <h4>LOGIN CTF</h4>
                 <p class="lead"><small>Ingrese sus credenciales</small></p>
+                <div id="JSONresp" class="alert alert-danger" style="display: none;" role="alert">
+                </div>
                 <form class="form-auth-small m-t-20" id="loginForm" method="POST" action="{{ route('login') }}">
+                    @csrf
                     <div class="form-group">
                         <label for="username" class="control-label sr-only">Username</label>
-                        <input autofocus type="username" class="form-control round" id="username" value="{{ old('username') }}" placeholder="Username" required autocomplete="username" autofocus>
+                        <input autofocus type="username" class="form-control round" id="username" value="{{ old('username') }}" name="username" placeholder="Username" required autocomplete="username" autofocus>
                     </div>
                     <div class="form-group">
                         <label for="password" class="control-label sr-only">Password</label>
@@ -77,6 +82,35 @@
 <script src="{{asset('bundles/libscripts.bundle.js')}}"></script>    
 <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
-<script src="{{asset('js/login.js')}}"></script>
+<script>
+$(document).on('submit', '#loginForm', function (e) {
+    e.preventDefault();
+
+    let form = $(this);
+    let formURL = $(form[0]).attr('action');
+
+    let formData = new FormData(form[0]);
+
+    $.ajax({
+        type: "POST",
+        url: formURL,
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "JSON",
+        success: function (response) {
+            if (response.auth) {
+                window.location.href = response.intended;
+            } else {
+                $('#JSONresp').show();
+                $('#JSONresp').text(response.msgError);
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+});
+</script>
 </body>
 </html>
