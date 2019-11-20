@@ -108,7 +108,7 @@
     @endif
 <div class="auth-main particles_js">            
                     <div class="content">
-                        <h1 class="text m-b-md title">Plataforma CTF</h1>
+                        <h1 class="text m-b-md title">CTF Dashboard</h1>
                     </div>
     <div id="particles-js"></div>
 </div>
