@@ -15,8 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Error Routes
+Route::get('/denied', function () {
+    return view('error\permissionError');
+})->name('permissionError');
+
+
 // Routes Admin
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     // Route::get('layout', function () {
     //     return view('adminLayout.master');
     // });
@@ -29,7 +35,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 // Routes Team
-Route::group(['prefix' => 'team'], function () {
+Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     // Route::get('layout', function () {
     //     return view('teamLayout.master');
     // });
