@@ -90,14 +90,13 @@ $(document).on('submit', '#loginForm', function (e) {
     let form = $(this);
     let formURL = $(form[0]).attr('action');
 
-    let formData = new FormData(form[0]);
+    let formData = $(form[0]).serialize();
 
     $.ajax({
         type: "POST",
         url: formURL,
         data: formData,
-        processData: false,
-        contentType: false,
+        cache: false,
         dataType: "JSON",
         success: function (response) {
             if (response.auth) {
