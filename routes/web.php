@@ -12,27 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-// login
-Route::get('/login', function()
-{
-    return view('login');
+    return view('auth/login');
 });
 
 // Routes Admin
-Route::group(['prefix' => 'admin'], function() {
-    Route::get('layout',function()
-    {
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('layout', function () {
         return view('adminLayout.master');
     });
 });
 
 // Routes Team
-Route::group(['prefix' => 'team'], function() {
-    Route::get('layout',function()
-    {
+Route::group(['prefix' => 'team'], function () {
+    Route::get('layout', function () {
         return view('teamLayout.master');
     });
 });
