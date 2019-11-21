@@ -742,11 +742,14 @@
     </div>
 
     <!-- Javascript -->
+    @section('libScript')
+
+    @show
     <script src="{{asset('bundles/libscripts.bundle.js')}}"></script>
     <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
     <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
     @section('script')
-
+        
     @show
 </body>
 

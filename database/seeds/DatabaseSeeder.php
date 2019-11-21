@@ -12,6 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Eloquent::unguard();
+
+        //orden de carga de datos
+
         Model::unguard();
         $this->call(OptionsSeeder::class);
         //primero las tablas que no tiene llave foranea

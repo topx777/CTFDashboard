@@ -22,6 +22,10 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
+    @font-face {
+    font-family: "myFirstFont";
+    src: url("{{asset('fonts/Zolan Mono BTN.ttf')}}");
+}
     .full-height {
         height: 100vh;
     }
@@ -50,24 +54,41 @@
     .title {
         font-size: 85px;
     }
-
+    .subtitle{
+        font-size: 25px;
+        margin-top:0px;
+        padding-top: 0px;
+        margin-bottom:10px;
+        padding-bottom: 10px;
+        color: #FEFEFE;
+        opacity:0.7;
+        text-shadow: 0.5px 0.7px 0px rgba(0,134,213, 0.5);
+        font-family: 'MyFirstFont';
+    }
     .text {
         color: #FEFEFE;
         text-shadow: 1px 2px 0px rgba(0,134,213, 0.5);
-        font-family: 'Montserrat', sans-serif;
+        font-family: 'MyFirstFont';
     }
+
     .links > a {
-        color: #636b6f;
-        padding: 0 25px;
-        font-size: 13px;
+        color: #FEFEFE;
+        opacity: 0.9;
+        font-size: 17px;
         font-weight: 600;
         letter-spacing: .1rem;
         text-decoration: none;
         text-transform: uppercase;
+        border: 1.5px solid #0093EA;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
     }
-
     .m-b-md {
-        margin-bottom: 30px;
+        margin-top:30px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
     }
 </style>
 <!-- VENDOR CSS -->
@@ -99,16 +120,16 @@
     <span class="green"></span>
     <span class="orange"></span>
 </div>
-    @if (Route::has('login'))
-        <div class="top-right links">
-                          
-            <a class="float-right text" href="{{ route('login') }}">Login</a>
-        
-        </div>
-    @endif
+    
 <div class="auth-main particles_js">            
                     <div class="content">
-                        <h1 class="text m-b-md title">CTF Dashboard</h1>
+                        <h1 class="text m-b-md title">Capture The Flag</h1>
+                        <h4 class="subtitle">By: Breaking Code</h4>
+                        @if (Route::has('login'))
+                            <div class="links">         
+                                <a class="btn btn-outline-primary text" href="{{ route('login') }}">Login</a>
+                            </div>
+                        @endif
                     </div>
     <div id="particles-js"></div>
 </div>

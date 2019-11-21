@@ -20,6 +20,9 @@ Route::get('/denied', function () {
     return view('error\permissionError');
 })->name('permissionError');
 
+Route::get('/test', function () {
+    return view('admin.users.list');
+});
 
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
