@@ -20,19 +20,5 @@ class OptionsSeeder extends Seeder
             'startTime' => $tiempo,
             'endTime' => $tiempo
         ]);
-        DB::table('options')->insert([
-            'id' => 2,
-            'state' => false,
-            'rules' => 'Reglas del juego',
-            'startTime' => $tiempo,
-            'endTime' => $tiempo
-        ]);
-        DB::table('options')->insert([
-            'id' => 3,
-            'state' => false,
-            'rules' => 'Reglas del juego',
-            'startTime' => $tiempo,
-            'endTime' => $tiempo
-        ]);
     }
 }
