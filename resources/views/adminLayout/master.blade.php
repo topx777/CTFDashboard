@@ -4,6 +4,9 @@
 <head>
     <title>Oculux | Page Blank</title>
     <meta charset="utf-8">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="icon" href="{{asset('favicon.ico')}}" type="image/x-icon">
@@ -12,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/font-awesome/css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{ asset('vendor/animate-css/vivify.min.css')}}">
     @section('style')
-        
+
     @show
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="{{ asset('css/site.min.css')}}">
@@ -146,7 +149,7 @@
     <div id="wrapper">
         {{-- topNavbar --}}
         @include('adminLayout.components.topNavbar')
-        
+
         <div class="search_div">
             <div class="card">
                 <div class="body">
@@ -743,7 +746,7 @@
     <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
     <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
     @section('script')
-        
+
     @show
 </body>
 
