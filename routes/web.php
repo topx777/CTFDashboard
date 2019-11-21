@@ -31,7 +31,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         return view('admin/home');
     });
 
-    // Rutas de User 
+    // Rutas de User
     Route::get('/users/list', 'UserController@list')->name('users/list');
     Route::get('/users/register', 'UserController@register')->name('users/register');
     Route::get('/users/get', 'UserController@get')->name('users/get');
@@ -40,7 +40,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
     // Rutas de Team
     Route::get('/teams/list', 'TeamController@list')->name('teams/list');
-    Route::get('/users/register', 'TeamController@register')->name('users/register');
+    Route::get('/teams/register', 'TeamController@register')->name('users/register');
     Route::get('/teams/get', 'TeamController@get')->name('teams/get');
     Route::post('/teams/update', 'TeamController@update')->name('teams/update');
     Route::post('/teams/delete', 'TeamController@delete')->name('teams/delete');
