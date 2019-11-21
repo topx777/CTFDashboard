@@ -9,22 +9,24 @@ class TeamController extends Controller
     /**
      * Funcion list
      *
-     * Funcion para listar los Usuarios (Administrador)
+     * Funcion para listar los Usuarios (Equipo)
      *
-     * @return void
+     * @return view
      **/
     public function list()
-    { }
+    {
+        return view('admin.team.list');
+    }
 
     /**
-     * undocumented function summary
+     * funciion register
      *
-     * Undocumented function long description
+     * Funcion para registrar los Usuarios (Equipo)
      *
-     * @param Type $var Description
-     * @return type
-     * @throws conditon
+     * @return view
      **/
-    public function register(Type $var = null)
-    { }
+    public function register()
+    {
+        return view('admin.team.register');
+    }
 }

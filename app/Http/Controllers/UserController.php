@@ -11,22 +11,22 @@ class UserController extends Controller
      *
      * Funcion para listar los Usuarios (Administrador)
      *
-     * @return void
+     * @return view
      **/
     public function list()
-    { }
+    {
+        return view('admin.user.list');
+    }
 
     /**
-     * undocumented function summary
+     * funciion register
      *
-     * Undocumented function long description
+     * Funcion para registrar los Usuarios (Administrador)
      *
-     * @param Type $var Description
-     * @return type
-     * @throws conditon
+     * @return view
      **/
-    public function register(Type $var = null)
+    public function register()
     {
-        # code...
+        return view('admin.user.register');
     }
 }
