@@ -7,7 +7,7 @@
             <h2>Advanced Validation</h2>
         </div>
         <div class="body">
-            <form id="userRegister" method="POST" action="{{ }}" ovalidate>
+            <form id="userRegister" method="POST" action="{{ route('register') }}" novalidate>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-               
+
                 <button type="submit" class="btn btn-primary">Registrar</button>
             </form>
         </div>
