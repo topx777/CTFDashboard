@@ -23,15 +23,24 @@ Route::get('/denied', function () {
 
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
-    // Route::get('layout', function () {
-    //     return view('adminLayout.master');
-    // });
+
     Route::get('/home', function () {
         return view('admin/home');
     });
-    Route::get('/users/register', function () {
-        return view('admin.users.register');
-    });
+
+    // Rutas de User 
+    Route::get('/users/list', 'UserController@list')->name('users/list');
+    Route::get('/users/register', 'UserController@register')->name('users/register');
+    Route::get('/users/get', 'UserController@get')->name('users/get');
+    Route::post('/users/update', 'UserController@update')->name('users/update');
+    Route::post('/users/delete', 'UserController@delete')->name('users/delete');
+
+    // Rutas de Team
+    Route::get('/teams/list', 'TeamController@list')->name('teams/list');
+    Route::get('/users/register', 'TeamController@register')->name('users/register');
+    Route::get('/teams/get', 'TeamController@get')->name('teams/get');
+    Route::post('/teams/update', 'TeamController@update')->name('teams/update');
+    Route::post('/teams/delete', 'TeamController@delete')->name('teams/delete');
 });
 
 // Routes Team
