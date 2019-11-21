@@ -79,13 +79,12 @@
         letter-spacing: .1rem;
         text-decoration: none;
         text-transform: uppercase;
-        border-inline-color: #F5F6F7;
+        border: 1.5px solid #0093EA;
         padding-top: 4px;
         padding-bottom: 4px;
         padding-left: 8px;
         padding-right: 8px;
     }
-
     .m-b-md {
         margin-top:30px;
         margin-bottom: 0px;
