@@ -7,7 +7,7 @@
             <h2>Advanced Validation</h2>
         </div>
         <div class="body">
-            <form id="userRegister" novalidate>
+            <form id="userRegister" method="POST" action="{{ }}" ovalidate>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">

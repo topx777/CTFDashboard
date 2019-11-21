@@ -21,7 +21,7 @@ class CreateTeamsTable extends Migration
             $table->text('phrase')->nulleable();
             $table->string('avatar', 255)->nullable();
             $table->string('couch', 55)->nullable();
-            $table->string('teampassword')->nullable();
+            $table->string('teamPassword')->nullable();
             $table->timestamps();
             $table->foreign('idUser')->references('id')->on('users');
         });

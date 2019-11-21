@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request as IlluminateRequest;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -44,6 +45,15 @@ class LoginController extends Controller
         return 'username';
     }
 
+    /**
+     * Function Logueo
+     *
+     * Function validacion de login
+     *
+     * @param Request $request Request
+     * @return response()->json($array)
+     * @throws \Throwable $ex
+     **/
     public function login(Request $request)
     {
         if ($request->ajax()) {
