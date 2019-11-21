@@ -15,7 +15,7 @@ class TeamController extends Controller
      **/
     public function list()
     {
-        return view('admin.team.list');
+        return view('admin.teams.list');
     }
 
     /**
@@ -27,6 +27,6 @@ class TeamController extends Controller
      **/
     public function register()
     {
-        return view('admin.team.register');
+        return view('admin.teams.register');
     }
 }

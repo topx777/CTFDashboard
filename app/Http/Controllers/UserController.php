@@ -15,7 +15,7 @@ class UserController extends Controller
      **/
     public function list()
     {
-        return view('admin.user.list');
+        return view('admin.users.list');
     }
 
     /**
@@ -27,6 +27,6 @@ class UserController extends Controller
      **/
     public function register()
     {
-        return view('admin.user.register');
+        return view('admin.users.register');
     }
 }
