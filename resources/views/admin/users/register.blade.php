@@ -12,7 +12,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="">Username</label>
-                            <input name="username" autofocus type="text" class="form-control" required maxlength="40" >
+                            <input name="userData[username]" autofocus type="text" class="form-control" required maxlength="40" >
                             <div class="invalid-feedback">
                                 El campo username es obligatorio
                             </div>
