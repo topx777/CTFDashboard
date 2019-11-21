@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use DataTables;
 
 class UserController extends Controller
 {
@@ -15,10 +16,58 @@ class UserController extends Controller
      *
      * @return view
      **/
-    public function list()
+    public function list(Request $request)
     {
+        if ($request->ajax()) {
+
+            if ($request->has('search') && !is_null($request->search["value"])) {
+                $search = $request->search["value"];
+
+                $data = User::where('username', 'LIKE', "%$search%")
+                    ->where('admin', 1)->get();
+            } else {
+                $data = User::where('admin', 1)->get();
+            }
+
+            return DataTables::of($data)
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-sm editProduct">Edit</a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-sm deleteProduct">Delete</a>';
+
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
         return view('admin.users.list');
     }
+
+
+    /**
+     * Funcion list
+     *
+     * Funcion para listar los Usuarios (Administrador)
+     *
+     * @return view
+     **/
+    public function get(Request $request)
+    {
+        if ($request->ajax()) {
+            $id = $request->id;
+
+            $user = User::find($id);
+
+            if (is_null($user)) {
+                return response()->json(null);
+            }
+
+            return response()->json($user);
+        } else {
+            return response()->json(null);
+        }
+    }
+
 
     /**
      * funcion register
@@ -33,9 +82,9 @@ class UserController extends Controller
     }
 
     /**
-     * undocumented function summary
+     * Funcion para Modificar Usuario
      *
-     * Undocumented function long description
+     * Modificar el usuario
      *
      * @param Request $request Peticion
      * @return JSON
@@ -87,9 +136,9 @@ class UserController extends Controller
     }
 
     /**
-     * undocumented function summary
+     * Funcion para Eliminar el Usuario
      *
-     * Undocumented function long description
+     * Eliminar el usuario
      *
      * @param Request $request Peticion
      * @return JSON
