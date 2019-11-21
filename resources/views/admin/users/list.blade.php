@@ -4,20 +4,11 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="header">
-            <h2>Table Tools<small>Basic example without any additional modification classes</small>
+            <h2>Lista de usuarios<small>Seleccione una fila para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-
+                <li><a href="" class="btn btn-primary text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
-                </li>
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                        aria-haspopup="true" aria-expanded="false"></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="javascript:void(0);">Action</a></li>
-                        <li><a href="javascript:void(0);">Another Action</a></li>
-                        <li><a href="javascript:void(0);">Something else</a></li>
-                    </ul>
                 </li>
             </ul>
         </div>
@@ -508,7 +499,7 @@
     </div>
 </div>
 @endsection
-@section('LibScript')
+@section('script')
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js')}}"></script>
