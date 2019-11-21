@@ -63,6 +63,6 @@ class UsersSeeder extends Seeder
             'admin' => true
         ]);
         //la clase llamada y el monto que se creara
-        factory(User::class, 5)->create();
+        factory(User::class, 2)->create();
     }
 }
