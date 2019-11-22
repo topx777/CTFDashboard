@@ -1,5 +1,10 @@
 @extends('adminLayout.master')
-
+@section('style')
+    <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
+@endsection
 @section('content')
 <div class="col-lg-12">
     <div class="card">
@@ -19,19 +24,61 @@
                         <tr>
                             <th>Usuario</th>
                             <th>Email</th>
-                            <th>Acciones</th>
+                            <th>id</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Usuario</th>
                             <th>Email</th>
-                            <th>Acciones</th>
+                            <th>id</th>
                         </tr>
                     </tfoot>
                     <tbody>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- larg modal -->
+<div id="detailModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myLargeModalLabel">Detalle de Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="d-flex flex-row justify-content-between">
+                    <div>
+                        <small>Registrado: 00-00-0000</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary">Editar</button>
+                        <button class="btn btn-primary">Eliminar</button>
+                    </div>
+                </div>
+                <div class="row pt-4 px-3">
+                    <div class="col-6 form-group">
+                        <strong class="text-white">Usuario:</strong>
+                        <span class="">username</span>
+                    </div>
+                    <div class="col-6 form-group">
+                        <strong class="text-white">Administrador:</strong>
+                        <label class="fancy-radio custom-color-green"><input name="gender4" value="female" type="radio"
+                                checked="" disabled=""><span><i></i></span></label>
+                    </div>
+                    <div class="col-6 form-group">
+                        <strong class="text-white">Email:</strong>
+                        <span class="">miemail@ctf.comsegserwgrtw</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -48,6 +95,7 @@
 {{-- <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script> --}}
 <script>
     $(document).ready(function () {
+        $(".dataTable tr").css('cursor', 'pointer');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -61,9 +109,19 @@
             columns: [
                 {data: 'username', name: 'username'},
                 {data: 'email', name: 'email'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
+                {data: 'DT_RowId', name: 'DT_RowId', visible: false}
             ]
         });
+        $('.dataTable').on( 'click', 'tr', function () {
+            var id = table.row( this ).id();
+            if(id)
+            {
+                id = id.replace(/\D/g, '');
+                id = parseInt(id, 10);
+                console.log( 'id '+id );
+                $('#detailModal').modal('show');
+            }
+        } );
 
     });
 
