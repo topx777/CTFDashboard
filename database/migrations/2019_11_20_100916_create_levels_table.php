@@ -15,6 +15,7 @@ class CreateLevelsTable extends Migration
     {
         Schema::create('levels', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name', 25);
             $table->smallInteger('score');
             $table->decimal('hintDiscount', 2, 1);
             $table->timestamps();
