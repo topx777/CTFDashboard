@@ -18,7 +18,6 @@ class ChallengesSeeder extends Seeder
             'idCategory' => 1,
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
-            'hint' => 'Pista para el reto',
             'timeDiscount' => 0
         ]);
         DB::table('challenges')->insert([
@@ -27,7 +26,6 @@ class ChallengesSeeder extends Seeder
             'idCategory' => 2,
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
-            'hint' => 'Pista para el reto',
             'timeDiscount' => 0
         ]);
         DB::table('challenges')->insert([
@@ -36,7 +34,6 @@ class ChallengesSeeder extends Seeder
             'idCategory' => 3,
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
-            'hint' => 'Pista para el reto',
             'timeDiscount' => 0
         ]);
         DB::table('challenges')->insert([
@@ -45,7 +42,6 @@ class ChallengesSeeder extends Seeder
             'idCategory' => 4,
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
-            'hint' => 'Pista para el reto',
             'timeDiscount' => 0
         ]);
         DB::table('challenges')->insert([
@@ -54,7 +50,6 @@ class ChallengesSeeder extends Seeder
             'idCategory' => 5,
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
-            'hint' => 'Pista para el reto',
             'timeDiscount' => 0
         ]);
     }
