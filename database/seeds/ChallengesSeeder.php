@@ -57,5 +57,14 @@ class ChallengesSeeder extends Seeder
             'hint' => 'Pista para el reto',
             'timeDiscount' => 0
         ]);
+        DB::table('challenges')->insert([
+            'id' => 6,
+            'idLevel' => 6,
+            'idCategory' => 6,
+            'name' => 'Nombre del Reto',
+            'description' => 'Descripcion del reto',
+            'hint' => 'Pista para el reto',
+            'timeDiscount' => 0
+        ]);
     }
 }
