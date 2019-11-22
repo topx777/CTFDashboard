@@ -56,10 +56,18 @@
             }
         });
 
+        let token = "{{ csrf_token() }}";
+
         var table = $('.dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('teams/list') }}",
+            ajax: {
+                url: "{{ route('teams/list') }}",
+                type: 'POST',
+                data: {
+                    _token: token
+                }
+            },
             columns: [
                 {data: 'name', name: 'name'},
                 {data: 'score', name: 'score'},
@@ -70,6 +78,18 @@
 
     });
 
+    // Typing timeout
+    var typingTimeout = null;
+    // On keyup
+    $("#datatable-search").keyup(function() {
+        // Clear previous timer
+        clearTimeout(typingTimeout);
+        // Set a new timer
+        var that = this;
+        typingTimeout = setTimeout(function(){
+            $(".dataTable").DataTable().search($(that).val()).draw();
+        }, 200); // Execute the search if user paused for 200 ms
+    });
 
 
 </script>

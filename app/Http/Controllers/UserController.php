@@ -31,10 +31,9 @@ class UserController extends Controller
 
             return DataTables::of($data)
                 ->addColumn('DT_RowId', function ($row) {
-                    $btn =$row->id;
+                    $btn = $row->id;
                     return $btn;
                 })
-                ->rawColumns(['action'])
                 ->make(true);
         }
 
@@ -43,11 +42,11 @@ class UserController extends Controller
 
 
     /**
-     * Funcion list
+     * Obtener Usuario
      *
-     * Funcion para listar los Usuarios (Administrador)
+     * Funcion para obtener un Usuario por ID (Administrador)
      *
-     * @return view
+     * @return JSON
      **/
     public function get(Request $request)
     {
