@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Level;
+use DataTables;
 
 class LevelController extends Controller
 {
@@ -122,7 +123,7 @@ class LevelController extends Controller
             $resp["status"] = true;
             try {
                 if (!$request->has('id')) {
-                    throw new Exception("Nivel no encontrado");
+                    throw new \Exception("Nivel no encontrado");
                 }
 
                 $id = $request->id;
@@ -130,7 +131,7 @@ class LevelController extends Controller
                 $level = Level::find($id);
 
                 if (is_null($level)) {
-                    throw new Exception("Nivel no encontrado");
+                    throw new \Exception("Nivel no encontrado");
                 }
 
                 $validation = $request->validate([
@@ -175,7 +176,7 @@ class LevelController extends Controller
             $resp["status"] = true;
             try {
                 if (!$request->has('id')) {
-                    throw new Exception("Nivel no encontrado");
+                    throw new \Exception("Nivel no encontrado");
                 }
 
                 $id = $request->id;
@@ -183,7 +184,7 @@ class LevelController extends Controller
                 $level = Level::find($id);
 
                 if (is_null($level)) {
-                    throw new Exception("Nivel no encontrado");
+                    throw new \Exception("Nivel no encontrado");
                 }
 
                 $level->delete();

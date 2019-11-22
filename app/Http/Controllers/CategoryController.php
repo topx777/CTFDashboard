@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use DataTables;
 
 class CategoryController extends Controller
 {
@@ -120,7 +121,7 @@ class CategoryController extends Controller
             $resp["status"] = true;
             try {
                 if (!$request->has('id')) {
-                    throw new Exception("Categoria no encontrado");
+                    throw new \Exception("Categoria no encontrado");
                 }
 
                 $id = $request->id;
@@ -128,7 +129,7 @@ class CategoryController extends Controller
                 $category = Category::find($id);
 
                 if (is_null($category)) {
-                    throw new Exception("Categoria no encontrado");
+                    throw new \Exception("Categoria no encontrado");
                 }
 
                 $validation = $request->validate([
@@ -171,7 +172,7 @@ class CategoryController extends Controller
             $resp["status"] = true;
             try {
                 if (!$request->has('id')) {
-                    throw new Exception("Categoria no encontrado");
+                    throw new \Exception("Categoria no encontrado");
                 }
 
                 $id = $request->id;
@@ -179,7 +180,7 @@ class CategoryController extends Controller
                 $category = Category::find($id);
 
                 if (is_null($category)) {
-                    throw new Exception("Categoria no encontrado");
+                    throw new \Exception("Categoria no encontrado");
                 }
 
                 $category->delete();

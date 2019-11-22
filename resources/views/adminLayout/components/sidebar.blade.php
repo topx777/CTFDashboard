@@ -28,7 +28,7 @@
                 <li class="header">Menu</li>
                 <li><a href=""><i class="icon-speedometer"></i><span>Usuarios</span></a></li>
                 <li><a href=""><i class="icon-diamond"></i><span>Equipos</span></a></li>
-                <li><a href=""><i class="icon-rocket"></i><span>Niveles Categorias</span></a></li>
+                <li><a href="{{ route('levelsCategories.list') }}"><i class="icon-rocket"></i><span>Niveles Categorias</span></a></li>
                 <li><a href=""><i class="icon-badge"></i><span>Retos</span></a></li>
                 </li>
             </ul>

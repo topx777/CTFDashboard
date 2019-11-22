@@ -11,7 +11,7 @@
 <div class="col-lg-6">
     <div class="card">
         <div class="header">
-            <h2>Lista de niveles<small>Seleccione una fila para ver detalles</small>
+            <h2>Lista de Niveles<small>Seleccione una fila para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
                 <li><a data-toggle="modal" data-target="#registerlevelModal" class="btn btn-primary text-white">Registrar</a></li>
@@ -21,7 +21,7 @@
         </div>
         <div class="body">
             <div class="table-responsive">
-                <table class="table table-striped table-hover dataTable js-exportable">
+                <table id="levelTable" class="table table-striped table-hover dataTable js-exportable">
                     <thead>
                         <tr>
                             <th>Nivel</th>
@@ -57,7 +57,7 @@
         </div>
         <div class="body">
             <div class="table-responsive">
-                <table class="table table-striped table-hover dataTable1 js-exportable">
+                <table id="categoryTable" class="table table-striped table-hover dataTable1 js-exportable">
                     <thead>
                         <tr>
                             <th>Categoria</th>
@@ -197,7 +197,7 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <ul class="nav nav-tabs2 justify-content-end">
                     <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#tabUserDetail">Detalle</a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabUserEdit">Editar</a></li>
-                    <li id="btnUserDelete" class="nav-item"><a class="nav-link">Eliminar</a></li>
+                    <li class="nav-item"><a id="btnLevelDelete" class="nav-link">Eliminar</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane show vivify flipInX active" id="tabUserDetail">
@@ -280,47 +280,75 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
             }
         });
 
-        var table = $('.dataTable').DataTable({
+        var levelTable = $('#levelTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('users/list') }}",
+            ajax: "{{ route('levels.list') }}",
             columns: [
-                { data: 'username', name: 'username' },
-                { data: 'username', name: 'username' },
-                { data: 'DT_RowId', name: 'DT_RowId' }
+                { data: 'name', name: 'name' },
+                { data: 'score', name: 'score' },
+                { data: 'hintDiscount', name: 'hintDiscount' },
+                { data: 'DT_RowId', name: 'DT_RowId', visible:false }
             ]
         });
 
-        var table1 = $('.dataTable1').DataTable({
+        var categoryTable = $('#categoryTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('users/list') }}",
+            ajax: "{{ route('categories.list') }}",
             columns: [
-                { data: 'username', name: 'username' },
-                { data: 'username', name: 'username' },
+                { data: 'name', name: 'name' },
+                { data: 'description', name: 'description' },
                 { data: 'DT_RowId', name: 'DT_RowId',visible:false }
             ]
         });
+
         // row id 
-        $('.dataTable').on('click', 'tr', function () {
-            var id = table.row(this).id();
+        $('#levelTable').on('click', 'tr', function () {
+            var id = levelTable.row(this).id();
             if (id) {
                 id = id.replace(/\D/g, '');
                 id = parseInt(id, 10);
-                console.log('id ' + id);
+                
+                CargarNivel(id);
                 $('#detaillevelModal').modal('show');
             }
         });
 
-        // confirm delete user
-        $('#btnUserDelete').click(function (e) {
-            e.preventDefault();
-            showConfirmMessage();
+        function CargarNivel(id) {
 
+            var attr = $('#btnLevelDelete').attr('id');
+
+            if (typeof attr !== typeof undefined && attr !== false) {
+                $('#btnLevelDelete').data('id', id);
+            } else {
+                // $('#btnLevelDelete')
+            }
+
+
+        }
+
+        $('#categoryTable').on('click', 'tr', function () {
+            var id = categoryTable.row(this).id();
+            if (id) {
+                id = id.replace(/\D/g, '');
+                id = parseInt(id, 10);
+                console.log('id ' + id);
+                $('#detailcategoryModal').modal('show');
+            }
         });
-        function showConfirmMessage() {
+
+        // confirm delete user
+        $('#btnLevelDelete').click(function (e) {
+            e.preventDefault();
+            let btn = $(this);
+            let id = btn.data('id');
+            showConfirmMessage(btn, 'nivel', 'el nivel', id);
+        });
+
+        function showConfirmMessage(trigger, tipo, campo, id) {
             swal({
-                title: "Esta seguro de eliminar al usuario?",
+                title: `Esta seguro de eliminar ${campo} ?`,
                 text: "Esta accion no se puede deshacer!",
                 type: "warning",
                 showCancelButton: true,
@@ -329,7 +357,56 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 closeOnConfirm: false,
                 cancelButtonText: 'Cancelar'
             }, function () {
-                swal("Deleted!", "El usuario a sido eliminado", "success");
+                switch (tipo) {
+                    case 'nivel':
+                        trigger.prop('disabled', true);
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ route('levels.delete') }}",
+                            data: {
+                                id: id,
+                                _token: "{{ csrf_token() }}"
+                            },
+                            dataType: "JSON",
+                            cache: false,
+                            success: function (response) {
+                                if(response.status) {
+                                    swal({
+                                        title: "Correcto",
+                                        text: "Nivel eliminado correctamente",
+                                        type: success
+                                    });
+                                    //Refrescar DataTable Actual
+
+                                    $('#detaillevelModal').modal('hide');
+                                } else {
+                                    swal({
+                                        title: "Error!",
+                                        text: response.msgError,
+                                        type: "error",
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                swal({
+                                    title: "Error!",
+                                    text: "Error desconocido, intente nuevamente!",
+                                    type: "error",
+                                });
+                                console.log(err);
+                            },
+                            complete: function() {
+                                trigger.prop('disable', false);
+                            }
+                        });
+                        
+                        break;
+                    case 'categoria':
+                        
+                        break;
+                    default:
+                        break;
+                }
             });
         }
 
