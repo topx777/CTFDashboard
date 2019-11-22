@@ -19,6 +19,7 @@ class CreateTeamsChallengesTable extends Migration
             $table->bigInteger('idChallenge')->unsigned();
             $table->integer('score');
             $table->dateTime('time')->nullable();
+            $table->boolean('whithHint')->default(false);
             $table->foreign('idTeam')->references('id')->on('teams');
             $table->foreign('idChallenge')->references('id')->on('challenges');
             $table->timestamps();
