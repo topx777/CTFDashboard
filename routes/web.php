@@ -24,6 +24,8 @@ Route::get('/test', function () {
     return view('admin.users.list');
 });
 
+
+
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
@@ -44,6 +46,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/teams/get', 'TeamController@get')->name('teams/get');
     Route::post('/teams/update', 'TeamController@update')->name('teams/update');
     Route::post('/teams/delete', 'TeamController@delete')->name('teams/delete');
+
+    // Rutas de LevelsCategories
+    Route::get('/levelsCategories/list', function() {
+        return view('admin/levelsCategories/list');
+    });
 });
 
 // Routes Team
