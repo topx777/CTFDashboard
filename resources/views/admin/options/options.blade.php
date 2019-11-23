@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="col-lg-6 col-md-6">
-            <label><b>Fecha de Fin (dd/mm/yyyy)</b></label>
+            <label><b>Fecha de Fin</b></label>
                     <div class="input-group mb-3">                                        
                         <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
                     </div>
