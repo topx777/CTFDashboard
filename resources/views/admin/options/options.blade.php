@@ -7,55 +7,23 @@
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 @endsection
 @section('content')
-<div class="col-lg-12">   
-        <div class="row clearfix">
-                <div class="col-lg-12 col-md-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>Toggle Switch</h2>
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                What is a toggle button in Microsoft Word?
-                                <div class="float-right">
-                                    <label class="switch">
-                                        <input type="checkbox">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                What is toggle button in Android?
-                                <div class="float-right">
-                                    <label class="switch">
-                                        <input type="checkbox" checked>
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                What is the purpose of a toggle switch?
-                                <div class="float-right">
-                                    <label class="switch">
-                                        <input type="checkbox">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                What is meant by toggle key?
-                                <div class="float-right">
-                                    <label class="switch">
-                                        <input type="checkbox" checked>
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
-                            </li>
-                        </ul>
+    <div class="col-md-6">
+            <li class="list-group-item">
+                    
+                    <div class="float-right">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
                     </div>
-                </div>                
-            </div>
-</div>
+                </li>
+    </div>
+    <div class="col-md-6">
+            <div class="form-group">
+                    <label>Ingresar reglas del CTF (Capture the flag)</label>
+                    <textarea class="form-control" rows="10" cols="30" required></textarea>
+                </div>
+    </div>
 
 <!-- larg modal -->
 
