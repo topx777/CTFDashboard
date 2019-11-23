@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use App\Team;
+use App\Member;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
-use MembersSeeder;
+use Symfony\Component\HttpFoundation\Request;
 
 class RegisterController extends Controller
 {
@@ -32,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/user/list';
+    protected $redirectTo = '/admin/users/list';
 
     /**
      * Create a new controller instance.
@@ -41,6 +42,61 @@ class RegisterController extends Controller
      */
     public function __construct()
     { }
+
+
+    public function register(Request $request)
+    {
+
+        $response["status"] = true;
+        try {
+
+            DB::beginTransaction();
+            if (!$request->ajax()) {
+                throw new \Exception("Error de peticion");
+            }
+            $userData = $request->userData;
+            $validationUser = Validator::make(
+                $userData,
+                [
+                    'username' => ['required', 'string', 'max:255', 'unique:users'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'password' => ['required', 'string', 'min:8', 'confirmed'],
+                ]
+            );
+
+            $validationErrors = [];
+
+            if ($validationUser->fails()) {
+                foreach ($validationUser->getMessageBag()->getMessages() as $key => $error) {
+                    $validationErrors[$key] = $error;
+                }
+            }
+
+            if (count($validationErrors) > 0) {
+                $response["errors"] = $validationErrors;
+                throw new \Exception("Existen errores de validacion");
+            }
+
+            $user = new User;
+            $user->username = $userData["username"];
+            $user->email = $userData["email"];
+            $user->email_verified_at = Carbon::now()->timestamp;
+            $user->password = Hash::make($userData["password"]);
+            $user->admin = $userData["admin"] == "true" ? true : false;
+
+            $response["intended"] = $this->redirectPath();
+
+            $user->saveOrFail();
+
+            DB::commit();
+        } catch (\Throwable $ex) {
+            DB::rollBack();
+            $response["status"] = false;
+            $response["msgError"] = $ex->getMessage();
+        } finally {
+            return response()->json($response);
+        }
+    }
 
     /**
      *  Function Registro de usuarios
@@ -51,101 +107,101 @@ class RegisterController extends Controller
      * @return response()->json($array)
      * @throws \Throwable $ex
      **/
-    public function register(Request $request)
-    {
-        $response["status"] = true;
-        try {
+    // public function register(Request $request)
+    // {
+    //     $response["status"] = true;
+    //     try {
 
-            DB::beginTransaction();
+    //         DB::beginTransaction();
 
-            if (!$request->ajax()) {
-                throw new Exception("Error de peticion");
-            }
+    //         if (!$request->ajax()) {
+    //             throw new Exception("Error de peticion");
+    //         }
 
-            $userData = $request->userData;
-            $validationUser = $this->validator($userData);
+    //         $userData = $request->userData;
+    //         $validationUser = $this->validator($userData);
 
-            $validationErrors = [];
-            if ($validationUser->fails()) {
-                foreach ($validationUser->errors()->toArray() as $key => $error) {
-                    $validationErrors[] = $error;
-                }
-            }
+    //         $validationErrors = [];
+    //         if ($validationUser->fails()) {
+    //             foreach ($validationUser->errors()->toArray() as $key => $error) {
+    //                 $validationErrors[] = $error;
+    //             }
+    //         }
 
-            if (!$userData->has('admin')) {
-                $teamData = $request->teamData;
-                $membersData = [];
-                foreach ($request->membersData as $key => $memberData) {
-                    $membersData[] = $memberData;
-                }
+    //         if (!$userData->has('admin')) {
+    //             $teamData = $request->teamData;
+    //             $membersData = [];
+    //             foreach ($request->membersData as $key => $memberData) {
+    //                 $membersData[] = $memberData;
+    //             }
 
-                $validationTeam = $this->validator($teamData);
-                $validationsMember = [];
-                foreach ($membersData as $key => $memberData) {
-                    $validationsMember[] = $this->validator($memberData);
-                }
+    //             $validationTeam = $this->validator($teamData);
+    //             $validationsMember = [];
+    //             foreach ($membersData as $key => $memberData) {
+    //                 $validationsMember[] = $this->validator($memberData);
+    //             }
 
-                if ($validationTeam->fails()) {
-                    foreach ($validationTeam->errors()->toArray() as $key => $error) {
-                        $validationErrors[] = $error;
-                    }
-                }
+    //             if ($validationTeam->fails()) {
+    //                 foreach ($validationTeam->errors()->toArray() as $key => $error) {
+    //                     $validationErrors[] = $error;
+    //                 }
+    //             }
 
-                foreach ($validationsMember as $validationMember) {
-                    if ($validationMember->fails()) {
-                        $validationErrors[] = "Error de validacion de Miembros";
-                    }
-                }
-            }
+    //             foreach ($validationsMember as $validationMember) {
+    //                 if ($validationMember->fails()) {
+    //                     $validationErrors[] = "Error de validacion de Miembros";
+    //                 }
+    //             }
+    //         }
 
-            if (count($validationErrors) > 0) {
-                $response["errors"] = $validationErrors;
-                throw new Exception("Existen errores de validacion");
-            }
+    //         if (count($validationErrors) > 0) {
+    //             $response["errors"] = $validationErrors;
+    //             throw new Exception("Existen errores de validacion");
+    //         }
 
-            $user = new User;
-            $user->username = $userData["username"];
-            $user->email = $userData["email"];
-            $user->email_verified_at = Carbon::now()->timestamp;
-            $user->password = Hash::make($userData["passsword"]);
-            $user->admin = $userData->has('admin') ? true : false;
+    //         $user = new User;
+    //         $user->username = $userData["username"];
+    //         $user->email = $userData["email"];
+    //         $user->email_verified_at = Carbon::now()->timestamp;
+    //         $user->password = Hash::make($userData["passsword"]);
+    //         $user->admin = $userData->has('admin') ? true : false;
 
-            $user->saveOrFail();
+    //         $user->saveOrFail();
 
-            if (!$user->admin) {
-                $team = new Team;
-                $team->idUser = $user->id;
-                $team->name = $teamData["name"];
-                $team->score = $teamData["score"];
-                $team->phrase = $teamData["phrase"];
-                $team->avatar = $teamData["avatar"];
-                $team->couch = $teamData["couch"];
-                $team->teamPassword = $teamData["teamPassword"];
+    //         if (!$user->admin) {
+    //             $team = new Team;
+    //             $team->idUser = $user->id;
+    //             $team->name = $teamData["name"];
+    //             $team->score = $teamData["score"];
+    //             $team->phrase = $teamData["phrase"];
+    //             $team->avatar = $teamData["avatar"];
+    //             $team->couch = $teamData["couch"];
+    //             $team->teamPassword = $teamData["teamPassword"];
 
-                $team->saveOrFail();
+    //             $team->saveOrFail();
 
-                foreach ($membersData as $key => $memberData) {
-                    $member = new Member;
+    //             foreach ($membersData as $key => $memberData) {
+    //                 $member = new Member;
 
-                    $member->idTeam = $team->id;
-                    $member->name = $memberData["name"];
-                    $member->lastname = $memberData["lastname"];
-                    $member->email = $memberData["email"];
-                    $member->career = $memberData["career"];
-                    $member->university = $memberData["university"];
-                    $member->saveOrFAil();
-                }
+    //                 $member->idTeam = $team->id;
+    //                 $member->name = $memberData["name"];
+    //                 $member->lastname = $memberData["lastname"];
+    //                 $member->email = $memberData["email"];
+    //                 $member->career = $memberData["career"];
+    //                 $member->university = $memberData["university"];
+    //                 $member->saveOrFAil();
+    //             }
 
-                DB::commit();
-            }
-        } catch (\Throwable $ex) {
-            DB::rollBack();
-            $response["status"] = false;
-            $response["msgError"] = $ex->getMessage();
-        } finally {
-            return response()->json($response);
-        }
-    }
+    //             DB::commit();
+    //         }
+    //     } catch (\Throwable $ex) {
+    //         DB::rollBack();
+    //         $response["status"] = false;
+    //         $response["msgError"] = $ex->getMessage();
+    //     } finally {
+    //         return response()->json($response);
+    //     }
+    // }
     /**
      * Get a validator for an incoming registration request.
      *
@@ -158,6 +214,7 @@ class RegisterController extends Controller
             'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+
         ]);
     }
 }
