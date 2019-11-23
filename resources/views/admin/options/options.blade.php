@@ -39,8 +39,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
 </div>
 
 <!-- larg modal -->
