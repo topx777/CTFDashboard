@@ -29,7 +29,7 @@ return [
         'array'   => 'tiene que tener entre :min - :max ítems.',
     ],
     'boolean'        => 'El campo debe tener un valor verdadero o falso.',
-    'confirmed'      => 'La confirmación de no coincide.',
+    'confirmed'      => 'La confirmación no coincide.',
     'date'           => 'no es una fecha válida.',
     'date_equals'    => 'debe ser una fecha igual a :date.',
     'date_format'    => 'no corresponde al formato :format.',
@@ -131,9 +131,10 @@ return [
     'custom' => [
         'password' => [
             'min' => 'La debe contener más de :min caracteres',
+            'confirmed' => 'La confirmacion de password no coinciden',
         ],
         'email' => [
-            'unique' => 'El ya ha sido registrado.',
+            'unique' => 'El correo ya ha sido registrado.',
         ],
     ],
 

@@ -50,6 +50,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::any('/teams/list', 'TeamController@list')->name('teams.list');
     Route::get('/teams/register', 'TeamController@register')->name('teams.register');
     Route::get('/teams/get/{$id}', 'TeamController@get')->name('teams.get');
+    Route::get('/teams/detail/{id}', 'TeamController@detail')->name('teams.detail');
     Route::post('/teams/update', 'TeamController@update')->name('teams.update');
     Route::post('/teams/delete', 'TeamController@delete')->name('teams.delete');
 
