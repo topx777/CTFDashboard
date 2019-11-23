@@ -100,16 +100,17 @@
                                     <div class="form-group">
                                         <label for="">Nombre nivel</label>
                                         <input name="name" autofocus type="text" class="form-control" required
-                                            maxlength="25">
+                                            autocomplete="false" maxlength="25">
                                         <div class="invalid-feedback">
-                                            El campo nombre nivel es obligatorio
+                                            El campo es obligatorio
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Puntaje</label>
-                                        <input name="score" type="text" class="form-control entero" required />
+                                        <input name="score" type="text" class="form-control" required
+                                            autocomplete="false" />
                                         <div class="invalid-feedback">
-                                            El campo Puntaje es obligatorio
+                                            El campo es obligatorio
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -119,9 +120,9 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>Porcentaje de Descuento</label>
-                                        <input name="hintDiscount" type="text" class="form-control decimal" required />
+                                        <input name="hintDiscount" type="text" class="form-control" required />
                                         <div class="invalid-feedback">
-                                            El campo Porcentaje de descuento es obligatorio
+                                            El campo es obligatorio
                                         </div>
                                     </div>
                                 </div>
@@ -207,37 +208,39 @@
                         <div class="row pt-4 px-3">
                             <div class="col-6 form-group">
                                 <strong class="text-white">Nombre Nivel:</strong>
-                                <span class="">nivel</span>
+                                <span id="levelName" class=""></span>
                             </div>
                             <div class="col-6 form-group">
                                 <strong class="text-white">Puntaje:</strong>
-                                <span class="">#0000</span>
+                                <span id="levelScore"></span>
                             </div>
                             <div class="col-6 form-group">
                                 <strong class="text-white">Porcentaje descuento:</strong>
-                                <span class="">#0000%</span>
+                                <span id="levelHintDiscount"></span>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane vivify flipInX" id="tabUserEdit">
                         <div class="pt-4 px-3">
-                            <form action="">
+                            <form id="updateLevelForm" action="{{ route('levels.update') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id" id="levelID">
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label for="">Nombre nivel</label>
-                                            <input name="userData[username]" autofocus type="text" class="form-control"
-                                                required maxlength="40">
+                                            <input name="name" autofocus type="text" class="form-control" required
+                                                autocomplete="false" maxlength="25">
                                             <div class="invalid-feedback">
-                                                El campo nombre nivel es obligatorio
+                                                El campo es obligatorio
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="">Porcentaje de descuento</label>
-                                            <input name="email" type="email" class="form-control" required
-                                                maxlength="55">
+                                            <label>Puntaje</label>
+                                            <input name="score" type="text" class="form-control" required
+                                                autocomplete="false" />
                                             <div class="invalid-feedback">
-                                                El campo Porcentaje de descuento es obligatorio
+                                                El campo es obligatorio
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -246,11 +249,10 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label for="">Puntaje</label>
-                                            <input name="email" type="email" class="form-control" required
-                                                maxlength="55">
+                                            <label>Porcentaje de Descuento</label>
+                                            <input name="hintDiscount" type="text" class="form-control" required />
                                             <div class="invalid-feedback">
-                                                El campo Puntaje es obligatorio
+                                                El campo es obligatorio
                                             </div>
                                         </div>
                                     </div>
@@ -276,6 +278,8 @@
 {{-- <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script> --}}
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 <script>
+    let levelTable = null;
+    let categoryTable = null;
     $(document).ready(function () {
 
         $('.decimal').toArray().forEach(element => {
@@ -291,7 +295,7 @@
             }
         });
 
-        var levelTable = $('#levelTable').DataTable({
+        levelTable = $('#levelTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('levels.list') }}",
@@ -315,7 +319,7 @@
             ]
         });
 
-        var categoryTable = $('#categoryTable').DataTable({
+        categoryTable = $('#categoryTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('categories.list') }}",
@@ -343,7 +347,6 @@
                 id = parseInt(id, 10);
 
                 CargarNivel(id);
-                $('#detaillevelModal').modal('show');
             }
         });
 
@@ -355,6 +358,35 @@
             } else {
                 $('#btnLevelDelete').attr('data-id', id);
             }
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('levels.get') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id
+                },
+                dataType: "JSON",
+                success: function (data) {
+                    $('#levelID').val(data.id);
+                    $('#levelName').html(data.name);
+                    $('#levelScore').html(`#${data.score}`);
+                    $('#levelHintDiscount').html(`${parseFloat(data.hintDiscount) * 100}%`);
+
+                    $('#updateLevelForm').find('input[name=id]').val(data.id);
+                    $('#updateLevelForm').find('input[name=name]').val(data.name);
+                    $('#updateLevelForm').find('input[name=score]').val(`${data.score}`);
+                    $('#updateLevelForm').find('input[name=hintDiscount]').val(`${parseFloat(data.hintDiscount) * 100}`);
+                },
+                error: function (err) {
+                    console.log(err);
+                    return false;
+                },
+                complete: function() {
+                    $('#detaillevelModal').modal('show');
+                }
+            });
+
         }
 
         $('#categoryTable').on('click', 'tr', function () {
@@ -403,7 +435,7 @@
                                     swal({
                                         title: "Correcto",
                                         text: "Nivel eliminado correctamente",
-                                        type: success
+                                        type: 'success'
                                     });
                                     levelTable.ajax.reload();
                                     $('#detaillevelModal').modal('hide');
@@ -439,13 +471,13 @@
         }
     });
 
+    var form = document.getElementById('registerLevelForm');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (form.checkValidity() === true) {
 
-    $(document).on('submit', '#registerLevelForm', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        let form = this;
-
-        if (e.isDefaultPrevented()) {
+            let form = this;
 
             $(form).find('button').prop('disabled', true);
             let method = $(form).attr('method');
@@ -457,7 +489,7 @@
                 data: $(form).serialize(),
                 dataType: "JSON",
                 success: function (response) {
-                    if(response.status) {
+                    if (response.status) {
                         swal({
                             type: 'success',
                             title: 'Correcto',
@@ -467,14 +499,31 @@
                         $('#registerlevelModal').modal('hide');
                         levelTable.ajax.reload();
                     } else {
-                        swal({
-                            type: 'error',
-                            title: 'Error',
-                            text: response.msgError
-                        });    
+                        $(form).removeClass('was-validated');
+                        if (response.validationErrors !== undefined) {
+                            let keys = Object.keys(response.validationErrors);
+                            let errors = response.validationErrors;
+                            keys.forEach(key => {
+                                let node = $(form).find(`input[name=${key}]`);
+                                console.log(node);
+                                node.addClass('is-invalid');
+                                let errores = "";
+                                errors[`${key}`].forEach(error => {
+                                    errores += error + '\n';
+                                });
+                                $(node[0]).parent().find('.invalid-feedback').html(errores);
+                            });
+
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Error',
+                                text: response.msgError
+                            });
+                        }
                     }
                 },
-                error: function(err) {
+                error: function (err) {
                     swal({
                         type: 'error',
                         title: 'Error',
@@ -482,25 +531,123 @@
                     });
                     console.log(err);
                 },
-                complete: function() {
-                    $(form).find('button').prop('disabled', true);
+                complete: function () {
+                    $(form).find('button').prop('disabled', false);
                 }
             });
 
         }
+        form.classList.add('was-validated');
+    }, false);
 
+
+    $(document).on('hide.bs.modal', '#registerlevelModal', function () {
+        let modal = $(this);
+        let form = modal.find('form')
+
+        form[0].reset();
+        $(form).find('input').removeClass('is-invalid');
+        form.find('.invalid-feedback').toArray().forEach(element => {
+            $(element).html('El Campo es obligatorio.')
+        });
     });
 
+    //Modificar Nivel
 
+    var form = document.getElementById('updateLevelForm');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (form.checkValidity() === true) {
 
+            let form = this;
 
+            $(form).find('button').prop('disabled', true);
+            let method = $(form).attr('method');
+            let action = $(form).attr('action');
 
+            $.ajax({
+                type: method,
+                url: action,
+                data: $(form).serialize(),
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.status) {
+                        swal({
+                            type: 'success',
+                            title: 'Correcto',
+                            text: 'Nivel actualizado correctamente'
+                        });
 
+                        $('#detaillevelModal').modal('hide');
+                        levelTable.ajax.reload();
+                    } else {
+                        $(form).removeClass('was-validated');
+                        if (response.validationErrors !== undefined) {
+                            let keys = Object.keys(response.validationErrors);
+                            let errors = response.validationErrors;
+                            keys.forEach(key => {
+                                let node = $(form).find(`input[name=${key}]`);
+                                console.log(node);
+                                node.addClass('is-invalid');
+                                let errores = "";
+                                errors[`${key}`].forEach(error => {
+                                    errores += error + '\n';
+                                });
+                                $(node[0]).parent().find('.invalid-feedback').html(errores);
+                            });
+
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Error',
+                                text: response.msgError
+                            });
+                        }
+                    }
+                },
+                error: function (err) {
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Error Desconocido'
+                    });
+                    console.log(err);
+                },
+                complete: function () {
+                    $(form).find('button').prop('disabled', false);
+                }
+            });
+
+        }
+        form.classList.add('was-validated');
+    }, false);
+
+    $(document).on('hide.bs.modal', '#detaillevelModal', function () {
+        let modal = $(this);
+        let form = modal.find('form')
+
+        $('#levelID').val('');
+        $('#levelName').html('');
+        $('#levelScore').html('');
+        $('#levelHintDiscount').html('');
+
+        $('#updateLevelForm').find('input[name=id]').val('');
+        $('#updateLevelForm').find('input[name=name]').val('');
+        $('#updateLevelForm').find('input[name=score]').val('');
+        $('#updateLevelForm').find('input[name=hintDiscount]').val('');
+        
+        form[0].reset();
+        $(form).find('input').removeClass('is-invalid');
+        form.find('.invalid-feedback').toArray().forEach(element => {
+            $(element).html('El Campo es obligatorio.')
+        });
+    });
 
 
     function setInputFilter(textbox, inputFilter) {
         ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (
-        event) {
+            event) {
             textbox.addEventListener(event, function () {
                 if (inputFilter(this.value)) {
                     this.oldValue = this.value;
