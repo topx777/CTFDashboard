@@ -7,37 +7,53 @@
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 @endsection
 @section('content')
-<div class="col-lg-12">
-    <div class="card">
-        <div class="header">
-            <h2>Lista de usuarios<small>Seleccione una fila para ver detalles</small>
-            </h2>
-            <ul class="header-dropdown dropdown">
-                <li><a href="{{ route('users.register') }}" class="btn btn-primary text-white">Registrar</a></li>
-                <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
-                </li>
-            </ul>
-        </div>
-        <div class="body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover dataTable js-exportable">
-                    <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>id</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>id</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                    </tbody>
-                </table>
+<div class="col-lg-12">   
+        <div class="row clearfix">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Toggle Switch</h2>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                What is a toggle button in Microsoft Word?
+                                <div class="float-right">
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                What is toggle button in Android?
+                                <div class="float-right">
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                What is the purpose of a toggle switch?
+                                <div class="float-right">
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                What is meant by toggle key?
+                                <div class="float-right">
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>                
             </div>
 </div>
 
