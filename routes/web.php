@@ -35,6 +35,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
         return view('admin/home');
     });
 
+    //Rutas de Opciones
+    Route::get('/options', 'OptionController@show')->name('options');
+    Route::post('/options/update', 'OptionController@update')->name('options.update');
+
     // Rutas de User
     Route::any('/users/list', 'UserController@list')->name('users.list');
     Route::get('/users/register', 'UserController@register')->name('users.register');

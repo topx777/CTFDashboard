@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Level;
 use DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class LevelController extends Controller
 {
@@ -33,6 +34,9 @@ class LevelController extends Controller
                 ->addColumn('DT_RowId', function ($row) {
                     $btn = $row->id;
                     return $btn;
+                })
+                ->editColumn('hintDiscount', function (Level $level) {
+                    return ($level->hintDiscount * 100) . '%';
                 })
                 ->make(true);
         }
@@ -81,20 +85,28 @@ class LevelController extends Controller
 
                 $level = new Level();
 
-                $validation = $request->validate([
-                    'name' => 'required|max:25',
-                    'score' => 'required|numeric|min:0',
-                    'hintDiscount' => 'required|numeric|max:100|min:0',
-                ]);
+                $validation = Validator::make(
+                    $request->all(),
+                    [
+                        'name' => 'required|max:25',
+                        'score' => 'required|numeric|min:0',
+                        'hintDiscount' => 'required|numeric|max:100|min:0',
+                    ]
+                );
 
                 if ($validation->fails()) {
-                    $resp["validationErrors"] = $validation->errors()->all();
+                    $validationErrors = [];
+
+                    foreach ($validation->getMessageBag()->getMessages() as $key => $value) {
+                        $validationErrors[$key] = $value;
+                    }
+                    $resp["validationErrors"] = $validationErrors;
                     throw new \Exception("Problemas de Validación");
                 }
 
                 $level->name = $request->name;
                 $level->score = $request->score;
-                $level->hintDiscount = $request->hintDiscount;
+                $level->hintDiscount = (float) round(($request->hintDiscount / 100), 2);
 
                 $level->saveOrFail();
             } catch (\Throwable $ex) {
@@ -134,20 +146,28 @@ class LevelController extends Controller
                     throw new \Exception("Nivel no encontrado");
                 }
 
-                $validation = $request->validate([
-                    'name' => 'required|max:25',
-                    'score' => 'required|numeric|min:0',
-                    'hintDiscount' => 'required|numeric|max:100|min:0',
-                ]);
+                $validation = Validator::make(
+                    $request->all(),
+                    [
+                        'name' => 'required|max:25',
+                        'score' => 'required|numeric|min:0',
+                        'hintDiscount' => 'required|numeric|max:100|min:0',
+                    ]
+                );
 
                 if ($validation->fails()) {
-                    $resp["validationErrors"] = $validation->errors()->all();
+                    $validationErrors = [];
+
+                    foreach ($validation->getMessageBag()->getMessages() as $key => $value) {
+                        $validationErrors[$key] = $value;
+                    }
+                    $resp["validationErrors"] = $validationErrors;
                     throw new \Exception("Problemas de Validación");
                 }
 
                 $level->name = $request->name;
                 $level->score = $request->score;
-                $level->hintDiscount = $request->hintDiscount;
+                $level->hintDiscount = (float) round(($request->hintDiscount / 100), 2);
 
                 $level->saveOrFail();
             } catch (\Throwable $ex) {
