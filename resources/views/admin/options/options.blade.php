@@ -1,72 +1,69 @@
 @extends('adminLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
-<link rel="stylesheet"
-    href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
+<link rel="stylesheet"href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 <link rel="stylesheet" href="{{asset('vendor/summernote/dist/summernote.css')}}" />
+
+
 <link rel="stylesheet" href="{{asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}"/>
+
 <link rel="stylesheet" href="{{asset('vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css')}}"/>
+
 <link rel="stylesheet" href="{{asset('vendor/bootstrap-multiselect/bootstrap-multiselect.css')}}"/>
 <link rel="stylesheet" href="{{asset('vendor/multi-select/css/multi-select.css')}}"/>
 
-
-
-
-
+<link rel="stylesheet" href="{{asset('vendor/nouislider/nouislider.min.css')}}"/>
 <!-- VENDOR CSS -->
 
 @endsection
 @section('content')
-    <div class="col-md-8 mb-5">
-        <h3>Hora de Inicio</h3>
-        <div class="col-md-4">
-                <label>Fecha de Inicio (dd/mm/yyyy)</label>
+<div class="col-lg-6 col-md-6">
+        <label><b>Fecha de Inicio (dd/mm/yyyy)</b></label>
                 <div class="input-group mb-3">                                        
                     <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
                 </div>
-        </div> 
-        <div class="col-md-4">
-                <b>Time (24 hour)</b>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="icon-clock"></i></span>
-                    </div>
-                    <input type="text" class="form-control time24" placeholder="Ex: 23:59">
-                </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+            <label><b>Hora de Inicio</b></label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="icon-clock"></i></span>
             </div>
-            <h3>Hora de fin</h3>
-            <div class="col-md-4">
-                    <label>Fecha de Inicio (dd/mm/yyyy)</label>
+            <input type="text" class="form-control time24" placeholder="Ex: 23:59">
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+            <label><b>Fecha de Fin (dd/mm/yyyy)</b></label>
                     <div class="input-group mb-3">                                        
                         <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
                     </div>
-            </div> 
-            <div class="col-md-4">
-                    <b>Time (24 hour)</b>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="icon-clock"></i></span>
-                        </div>
-                        <input type="text" class="form-control time24" placeholder="Ex: 23:59">
-                    </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <label><b>Hora Fin</b></label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-clock"></i></span>
                 </div>
-    </div>
+                <input type="text" class="form-control time24" placeholder="Ex: 23:59">
+            </div>
+        </div>
     
-    <div class="col-md-4 mb-5">
-        <li class="list-group-item">
-                Estado de la competencia
-                    <div class="float-right">
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
+            <div class="col-md-6 mb-5">
+                    <ul class="list-group">
+                <li class="list-group-item">
+                    Estado de la competencia
+                        <div class="float-right">
+                            <label class="switch">
+                                <input type="checkbox">
+                                    <span class="slider round"></span>
+                            </label>
+                        </div>
                 </li>
-
-                
-    </div>    
+                    </ul>                      
+            </div>    
+    
             <div class="col-md-12 col-lg-12">
                 <h3>Reglas de juego</h3>
                 <div class="card mt-3">
@@ -169,8 +166,6 @@
                 swal("Deleted!", "El usuario a sido eliminado", "success");
             });
         }
-
-
     });
 </script>
 @endsection
