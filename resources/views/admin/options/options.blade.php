@@ -10,6 +10,13 @@
 <link rel="stylesheet" href="{{asset('vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css')}}"/>
 <link rel="stylesheet" href="{{asset('vendor/bootstrap-multiselect/bootstrap-multiselect.css')}}"/>
 <link rel="stylesheet" href="{{asset('vendor/multi-select/css/multi-select.css')}}"/>
+
+
+
+
+
+<!-- VENDOR CSS -->
+
 @endsection
 @section('content')
     <div class="col-md-6 mb-5">
@@ -29,7 +36,24 @@
                     <input type="text" class="form-control time24" placeholder="Ex: 23:59">
                 </div>
             </div>
+            <h3>Hora de fin</h3>
+            <div class="col-md-6">
+                    <label>Fecha de Inicio (dd/mm/yyyy)</label>
+                    <div class="input-group mb-3">                                        
+                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
+                    </div>
+            </div> 
+            <div class="col-md-6">
+                    <b>Time (24 hour)</b>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-clock"></i></span>
+                        </div>
+                        <input type="text" class="form-control time24" placeholder="Ex: 23:59">
+                    </div>
+                </div>
     </div>
+    
     <div class="col-md-6 mb-5">
         <li class="list-group-item">
                 Estado de la competencia
@@ -64,6 +88,20 @@
 
 @endsection
 @section('script')
+<script src="{{asset('bundles/libscripts.bundle.js')}}"></script>
+<script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
+
+<script src="{{asset('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js')}}"></script>
+<script src="{{asset('vendor/jquery-inputmask/jquery.inputmask.bundle.js')}}"></script>
+<script src="{{asset('vendor/jquery.maskedinput/jquery.maskedinput.min.js')}}"></script>
+<script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
+<script src="{{asset('vendor/bootstrap-multiselect/bootstrap-multiselect.js')}}"></script>
+<script src="{{asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+<script src="{{asset('vendor/nouislider/nouislider.js')}}"></script>
+<script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
+<script src="{{asset('js/pages/forms/advanced-form-elements.js')}}"></script>
+
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js')}}"></script>
@@ -74,11 +112,7 @@
 {{-- <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script> --}}
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 <script src="{{asset('vendor/summernote/dist/summernote.js')}}"></script>
-<script src="{{asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
-<script src="{{asset('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js')}}"></script>
-<script src="{{asset('vendor/jquery-inputmask/jquery.inputmask.bundle.js')}}"></script>
-<script src="{{asset('js/pages/forms/advanced-form-elements.js')}}"></script>
-<script src="{{asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+
 
 
 <script>
