@@ -5,11 +5,34 @@
     href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
+<link rel="stylesheet" href="{{asset('vendor/summernote/dist/summernote.css')}}" />
+<link rel="stylesheet" href="{{asset('vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}"/>
+<link rel="stylesheet" href="{{asset('vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css')}}"/>
+<link rel="stylesheet" href="{{asset('vendor/bootstrap-multiselect/bootstrap-multiselect.css')}}"/>
+<link rel="stylesheet" href="{{asset('vendor/multi-select/css/multi-select.css')}}"/>
 @endsection
 @section('content')
-    <div class="col-md-6">
-            <li class="list-group-item">
-                    
+    <div class="col-md-6 mb-5">
+        <h3>Hora de Inicio</h3>
+        <div class="col-md-6">
+                <label>Fecha de Inicio (dd/mm/yyyy)</label>
+                <div class="input-group mb-3">                                        
+                    <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
+                </div>
+        </div> 
+        <div class="col-md-6">
+                <b>Time (24 hour)</b>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-clock"></i></span>
+                    </div>
+                    <input type="text" class="form-control time24" placeholder="Ex: 23:59">
+                </div>
+            </div>
+    </div>
+    <div class="col-md-6 mb-5">
+        <li class="list-group-item">
+                Estado de la competencia
                     <div class="float-right">
                         <label class="switch">
                             <input type="checkbox">
@@ -17,14 +40,26 @@
                         </label>
                     </div>
                 </li>
-    </div>
-    <div class="col-md-6">
-            <div class="form-group">
-                    <label>Ingresar reglas del CTF (Capture the flag)</label>
-                    <textarea class="form-control" rows="10" cols="30" required></textarea>
-                </div>
-    </div>
 
+                
+    </div>    
+            <div class="col-md-12 col-lg-12">
+                <h3>Reglas de juego</h3>
+                <div class="card mt-3">
+                    <div class="body">
+                        <div class="summernote">
+                            Hi dada
+                            <br/><br/>
+                            <p>The toolbar can be customized and it also supports various callbacks such as <code>oninit</code>, <code>onfocus</code>, <code>onpaste</code> and many more.</p>
+                            <p><strong>Note:</strong> The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English</p>                                
+                            <br/><br/>
+                            <p>Thank you!</p>
+                            <h6>Summer Note</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
 <!-- larg modal -->
 
 @endsection
@@ -38,6 +73,11 @@
 <script src="{{asset('vendor/sweetalert/sweetalert.min.js')}}"></script><!-- SweetAlert Plugin Js -->
 {{-- <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script> --}}
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
+<script src="{{asset('vendor/summernote/dist/summernote.js')}}"></script>
+<script src="{{asset('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js')}}"></script>
+<script src="{{asset('vendor/jquery-inputmask/jquery.inputmask.bundle.js')}}"></script>
+<script src="{{asset('js/pages/forms/advanced-form-elements.js')}}"></script>
+
 <script>
     $(document).ready(function () {
         $.ajaxSetup({
