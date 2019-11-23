@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Team;
 use Illuminate\Http\Request;
 use DataTables;
+use Faker;
 
 class TeamController extends Controller
 {
@@ -65,7 +66,7 @@ class TeamController extends Controller
         }
     }
 
-     /**
+    /**
      * Funcion detail
      *
      * Funcion para detalles los equipos (Administrador)
