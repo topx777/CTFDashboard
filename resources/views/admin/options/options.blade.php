@@ -19,15 +19,15 @@
 
 @endsection
 @section('content')
-    <div class="col-md-6 mb-5">
+    <div class="col-md-8 mb-5">
         <h3>Hora de Inicio</h3>
-        <div class="col-md-6">
+        <div class="col-md-4">
                 <label>Fecha de Inicio (dd/mm/yyyy)</label>
                 <div class="input-group mb-3">                                        
                     <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
                 </div>
         </div> 
-        <div class="col-md-6">
+        <div class="col-md-4">
                 <b>Time (24 hour)</b>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -37,13 +37,13 @@
                 </div>
             </div>
             <h3>Hora de fin</h3>
-            <div class="col-md-6">
+            <div class="col-md-4">
                     <label>Fecha de Inicio (dd/mm/yyyy)</label>
                     <div class="input-group mb-3">                                        
                         <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
                     </div>
             </div> 
-            <div class="col-md-6">
+            <div class="col-md-4">
                     <b>Time (24 hour)</b>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -54,7 +54,7 @@
                 </div>
     </div>
     
-    <div class="col-md-6 mb-5">
+    <div class="col-md-4 mb-5">
         <li class="list-group-item">
                 Estado de la competencia
                     <div class="float-right">
@@ -90,15 +90,20 @@
 @section('script')
 <script src="{{asset('bundles/libscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
-
 <script src="{{asset('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js')}}"></script>
+
 <script src="{{asset('vendor/jquery-inputmask/jquery.inputmask.bundle.js')}}"></script>
+
 <script src="{{asset('vendor/jquery.maskedinput/jquery.maskedinput.min.js')}}"></script>
 <script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
+
 <script src="{{asset('vendor/bootstrap-multiselect/bootstrap-multiselect.js')}}"></script>
 <script src="{{asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+
 <script src="{{asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+
 <script src="{{asset('vendor/nouislider/nouislider.js')}}"></script>
+
 <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
 <script src="{{asset('js/pages/forms/advanced-form-elements.js')}}"></script>
 
