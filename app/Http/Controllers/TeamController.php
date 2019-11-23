@@ -65,6 +65,18 @@ class TeamController extends Controller
         }
     }
 
+     /**
+     * Funcion detail
+     *
+     * Funcion para detalles los equipos (Administrador)
+     *
+     * @return view
+     **/
+    public function detail(Request $request)
+    {
+        return view('admin.teams.detail');
+    }
+
 
     /**
      * funcion register

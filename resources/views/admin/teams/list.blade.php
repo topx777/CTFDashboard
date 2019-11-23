@@ -10,10 +10,10 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="header">
-            <h2>Lista de usuarios<small>Seleccione una fila para ver detalles</small>
+            <h2>Lista de Equipos en CTF<small>Seleccione un item para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-                <li><a href="{{ route('users.register') }}" class="btn btn-primary text-white">Registrar</a></li>
+                <li><a href="{{ route('teams.register') }}" class="btn btn-primary text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>
             </ul>
@@ -23,16 +23,16 @@
                 <table class="table table-striped table-hover dataTable js-exportable">
                     <thead>
                         <tr>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>id</th>
+                            <th>Nombre</th>
+                            <th>Couch</th>
+                            <th>Frase</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>id</th>
+                            <th>Nombre</th>
+                            <th>Couch</th>
+                            <th>Frase</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -152,10 +152,11 @@
         var table = $('.dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('users.list') }}",
+            ajax: "{{ route('teams.list') }}",
             columns: [
-                { data: 'username', name: 'username' },
-                { data: 'email', name: 'email' },
+                { data: 'name', name: 'name' },
+                { data: 'couch', name: 'couch' },
+                { data: 'phrase', name: 'phrase' },
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });
@@ -165,8 +166,11 @@
             if (id) {
                 id = id.replace(/\D/g, '');
                 id = parseInt(id, 10);
-                console.log('id ' + id);
-                $('#detailModal').modal('show');
+                var url = '{{ route("teams.detail", "") }}';
+                url+=`/${id}`
+                window.location.href=url;
+
+
             }
         });
 
