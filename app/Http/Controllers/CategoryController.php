@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -80,10 +82,13 @@ class CategoryController extends Controller
 
                 $category = new Category();
 
-                $validation = $request->validate([
-                    'name' => 'required|max:30',
-                    'description' => 'required',
-                ]);
+                $validation = Validator::make(
+                    $request->all,
+                    [
+                        'name' => 'required|max:30',
+                        'description' => 'required',
+                    ]
+                );
 
                 if ($validation->fails()) {
                     $resp["validationErrors"] = $validation->errors()->all();
@@ -120,7 +125,7 @@ class CategoryController extends Controller
             $resp["status"] = true;
             try {
                 if (!$request->has('id')) {
-                    throw new Exception("Categoria no encontrado");
+                    throw new \Exception("Categoria no encontrado");
                 }
 
                 $id = $request->id;
@@ -128,7 +133,7 @@ class CategoryController extends Controller
                 $category = Category::find($id);
 
                 if (is_null($category)) {
-                    throw new Exception("Categoria no encontrado");
+                    throw new \Exception("Categoria no encontrado");
                 }
 
                 $validation = $request->validate([
@@ -171,7 +176,7 @@ class CategoryController extends Controller
             $resp["status"] = true;
             try {
                 if (!$request->has('id')) {
-                    throw new Exception("Categoria no encontrado");
+                    throw new \Exception("Categoria no encontrado");
                 }
 
                 $id = $request->id;
@@ -179,7 +184,7 @@ class CategoryController extends Controller
                 $category = Category::find($id);
 
                 if (is_null($category)) {
-                    throw new Exception("Categoria no encontrado");
+                    throw new \Exception("Categoria no encontrado");
                 }
 
                 $category->delete();

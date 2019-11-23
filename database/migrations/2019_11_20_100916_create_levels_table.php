@@ -17,7 +17,7 @@ class CreateLevelsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 25);
             $table->smallInteger('score');
-            $table->decimal('hintDiscount', 2, 1);
+            $table->decimal('hintDiscount', 3, 2);
             $table->timestamps();
         });
     }

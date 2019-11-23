@@ -20,6 +20,8 @@ Route::get('/denied', function () {
     return view('error\permissionError');
 })->name('permissionError');
 
+
+
 Route::get('/test', function () {
     return view('admin.users.list');
 });
@@ -32,6 +34,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/home', function () {
         return view('admin/home');
     });
+
+    //Rutas de Opciones
+    Route::get('/options', 'OptionController@show')->name('options');
+    Route::post('/options/update', 'OptionController@update')->name('options.update');
 
     // Rutas de User
     Route::any('/users/list', 'UserController@list')->name('users.list');
@@ -47,7 +53,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::post('/teams/update', 'TeamController@update')->name('teams.update');
     Route::post('/teams/delete', 'TeamController@delete')->name('teams.delete');
 
-    //Rutas de Level
+    //Ruta {Categoria/ Nivel
+    Route::get('/levelsCategories/list', function () {
+        return view('admin.levelsCategories.list');
+    })->name('levelsCategories.list');
+
+    //Rutas de Level AJAX
     Route::any('/levels/list', 'LevelController@list')->name('levels.list');
     Route::post('/levels/store', 'LevelController@store')->name('levels.store');
     Route::get('/levels/get', 'LevelController@get')->name('levels.get');
@@ -56,7 +67,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
     Route::get('/levels/getAll', 'LevelController@getAll')->name('levels.getAll');
 
-    //Rutas de Category
+    //Rutas de Category AJAX
     Route::any('/categories/list', 'CategoryController@list')->name('categories.list');
     Route::post('/categories/store', 'CategoryController@store')->name('categories.store');
     Route::get('/categories/get', 'CategoryController@get')->name('categories.get');
