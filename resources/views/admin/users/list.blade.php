@@ -13,7 +13,7 @@
             <h2>Lista de usuarios<small>Seleccione una fila para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-                <li><a href="{{ route('users/register') }}" class="btn btn-primary text-white">Registrar</a></li>
+                <li><a href="{{ route('users.register') }}" class="btn btn-primary text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>
             </ul>
@@ -152,7 +152,7 @@
         var table = $('.dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('users/list') }}",
+            ajax: "{{ route('users.list') }}",
             columns: [
                 { data: 'username', name: 'username' },
                 { data: 'email', name: 'email' },

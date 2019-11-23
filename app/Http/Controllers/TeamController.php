@@ -28,11 +28,10 @@ class TeamController extends Controller
             }
 
             return DataTables::of($data)
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Editar" class="edit btn btn-primary btn-sm editProduct">Edit</a>';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Eliminar" class="btn btn-danger btn-sm deleteProduct">Delete</a>';
+                ->addColumn('DT_RowId', function ($row) {
+                    $row = $row->id;
 
-                    return $btn;
+                    return $row;
                 })
                 ->rawColumns(['action'])
                 ->make(true);

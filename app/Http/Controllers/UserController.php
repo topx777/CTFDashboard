@@ -31,8 +31,8 @@ class UserController extends Controller
 
             return DataTables::of($data)
                 ->addColumn('DT_RowId', function ($row) {
-                    $btn = $row->id;
-                    return $btn;
+                    $row = $row->id;
+                    return $row;
                 })
                 ->make(true);
         }
