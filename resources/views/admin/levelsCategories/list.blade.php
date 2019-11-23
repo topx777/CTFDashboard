@@ -80,7 +80,7 @@
     </div>
 </div>
 <!-- Register level modal -->
-<div id='registerlevelModal' class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+<div id="registerlevelModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -94,6 +94,7 @@
                 <div class="tab-pane vivify flipInX">
                     <div class="pt-4 px-3">
                         <form id="registerLevelForm" action="{{ route('levels.store') }}" method="POST">
+                            @csrf
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -446,7 +447,7 @@
 
         if (e.isDefaultPrevented()) {
 
-            $(form).find(button).prop('disabled', true);
+            $(form).find('button').prop('disabled', true);
             let method = $(form).attr('method');
             let action = $(form).attr('action');
 
@@ -458,13 +459,18 @@
                 success: function (response) {
                     if(response.status) {
                         swal({
+                            type: 'success',
+                            title: 'Correcto',
+                            text: 'Nivel registrado correctamente'
+                        });
 
-                        })
+                        $('#registerlevelModal').modal('hide');
+                        levelTable.ajax.reload();
                     } else {
                         swal({
                             type: 'error',
                             title: 'Error',
-                            text: response.msgError;
+                            text: response.msgError
                         });    
                     }
                 },
@@ -472,12 +478,12 @@
                     swal({
                         type: 'error',
                         title: 'Error',
-                        text: 'Error Desconocido';
+                        text: 'Error Desconocido'
                     });
                     console.log(err);
                 },
                 complete: function() {
-                    $(form).find(button).prop('disabled', true);
+                    $(form).find('button').prop('disabled', true);
                 }
             });
 

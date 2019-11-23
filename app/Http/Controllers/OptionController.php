@@ -28,7 +28,7 @@ class OptionController extends Controller
             $option->endTime = Carbon::now();
         }
 
-        return view('admin.option', compact('option'));
+        return view('admin.options.options', compact('option'));
     }
 
     /**

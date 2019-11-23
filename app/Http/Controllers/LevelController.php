@@ -94,7 +94,7 @@ class LevelController extends Controller
 
                 $level->name = $request->name;
                 $level->score = $request->score;
-                $level->hintDiscount = $request->hintDiscount;
+                $level->hintDiscount = (float) round(($request->hintDiscount / 100));
 
                 $level->saveOrFail();
             } catch (\Throwable $ex) {
