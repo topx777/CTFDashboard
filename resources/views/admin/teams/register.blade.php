@@ -56,12 +56,20 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="">Password</label>
-                            <input name="nombre" autofocus type="text" class="form-control" required maxlength="35">
+                            <div class="input-group">
+                                    <input name="nombre" autofocus type="text" class="form-control" disabled required maxlength="35">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fa fa-lock"></i>
+                                    </button>
+                                </div>
+                            </div>
                             <div class="invalid-feedback">
                                 El campo password es obligatorio
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

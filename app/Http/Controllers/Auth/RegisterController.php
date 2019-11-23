@@ -54,15 +54,31 @@ class RegisterController extends Controller
             if (!$request->ajax()) {
                 throw new \Exception("Error de peticion");
             }
+
             $userData = $request->userData;
-            $validationUser = Validator::make(
-                $userData,
-                [
-                    'username' => ['required', 'string', 'max:255', 'unique:users'],
-                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                    'password' => ['required', 'string', 'min:8', 'confirmed'],
-                ]
-            );
+
+            if ($userData["admin"] != "true") {
+                $this->redirectTo = "/admin/teams/list";
+            }
+
+            if ($userData["admin"] == "true") {
+                $validationUser = Validator::make(
+                    $userData,
+                    [
+                        'username' => ['required', 'string', 'max:255', 'unique:users'],
+                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                        'password' => ['required', 'string', 'min:8', 'confirmed'],
+                    ]
+                );
+            } else {
+                $validationUser = Validator::make(
+                    $userData,
+                    [
+                        'username' => ['required', 'string', 'max:255', 'unique:users'],
+                        'password' => ['required', 'string', 'min:8'],
+                    ]
+                );
+            }
 
             $validationErrors = [];
 
@@ -123,8 +139,10 @@ class RegisterController extends Controller
 
             $user = new User;
             $user->username = $userData["username"];
-            $user->email = $userData["email"];
-            $user->email_verified_at = Carbon::now()->timestamp;
+            if ($userData["admin"] == "true") {
+                $user->email = $userData["email"];
+                $user->email_verified_at = Carbon::now()->timestamp;
+            }
             $user->password = Hash::make($userData["password"]);
             $user->admin = $userData["admin"] == "true" ? true : false;
 
@@ -140,7 +158,7 @@ class RegisterController extends Controller
                 $team->phrase = $teamData["phrase"];
                 $team->avatar = $teamData["avatar"];
                 $team->couch = $teamData["couch"];
-                $team->teamPassword = $teamData["teamPassword"];
+                $team->teamPassword = $userData["password"];
 
                 $team->saveOrFail();
 

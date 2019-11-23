@@ -554,22 +554,22 @@
 
     //Modificar Nivel
 
-    var form = document.getElementById('updateLevelForm');
-    form.addEventListener('submit', function (event) {
+    var form2 = document.getElementById('updateLevelForm');
+    form2.addEventListener('submit', function (event) {
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity() === true) {
+        if (form2.checkValidity() === true) {
 
-            let form = this;
+            let form2 = this;
 
-            $(form).find('button').prop('disabled', true);
-            let method = $(form).attr('method');
-            let action = $(form).attr('action');
+            $(form2).find('button').prop('disabled', true);
+            let method = $(form2).attr('method');
+            let action = $(form2).attr('action');
 
             $.ajax({
                 type: method,
                 url: action,
-                data: $(form).serialize(),
+                data: $(form2).serialize(),
                 dataType: "JSON",
                 success: function (response) {
                     if (response.status) {
@@ -582,12 +582,12 @@
                         $('#detaillevelModal').modal('hide');
                         levelTable.ajax.reload();
                     } else {
-                        $(form).removeClass('was-validated');
+                        $(form2).removeClass('was-validated');
                         if (response.validationErrors !== undefined) {
                             let keys = Object.keys(response.validationErrors);
                             let errors = response.validationErrors;
                             keys.forEach(key => {
-                                let node = $(form).find(`input[name=${key}]`);
+                                let node = $(form2).find(`input[name=${key}]`);
                                 console.log(node);
                                 node.addClass('is-invalid');
                                 let errores = "";
@@ -615,12 +615,12 @@
                     console.log(err);
                 },
                 complete: function () {
-                    $(form).find('button').prop('disabled', false);
+                    $(form2).find('button').prop('disabled', false);
                 }
             });
 
         }
-        form.classList.add('was-validated');
+        form2.classList.add('was-validated');
     }, false);
 
     $(document).on('hide.bs.modal', '#detaillevelModal', function () {
