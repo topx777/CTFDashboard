@@ -20,6 +20,7 @@ class CreateChallengesTable extends Migration
             $table->string('name', 40);
             $table->text('description');
             $table->text('hint');
+            $table->text('flag');
             $table->timestamps();
             $table->foreign('idLevel')->references('id')->on('levels');
             $table->foreign('idCategory')->references('id')->on('categories');
