@@ -72,6 +72,50 @@ class RegisterController extends Controller
                 }
             }
 
+            if (!$userData['admin'] == "true") {
+                $teamData = $request->teamData;
+                $membersData = [];
+                foreach ($request->membersData as $key => $memberData) {
+                    $membersData[] = $memberData;
+                }
+
+                $validationTeam = Validator::make(
+                    $teamData,
+                    [
+                        //Cambiar validacion
+                        'username' => ['required', 'string', 'max:255', 'unique:users'],
+                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                        'password' => ['required', 'string', 'min:8', 'confirmed'],
+                    ]
+                );
+
+
+                $validationsMember = [];
+                foreach ($membersData as $key => $memberData) {
+                    $validationsMember[] = Validator::make(
+                        $memberData,
+                        [
+                            //Cambiar validacion
+                            'username' => ['required', 'string', 'max:255', 'unique:users'],
+                            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                            'password' => ['required', 'string', 'min:8', 'confirmed'],
+                        ]
+                    );
+                }
+
+                if ($validationTeam->fails()) {
+                    foreach ($validationTeam->getMessageBag()->getMessages() as $key => $error) {
+                        $validationErrors[$key] = $error;
+                    }
+                }
+
+                foreach ($validationsMember as $validationMember) {
+                    if ($validationMember->fails()) {
+                        $validationErrors[] = "Error de validacion de Miembros";
+                    }
+                }
+            }
+
             if (count($validationErrors) > 0) {
                 $response["errors"] = $validationErrors;
                 throw new \Exception("Existen errores de validacion");
@@ -87,6 +131,31 @@ class RegisterController extends Controller
             $response["intended"] = $this->redirectPath();
 
             $user->saveOrFail();
+
+            if (!$user->admin) {
+                $team = new Team;
+                $team->idUser = $user->id;
+                $team->name = $teamData["name"];
+                $team->score = $teamData["score"];
+                $team->phrase = $teamData["phrase"];
+                $team->avatar = $teamData["avatar"];
+                $team->couch = $teamData["couch"];
+                $team->teamPassword = $teamData["teamPassword"];
+
+                $team->saveOrFail();
+
+                foreach ($membersData as $key => $memberData) {
+                    $member = new Member;
+
+                    $member->idTeam = $team->id;
+                    $member->name = $memberData["name"];
+                    $member->lastname = $memberData["lastname"];
+                    $member->email = $memberData["email"];
+                    $member->career = $memberData["career"];
+                    $member->university = $memberData["university"];
+                    $member->saveOrFAil();
+                }
+            }
 
             DB::commit();
         } catch (\Throwable $ex) {
