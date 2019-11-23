@@ -74,9 +74,12 @@
 {{-- <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script> --}}
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 <script src="{{asset('vendor/summernote/dist/summernote.js')}}"></script>
+<script src="{{asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js')}}"></script>
 <script src="{{asset('vendor/jquery-inputmask/jquery.inputmask.bundle.js')}}"></script>
 <script src="{{asset('js/pages/forms/advanced-form-elements.js')}}"></script>
+<script src="{{asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+
 
 <script>
     $(document).ready(function () {
