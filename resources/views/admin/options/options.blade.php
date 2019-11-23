@@ -70,7 +70,7 @@
                                      
             </div>    
           <div class="col-lg-6 col-md-6 ml-5 mb-5 px-5 py-2">
-                  <button class="btn btn-success btn-round mr-4 ml-5" type="button">Aceptar</button>  
+                  <button class="btn btn-success btn-round mr-4 ml-5 " type="button">Aceptar</button>  
                   <button class="btn btn-danger btn-round ml-5" type="button">Cancelar</button>
             </div>
             <div class="col-md-12 col-lg-12">
