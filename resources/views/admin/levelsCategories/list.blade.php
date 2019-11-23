@@ -14,7 +14,8 @@
             <h2>Lista de Niveles<small>Seleccione una fila para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-                <li><a data-toggle="modal" data-target="#registerlevelModal" class="btn btn-primary text-white">Registrar</a></li>
+                <li><a data-toggle="modal" data-target="#registerlevelModal"
+                        class="btn btn-primary text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>
             </ul>
@@ -50,7 +51,8 @@
             <h2>Lista de Categorias<small>Seleccione una fila para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-                <li><a data-toggle="modal" data-target="#registercategoryModal" class="btn btn-success text-white">Registrar</a></li>
+                <li><a data-toggle="modal" data-target="#registercategoryModal"
+                        class="btn btn-success text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>
             </ul>
@@ -79,11 +81,11 @@
 </div>
 <!-- Register level modal -->
 <div id='registerlevelModal' class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title h4" id="myLargeModalLabel">Detalle de Usuario</h5>
+                <h5 class="modal-title h4" id="myLargeModalLabel">Nuevo Nivel</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -91,40 +93,38 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-body">
                 <div class="tab-pane vivify flipInX">
                     <div class="pt-4 px-3">
-                        <form action="">
+                        <form id="registerLevelForm" action="{{ route('levels.store') }}" method="POST">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="">Nombre nivel</label>
-                                        <input name="userData[username]" autofocus type="text" class="form-control"
-                                            required maxlength="40">
+                                        <input name="name" autofocus type="text" class="form-control" required
+                                            maxlength="25">
                                         <div class="invalid-feedback">
                                             El campo nombre nivel es obligatorio
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                            <label for="">Porcentaje de descuento</label>
-                                            <input name="email" type="email" class="form-control" required
-                                                maxlength="55">
-                                            <div class="invalid-feedback">
-                                                El campo Porcentaje de descuento es obligatorio
-                                            </div>
+                                        <label>Puntaje</label>
+                                        <input name="score" type="text" class="form-control entero" required />
+                                        <div class="invalid-feedback">
+                                            El campo Puntaje es obligatorio
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                            <button class="btn btn-primary">Guardar</button>
+                                        <button class="btn btn-primary">Guardar</button>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                        <div class="form-group">
-                                                <label for="">Puntaje</label>
-                                                <input name="email" type="email" class="form-control" required
-                                                    maxlength="55">
-                                                <div class="invalid-feedback">
-                                                    El campo Puntaje es obligatorio
-                                                </div>
-                                            </div>
+                                    <div class="form-group">
+                                        <label>Porcentaje de Descuento</label>
+                                        <input name="hintDiscount" type="text" class="form-control decimal" required />
+                                        <div class="invalid-feedback">
+                                            El campo Porcentaje de descuento es obligatorio
+                                        </div>
+                                    </div>
                                 </div>
-                                
+
                             </div>
                         </form>
                     </div>
@@ -135,7 +135,7 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
 </div>
 <!-- Register category modal -->
 <div id='registercategoryModal' class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -160,19 +160,20 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                        <div class="form-group">
-                                                <label for="">Descripcion</label>
-                                                <textarea type="text" class="form-control" placeholder="Ingrese descripcion" rows="3"></textarea>
-                                                <div class="invalid-feedback">
-                                                    El campo Puntaje es obligatorio
-                                                </div>
-                                            </div>
+                                    <div class="form-group">
+                                        <label for="">Descripcion</label>
+                                        <textarea type="text" class="form-control" placeholder="Ingrese descripcion"
+                                            rows="3"></textarea>
+                                        <div class="invalid-feedback">
+                                            El campo Puntaje es obligatorio
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                            <button class="btn btn-primary">Guardar</button>
+                                        <button class="btn btn-primary">Guardar</button>
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -195,7 +196,8 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
             <div class="modal-body">
                 <ul class="nav nav-tabs2 justify-content-end">
-                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#tabUserDetail">Detalle</a></li>
+                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab"
+                            href="#tabUserDetail">Detalle</a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabUserEdit">Editar</a></li>
                     <li class="nav-item"><a id="btnLevelDelete" class="nav-link">Eliminar</a></li>
                 </ul>
@@ -207,55 +209,55 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                 <span class="">nivel</span>
                             </div>
                             <div class="col-6 form-group">
-                                    <strong class="text-white">Puntaje:</strong>
-                                    <span class="">#0000</span>
+                                <strong class="text-white">Puntaje:</strong>
+                                <span class="">#0000</span>
                             </div>
                             <div class="col-6 form-group">
-                                    <strong class="text-white">Porcentaje descuento:</strong>
-                                    <span class="">#0000%</span>
+                                <strong class="text-white">Porcentaje descuento:</strong>
+                                <span class="">#0000%</span>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane vivify flipInX" id="tabUserEdit">
-                    <div class="pt-4 px-3">
-                        <form action="">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="">Nombre nivel</label>
-                                        <input name="userData[username]" autofocus type="text" class="form-control"
-                                            required maxlength="40">
-                                        <div class="invalid-feedback">
-                                            El campo nombre nivel es obligatorio
+                        <div class="pt-4 px-3">
+                            <form action="">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="">Nombre nivel</label>
+                                            <input name="userData[username]" autofocus type="text" class="form-control"
+                                                required maxlength="40">
+                                            <div class="invalid-feedback">
+                                                El campo nombre nivel es obligatorio
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
+                                        <div class="form-group">
                                             <label for="">Porcentaje de descuento</label>
                                             <input name="email" type="email" class="form-control" required
                                                 maxlength="55">
                                             <div class="invalid-feedback">
                                                 El campo Porcentaje de descuento es obligatorio
                                             </div>
-                                    </div>
-                                    <div class="form-group">
-                                            <button class="btn btn-primary">Guardar</button>
-                                    </div>
-                                </div>
-                                <div class="col-6">
+                                        </div>
                                         <div class="form-group">
-                                                <label for="">Puntaje</label>
-                                                <input name="email" type="email" class="form-control" required
-                                                    maxlength="55">
-                                                <div class="invalid-feedback">
-                                                    El campo Puntaje es obligatorio
-                                                </div>
+                                            <button class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="">Puntaje</label>
+                                            <input name="email" type="email" class="form-control" required
+                                                maxlength="55">
+                                            <div class="invalid-feedback">
+                                                El campo Puntaje es obligatorio
                                             </div>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
         </div>
@@ -274,6 +276,14 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 <script>
     $(document).ready(function () {
+
+        $('.decimal').toArray().forEach(element => {
+            ValidarInput('decimal', element);
+        });
+        $('.entero').toArray().forEach(element => {
+            ValidarInput('integer', element);
+        });
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -284,11 +294,23 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
             processing: true,
             serverSide: true,
             ajax: "{{ route('levels.list') }}",
-            columns: [
-                { data: 'name', name: 'name' },
-                { data: 'score', name: 'score' },
-                { data: 'hintDiscount', name: 'hintDiscount' },
-                { data: 'DT_RowId', name: 'DT_RowId', visible:false }
+            columns: [{
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'score',
+                    name: 'score'
+                },
+                {
+                    data: 'hintDiscount',
+                    name: 'hintDiscount'
+                },
+                {
+                    data: 'DT_RowId',
+                    name: 'DT_RowId',
+                    visible: false
+                }
             ]
         });
 
@@ -296,10 +318,19 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
             processing: true,
             serverSide: true,
             ajax: "{{ route('categories.list') }}",
-            columns: [
-                { data: 'name', name: 'name' },
-                { data: 'description', name: 'description' },
-                { data: 'DT_RowId', name: 'DT_RowId',visible:false }
+            columns: [{
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'description',
+                    name: 'description'
+                },
+                {
+                    data: 'DT_RowId',
+                    name: 'DT_RowId',
+                    visible: false
+                }
             ]
         });
 
@@ -309,23 +340,20 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
             if (id) {
                 id = id.replace(/\D/g, '');
                 id = parseInt(id, 10);
-                
+
                 CargarNivel(id);
                 $('#detaillevelModal').modal('show');
             }
         });
 
         function CargarNivel(id) {
-
             var attr = $('#btnLevelDelete').attr('id');
 
             if (typeof attr !== typeof undefined && attr !== false) {
                 $('#btnLevelDelete').data('id', id);
             } else {
-                // $('#btnLevelDelete')
+                $('#btnLevelDelete').attr('data-id', id);
             }
-
-
         }
 
         $('#categoryTable').on('click', 'tr', function () {
@@ -370,14 +398,13 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
                             dataType: "JSON",
                             cache: false,
                             success: function (response) {
-                                if(response.status) {
+                                if (response.status) {
                                     swal({
                                         title: "Correcto",
                                         text: "Nivel eliminado correctamente",
                                         type: success
                                     });
-                                    //Refrescar DataTable Actual
-
+                                    levelTable.ajax.reload();
                                     $('#detaillevelModal').modal('hide');
                                 } else {
                                     swal({
@@ -395,22 +422,108 @@ aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                 });
                                 console.log(err);
                             },
-                            complete: function() {
+                            complete: function () {
                                 trigger.prop('disable', false);
                             }
                         });
-                        
+
                         break;
                     case 'categoria':
-                        
+
                         break;
                     default:
                         break;
                 }
             });
         }
+    });
 
+
+    $(document).on('submit', '#registerLevelForm', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        let form = this;
+
+        if (e.isDefaultPrevented()) {
+
+            $(form).find(button).prop('disabled', true);
+            let method = $(form).attr('method');
+            let action = $(form).attr('action');
+
+            $.ajax({
+                type: method,
+                url: action,
+                data: $(form).serialize(),
+                dataType: "JSON",
+                success: function (response) {
+                    if(response.status) {
+                        swal({
+
+                        })
+                    } else {
+                        swal({
+                            type: 'error',
+                            title: 'Error',
+                            text: response.msgError;
+                        });    
+                    }
+                },
+                error: function(err) {
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Error Desconocido';
+                    });
+                    console.log(err);
+                },
+                complete: function() {
+                    $(form).find(button).prop('disabled', true);
+                }
+            });
+
+        }
 
     });
+
+
+
+
+
+
+
+
+    function setInputFilter(textbox, inputFilter) {
+        ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (
+        event) {
+            textbox.addEventListener(event, function () {
+                if (inputFilter(this.value)) {
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                }
+            });
+        });
+    }
+
+    function ValidarInput(type, input) {
+        switch (type) {
+            case 'integer':
+                setInputFilter(input, function (value) {
+                    return /^\d*$/.test(value);
+                });
+                break;
+            case 'decimal':
+                setInputFilter(input, function (value) {
+                    return /^\d*[.]?\d{0,2}$/.test(value);
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
 </script>
 @endsection
