@@ -19,14 +19,18 @@
 
 @endsection
 @section('content')
+<div class="demo-masked-input">
+    <div class="row clearfix">
 <div class="col-lg-6 col-md-6">
-        <label><b>Fecha de Inicio (dd/mm/yyyy)</b></label>
+        <label><b>Fecha de Inicio</b></label>
                 <div class="input-group mb-3">                                        
-                    <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
+                    <input data-provide="datepicker" placeholder="dd/mm/yyyy" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
                 </div>
     </div>
+
     <div class="col-lg-6 col-md-6">
-            <label><b>Hora de Inicio</b></label>
+            
+        <label><b>Hora de Inicio</b></label>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text"><i class="icon-clock"></i></span>
@@ -37,10 +41,11 @@
     <div class="col-lg-6 col-md-6">
             <label><b>Fecha de Fin</b></label>
                     <div class="input-group mb-3">                                        
-                        <input data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
+                        <input placeholder="dd/mm/yyyy" data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
                     </div>
         </div>
         <div class="col-lg-6 col-md-6">
+              
             <label><b>Hora Fin</b></label>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -49,10 +54,11 @@
                 <input type="text" class="form-control time24" placeholder="Ex: 23:59">
             </div>
         </div>
+    </div>
+</div>
     
-            <div class="col-md-6 mb-5">
-                    <ul class="list-group">
-                <li class="list-group-item">
+            <div class="col-lg-4 col-md-5 m-0 p-0 mb-5">
+                <div class="list-group-item">
                     Estado de la competencia
                         <div class="float-right">
                             <label class="switch">
@@ -60,10 +66,13 @@
                                     <span class="slider round"></span>
                             </label>
                         </div>
-                </li>
-                    </ul>                      
+                    </div>
+                                     
             </div>    
-    
+          <div class="col-lg-6 col-md-6 ml-5 mb-5 px-5 py-2">
+                  <button class="btn btn-success btn-round mr-4 ml-5" type="button">Aceptar</button>  
+                  <button class="btn btn-danger btn-round ml-5" type="button">Cancelar</button>
+            </div>
             <div class="col-md-12 col-lg-12">
                 <h3>Reglas de juego</h3>
                 <div class="card mt-3">
