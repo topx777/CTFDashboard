@@ -150,6 +150,9 @@
         });
 
         var table = $('.dataTable').DataTable({
+            language: {
+                url: "{{asset('lenguage/Spanish.json')}}"
+            },
             processing: true,
             serverSide: true,
             ajax: "{{ route('users.list') }}",

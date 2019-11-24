@@ -26,9 +26,9 @@
         <nav id="left-sidebar-nav" class="sidebar-nav">
             <ul id="main-menu" class="metismenu">
                 <li class="header">Menu</li>
-                <li class="{{(Route::currentRouteName()=='users.list')?'active open':''}}"><a href="{{route('users.list')}}"><i class="icon-user"></i><span>Usuarios</span></a></li>
-                <li class="{{(Route::currentRouteName()=='teams.list')?'active open':''}}"><a href="{{route('teams.list')}}"><i class="icon-users"></i><span>Equipos</span></a></li>
-                <li class="{{(Route::currentRouteName()=='levelsCategories.list')?'active open':''}}" ><a href="{{ route('levelsCategories.list') }}"><i class="icon-layers"></i><span>Niveles Categorias</span></a></li>
+                <li class="{{( explode('.', Route::currentRouteName())[0] =='users')?'active open':''}}"><a href="{{route('users.list')}}"><i class="icon-user"></i><span>Usuarios</span></a></li>
+                <li class="{{( explode('.', Route::currentRouteName())[0] =='teams')?'active open':''}}"><a href="{{route('teams.list')}}"><i class="icon-users"></i><span>Equipos</span></a></li>
+                <li class="{{( explode('.', Route::currentRouteName())[0] =='levelsCategories.list')?'active open':''}}" ><a href="{{ route('levelsCategories.list') }}"><i class="icon-layers"></i><span>Niveles Categorias</span></a></li>
                 <li><a href=""><i class="icon-badge"></i><span>Retos</span></a></li>
                 </li>   
             </ul>
