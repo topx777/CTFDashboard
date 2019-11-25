@@ -77,12 +77,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/categories/getAll', 'CategoryController@getAll')->name('categories.getAll');
 
     // Rutas de Chellange
-    Route::any('/challenges/list', 'TeamController@list')->name('challenges.list');
-    Route::get('/challenges/register', 'TeamController@register')->name('challenges.register');
-    Route::get('/challenges/get/{$id}', 'TeamController@get')->name('challenges.get');
-    Route::get('/challenges/detail/{id}', 'TeamController@detail')->name('challenges.detail');
-    Route::post('/challenges/update', 'TeamController@update')->name('challenges.update');
-    Route::post('/challenges/delete', 'TeamController@delete')->name('challenges.delete');
+    Route::any('/challenges/list', 'ChallengeController@list')->name('challenges.list');
+    Route::get('/challenges/register', 'ChallengeController@register')->name('challenges.register');
+    Route::get('/challenges/get/{$id}', 'ChallengeController@get')->name('challenges.get');
+    Route::get('/challenges/detail/{id}', 'ChallengeController@detail')->name('challenges.detail');
+    Route::post('/challenges/update', 'ChallengeController@update')->name('challenges.update');
+    Route::post('/challenges/delete', 'ChallengeController@delete')->name('challenges.delete');
     Route::get('/challenges/filemanager', 'FilesController@upload')->name('challenges.upload');
 });
 
