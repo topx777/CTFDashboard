@@ -13,7 +13,7 @@
             <h2>Lista de retos en CTF<small>Seleccione un item para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-                <li><a href="{{ route('teams.register') }}" class="btn btn-primary text-white">Registrar</a></li>
+                <li><a href="{{ route('challenges.register') }}" class="btn btn-primary text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>
             </ul>
@@ -24,15 +24,15 @@
                     <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Couch</th>
-                            <th>Frase</th>
+                            <th>Descripcion</th>
+                            <th>Pista</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Nombre</th>
-                            <th>Couch</th>
-                            <th>Frase</th>
+                            <th>Descripcion</th>
+                            <th>Pista</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -67,11 +67,11 @@
             },
             processing: true,
             serverSide: true,
-            ajax: "{{ route('teams.list') }}",
+            ajax: "{{ route('challenges.list') }}",
             columns: [
                 { data: 'name', name: 'name' },
-                { data: 'couch', name: 'couch' },
-                { data: 'phrase', name: 'phrase' },
+                { data: 'description', name: 'description' },
+                { data: 'hint', name: 'hint' },
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });
@@ -81,7 +81,7 @@
             if (id) {
                 id = id.replace(/\D/g, '');
                 id = parseInt(id, 10);
-                var url = '{{ route("teams.detail", "") }}';
+                var url = '{{ route("challenges.detail", "") }}';
                 url+=`/${id}`
                 window.location.href=url;
 

@@ -74,7 +74,7 @@ class ChallengeController extends Controller
      **/
     public function detail(Request $request)
     {
-        return view('admin.teams.detail');
+        return view('admin.challenges.detail');
     }
 
 
@@ -87,7 +87,7 @@ class ChallengeController extends Controller
      **/
     public function register()
     {
-        return view('admin.teams.register');
+        return view('admin.challenges.register');
     }
 
     /**
