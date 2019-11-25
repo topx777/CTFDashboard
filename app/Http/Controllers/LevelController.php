@@ -210,7 +210,11 @@ class LevelController extends Controller
                 $level->delete();
             } catch (\Throwable $ex) {
                 $resp["status"] = false;
-                $resp["msgError"] = $ex->getMessage();
+                if($ex->getCode() == 1451) {
+                    $resp["msgError"] = "El registro tiene retos relacionados";
+                } else {
+                    $resp["msgError"] = $ex->getMessage();
+                }
             } finally {
                 return response()->json($resp);
             }

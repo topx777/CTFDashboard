@@ -51,7 +51,7 @@
             <h2>Lista de Categorias<small>Seleccione una fila para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-                <li><a data-toggle="modal" data-target="#registercategoryModal"
+                <li><a data-toggle="modal" data-target="#registerCategoryModal"
                         class="btn btn-success text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>
@@ -136,12 +136,12 @@
     </div>
 </div>
 <!-- Register category modal -->
-<div id='registercategoryModal' class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+<div id='registerCategoryModal' class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title h4" id="myLargeModalLabel">Detalle de Usuario</h5>
+                <h5 class="modal-title h4" id="myLargeModalLabel">Nueva Categoria</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -149,25 +149,26 @@
             <div class="modal-body">
                 <div class="tab-pane vivify flipInX">
                     <div class="pt-4 px-3">
-                        <form action="">
+                        <form id="registerCategoryForm" action="{{ route('categories.store') }}" method="POST">
+                            @csrf
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="">Nombre categoria</label>
-                                        <input name="userData[username]" autofocus type="text" class="form-control"
-                                            required maxlength="40">
+                                        <label for="">Nombre Categoria</label>
+                                        <input name="name" autofocus type="text" class="form-control"
+                                            required  maxlength="40">
                                         <div class="invalid-feedback">
-                                            El campo categoria es obligatorio
+                                            El campo es obligatorio
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="">Descripcion</label>
-                                        <textarea type="text" class="form-control" placeholder="Ingrese descripcion"
+                                        <textarea type="text" name="description" class="form-control"
                                             rows="3"></textarea>
                                         <div class="invalid-feedback">
-                                            El campo Puntaje es obligatorio
+                                            El campo es obligatorio
                                         </div>
                                     </div>
                                 </div>
@@ -254,6 +255,80 @@
                                             <div class="invalid-feedback">
                                                 El campo es obligatorio
                                             </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- larg category modal -->
+<div id="detailcategoryModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myLargeModalLabel">Detalle de Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <ul class="nav nav-tabs2 justify-content-end">
+                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab"
+                            href="#tabUserDetail1">Detalle</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabUserEdit1">Editar</a></li>
+                    <li class="nav-item"><a id="btnCategoryDelete" class="nav-link">Eliminar</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane show vivify flipInX active" id="tabUserDetail1">
+                        <div class="row pt-4 px-3">
+                            <div class="col-6 form-group">
+                                <strong class="text-white">Nombre Categoria:</strong>
+                                <span id="categoryName" class=""></span>
+                            </div>
+                            <div class="col-12 form-group">
+                                <strong class="text-white">Descripcion:</strong>
+                                <span id="categoryDescription"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane vivify flipInX" id="tabUserEdit1">
+                        <div class="pt-4 px-3">
+                            <form id="updateCategoryForm" action="{{ route('categories.update') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id" id="categoryID">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="">Nombre categoria</label>
+                                            <input name="name" autofocus type="text" class="form-control"
+                                                required maxlength="40">
+                                            <div class="invalid-feedback">
+                                                El campo es obligatorio
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="">Descripcion</label>
+                                            <textarea name="description" type="text" class="form-control" placeholder="Ingrese descripcion"
+                                                rows="4"></textarea>
+                                            <div class="invalid-feedback">
+                                                El campo es obligatorio
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <button class="btn btn-primary">Guardar</button>
                                         </div>
                                     </div>
 
@@ -371,12 +446,12 @@
                     $('#levelID').val(data.id);
                     $('#levelName').html(data.name);
                     $('#levelScore').html(`#${data.score}`);
-                    $('#levelHintDiscount').html(`${parseFloat(data.hintDiscount) * 100}%`);
+                    $('#levelHintDiscount').html(`${(parseFloat(data.hintDiscount) * 100).toFixed(2)}%`);
 
                     $('#updateLevelForm').find('input[name=id]').val(data.id);
                     $('#updateLevelForm').find('input[name=name]').val(data.name);
                     $('#updateLevelForm').find('input[name=score]').val(`${data.score}`);
-                    $('#updateLevelForm').find('input[name=hintDiscount]').val(`${parseFloat(data.hintDiscount) * 100}`);
+                    $('#updateLevelForm').find('input[name=hintDiscount]').val(`${(parseFloat(data.hintDiscount) * 100).toFixed(2)}`);
                 },
                 error: function (err) {
                     console.log(err);
@@ -394,12 +469,57 @@
             if (id) {
                 id = id.replace(/\D/g, '');
                 id = parseInt(id, 10);
-                console.log('id ' + id);
-                $('#detailcategoryModal').modal('show');
+
+                CargarCategory(id);
             }
         });
 
-        // confirm delete user
+        function CargarCategory(id) {
+            var attr = $('#btnCategoryDelete').attr('id');
+
+            if (typeof attr !== typeof undefined && attr !== false) {
+                $('#btnCategoryDelete').data('id', id);
+            } else {
+                $('#btnCategoryDelete').attr('data-id', id);
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('categories.get') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id
+                },
+                dataType: "JSON",
+                success: function (data) {
+                    $('#categoryID').val(data.id);
+                    $('#categoryName').html(data.name);
+                    $('#categoryDescription').html(data.description);
+
+                    $('#updateCategoryForm').find('input[name=id]').val(data.id);
+                    $('#updateCategoryForm').find('input[name=name]').val(data.name);
+                    $('#updateCategoryForm').find('textarea[name=description]').val(data.description);
+                },
+                error: function (err) {
+                    console.log(err);
+                    return false;
+                },
+                complete: function() {
+                    $('#detailcategoryModal').modal('show');
+                }
+            });
+
+        }
+
+        // confirm delete category
+        $('#btnCategoryDelete').click(function (e) {
+            e.preventDefault();
+            let btn = $(this);
+            let id = btn.data('id');
+            showConfirmMessage(btn, 'categoria', 'la categoria', id);
+        });
+
+        // confirm delete level
         $('#btnLevelDelete').click(function (e) {
             e.preventDefault();
             let btn = $(this);
@@ -462,7 +582,45 @@
 
                         break;
                     case 'categoria':
-
+                    trigger.prop('disabled', true);
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ route('categories.delete') }}",
+                            data: {
+                                id: id,
+                                _token: "{{ csrf_token() }}"
+                            },
+                            dataType: "JSON",
+                            cache: false,
+                            success: function (response) {
+                                if (response.status) {
+                                    swal({
+                                        title: "Correcto",
+                                        text: "Categoria eliminado correctamente",
+                                        type: 'success'
+                                    });
+                                    categoryTable.ajax.reload();
+                                    $('#detailcategoryModal').modal('hide');
+                                } else {
+                                    swal({
+                                        title: "Error!",
+                                        text: response.msgError,
+                                        type: "error",
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                swal({
+                                    title: "Error!",
+                                    text: "Error desconocido, intente nuevamente!",
+                                    type: "error",
+                                });
+                                console.log(err);
+                            },
+                            complete: function () {
+                                trigger.prop('disable', false);
+                            }
+                        });
                         break;
                     default:
                         break;
@@ -471,6 +629,195 @@
         }
     });
 
+    //Register Category
+
+    var formRegCategory = document.getElementById('registerCategoryForm');
+    formRegCategory.addEventListener('submit',function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        if (formRegCategory.checkValidity()==true) {
+            
+            let formRegCategory=this;
+
+            $(formRegCategory).find('button').prop('disabled',true);
+            let method=$(formRegCategory).attr('method');
+            let action = $(formRegCategory).attr('action');
+
+            $.ajax({
+                type: method,
+                url: action,
+                data: $(formRegCategory).serialize(),
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.status) {
+                        swal({
+                            type:'success',
+                            title:'Correcto',
+                            text:'Categoria registrada con exito'
+                        });
+
+                        $('#registerCategoryModal').modal('hide');
+                        categoryTable.ajax.reload();
+                    } else{
+                        $(formRegCategory).removeClass('was-validated');
+                        if (response.validationErrors!== undefined) {
+                            let keys = Object.keys(response.validationErrors);
+                            let errors=response.validationErrors;
+                            keys.forEach(key=>{
+                                let node = $(formRegCategory).find(`input[name=${key}]`);
+                                let node2 = $(formRegCategory).find(`textarea[name=${key}]`);
+                                console.log(node, node2);
+                                if(node !== undefined) {
+                                    node.addClass('is-invalid');
+                                } else if(node2 !== undefined) {
+                                    node2.addClass('is-invalid');
+                                }
+                                let= errores = "";
+                                errors[`${key}`].forEach(error=>{
+                                    errores +=error + '\n';
+                                });
+                                if(node !== undefined) {
+                                    $(node[0]).parent().find('.invalid-feedback').html(errores);
+                                } else if(node2 !== undefined) {
+                                    $(node2[0]).parent().find('.invalid-feedback').html(errores);
+                                }
+                            });
+
+                        } else {
+                            swal({
+                                type: 'error',
+                                title:'Error',
+                                text: response.msgError
+                            });
+                        }
+                    }
+                },
+                error: function(err){
+                    console.log(err);
+                    swall({
+                        type: 'error',
+                        title:'Error',
+                        text: 'Error Desconocido'
+                    });
+                },
+                complete: function(){
+                    $(formRegCategory).find('button').prop('disabled',false);
+                }
+            });
+        }
+        formRegCategory.classList.add('was-validated');
+    },false);
+
+    $(document).on('hide.bs.modal','registerCategoryModal',function (){
+        let modal= $(this);
+        let formRegCategory = modal.find('form')
+        
+        formRegCategory[0].reset();
+        $(formRegCategory).find('input').removeClass('is-invalid');
+        formRegCategory.find('.invalid-feedback').toArray().forEach(element =>{
+            $(element).html('El Campo es obligatorio.')
+        });
+    });
+
+    //Modify Category
+    
+    var formUpdCategory = document.getElementById('updateCategoryForm');
+    formUpdCategory.addEventListener('submit',function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        if (formUpdCategory.checkValidity() ===true) {
+            
+            let formUpdCategory=this;
+
+            $(formUpdCategory).find('button').prop('disabled', true);
+            let method = $(formUpdCategory).attr('method');
+            let action = $(formUpdCategory).attr('action');
+
+            $.ajax({
+                type: method,
+                url: action,
+                data: $(formUpdCategory).serialize(),
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.status) {
+                        swal({
+                            type: 'success',
+                            title: 'Correcto',
+                        text:'Categoria actualizada correctamente'
+                        });
+
+                        $('#detailcategoryModal').modal('hide');
+                        categoryTable.ajax.reload();
+                    }else {
+                        $(formUpdCategory).removeClass('was-validated');
+                        if (response.validationErrors !== undefined) {
+                            let keys = Object.keys(response.validationErrors);
+                            let errors = response.validationErrors;
+                            keys.forEach(key => {
+                                let node = $(formRegCategory).find(`input[name=${key}]`);
+                                let node2 = $(formRegCategory).find(`textarea[name=${key}]`);
+                                console.log(node, node2);
+                                if(node !== undefined) {
+                                    node.addClass('is-invalid');
+                                } else if(node2 !== undefined) {
+                                    node2.addClass('is-invalid');
+                                }
+                                let= errores = "";
+                                errors[`${key}`].forEach(error=>{
+                                    errores +=error + '\n';
+                                });
+                                if(node !== undefined) {
+                                    $(node[0]).parent().find('.invalid-feedback').html(errores);
+                                } else if(node2 !== undefined) {
+                                    $(node2[0]).parent().find('.invalid-feedback').html(errores);
+                                }
+                            });
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Error',
+                                text: response.msgError
+                            });
+                        }
+                    }
+                },
+                error: function (err) {
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Error Desconocido'
+                    });
+                    console.log(err);
+                },
+                complete: function () {
+                    $(formUpdCategory).find('button').prop('disabled', false);
+                }
+            });
+        }
+        formUpdCategory.classList.add('was-validated');
+    },false);
+
+    $(document).on('hide.bs.modal', '#detailcategoryModal', function () {
+        let modal = $(this);
+
+        $('#categoryID').val('');
+        $('#categoryName').html('');
+        $('#categoryDescription').html('');
+
+        $('#updateCategoryForm').find('input[name=id]').val('');
+        $('#updateCategoryForm').find('input[name=name]').val('');
+        $('#updateCategoryForm').find('textarea[name=description]').val('');
+        
+        formUpdCategory.reset();
+        formUpdCategory.classList.remove('was-validated');
+        $(formUpdCategory).find('input').removeClass('is-invalid');
+        $(formUpdCategory).find('.invalid-feedback').toArray().forEach(element => {
+            $(element).html('El Campo es obligatorio.')
+        });
+    });
+
+    //Register level
+    
     var form = document.getElementById('registerLevelForm');
     form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -554,22 +901,22 @@
 
     //Modificar Nivel
 
-    var form2 = document.getElementById('updateLevelForm');
-    form2.addEventListener('submit', function (event) {
+    var formUpdLevel = document.getElementById('updateLevelForm');
+    formUpdLevel.addEventListener('submit', function (event) {
         event.preventDefault();
         event.stopPropagation();
-        if (form2.checkValidity() === true) {
+        if (formUpdLevel.checkValidity() === true) {
 
-            let form2 = this;
+            let formUpdLevel = this;
 
-            $(form2).find('button').prop('disabled', true);
-            let method = $(form2).attr('method');
-            let action = $(form2).attr('action');
+            $(formUpdLevel).find('button').prop('disabled', true);
+            let method = $(formUpdLevel).attr('method');
+            let action = $(formUpdLevel).attr('action');
 
             $.ajax({
                 type: method,
                 url: action,
-                data: $(form2).serialize(),
+                data: $(formUpdLevel).serialize(),
                 dataType: "JSON",
                 success: function (response) {
                     if (response.status) {
@@ -582,12 +929,12 @@
                         $('#detaillevelModal').modal('hide');
                         levelTable.ajax.reload();
                     } else {
-                        $(form2).removeClass('was-validated');
+                        $(formUpdLevel).removeClass('was-validated');
                         if (response.validationErrors !== undefined) {
                             let keys = Object.keys(response.validationErrors);
                             let errors = response.validationErrors;
                             keys.forEach(key => {
-                                let node = $(form2).find(`input[name=${key}]`);
+                                let node = $(formUpdLevel).find(`input[name=${key}]`);
                                 console.log(node);
                                 node.addClass('is-invalid');
                                 let errores = "";
@@ -615,31 +962,31 @@
                     console.log(err);
                 },
                 complete: function () {
-                    $(form2).find('button').prop('disabled', false);
+                    $(formUpdLevel).find('button').prop('disabled', false);
                 }
             });
 
         }
-        form2.classList.add('was-validated');
+        formUpdLevel.classList.add('was-validated');
     }, false);
 
     $(document).on('hide.bs.modal', '#detaillevelModal', function () {
         let modal = $(this);
-        let form = modal.find('form')
 
-        $('#levelID').val('');
-        $('#levelName').html('');
-        $('#levelScore').html('');
-        $('#levelHintDiscount').html('');
+        modal.find('#levelID').val('');
+        modal.find('#levelName').html('');
+        modal.find('#levelScore').html('');
+        modal.find('#levelHintDiscount').html('');
 
-        $('#updateLevelForm').find('input[name=id]').val('');
-        $('#updateLevelForm').find('input[name=name]').val('');
-        $('#updateLevelForm').find('input[name=score]').val('');
-        $('#updateLevelForm').find('input[name=hintDiscount]').val('');
+        modal.find('#updateLevelForm').find('input[name=id]').val('');
+        modal.find('#updateLevelForm').find('input[name=name]').val('');
+        modal.find('#updateLevelForm').find('input[name=score]').val('');
+        modal.find('#updateLevelForm').find('input[name=hintDiscount]').val('');
         
-        form[0].reset();
-        $(form).find('input').removeClass('is-invalid');
-        form.find('.invalid-feedback').toArray().forEach(element => {
+        formUpdLevel.reset();
+        formUpdLevel.classList.remove('was-validated')
+        $(formUpdLevel).find('input').removeClass('is-invalid');
+        $(formUpdLevel).find('.invalid-feedback').toArray().forEach(element => {
             $(element).html('El Campo es obligatorio.')
         });
     });

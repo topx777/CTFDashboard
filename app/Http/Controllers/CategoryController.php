@@ -83,7 +83,7 @@ class CategoryController extends Controller
                 $category = new Category();
 
                 $validation = Validator::make(
-                    $request->all,
+                    $request->all(),
                     [
                         'name' => 'required|max:30',
                         'description' => 'required',
@@ -136,10 +136,13 @@ class CategoryController extends Controller
                     throw new \Exception("Categoria no encontrado");
                 }
 
-                $validation = $request->validate([
-                    'name' => 'required|max:30',
-                    'description' => 'required',
-                ]);
+                $validation = Validator::make(
+                    $request->all(),
+                    [
+                        'name' => 'required|max:30',
+                        'description' => 'required',
+                    ]
+                );
 
                 if ($validation->fails()) {
                     $resp["validationErrors"] = $validation->errors()->all();
