@@ -54,6 +54,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::post('/teams/update', 'TeamController@update')->name('teams.update');
     Route::post('/teams/delete', 'TeamController@delete')->name('teams.delete');
 
+
     //Ruta {Categoria/ Nivel
     Route::get('/levelsCategories/list', function () {
         return view('admin.levelsCategories.list');
@@ -86,12 +87,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/challenges/filemanager', 'FilesController@upload')->name('challenges.upload');
 });
 
-// Routes Team
+// Routes Team que no son administradores
 Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/dashboard', 'TeamController@dashboard')->name('team.dashboard');
-    
     Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
+    Route::get('/reto', 'TeamController@showChallenge')->name('teams.showChallenge');
 });
-
+    
 
 Auth::routes();

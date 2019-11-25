@@ -90,7 +90,6 @@ class TeamController extends Controller
     {
         return view('admin.teams.register');
     }
-
     /**
      * Funcion para Modificar equipo
      *
@@ -201,5 +200,9 @@ class TeamController extends Controller
     public function challenges(Request $request)
     {
         return view('team.challenges');
+    }
+    public function showChallenge(Request $request)
+    {
+        return view('team.challenge');
     }
 }
