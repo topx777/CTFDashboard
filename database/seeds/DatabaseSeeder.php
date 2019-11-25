@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
 
         Model::unguard();
         $this->call(OptionsSeeder::class);
+        $this->call(FilesSeeder::class);
         //primero las tablas que no tiene llave foranea
         $this->call(UsersSeeder::class);
         $this->call(CategoriesSeeder::class);
