@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 //Error Routes
 Route::get('/denied', function () {
-    return view('error\permissionError');
+    return view('error.permissionError');
 })->name('permissionError');
 
 

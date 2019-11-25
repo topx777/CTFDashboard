@@ -186,6 +186,7 @@ class TeamController extends Controller
      **/
     public function dashboard(Request $request)
     {
+        
         return view('team.dashboard');
 
     }
