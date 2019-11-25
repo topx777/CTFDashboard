@@ -10,7 +10,7 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="header">
-            <h2>Lista de Equipos en CTF<small>Seleccione un item para ver detalles</small>
+            <h2>Lista de retos en CTF<small>Seleccione un item para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
                 <li><a href="{{ route('teams.register') }}" class="btn btn-primary text-white">Registrar</a></li>
@@ -42,7 +42,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 @section('script')
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
@@ -76,7 +75,6 @@
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });
-        
         // row id 
         $('.dataTable').on('click', 'tr', function () {
             var id = table.row(this).id();
@@ -86,9 +84,31 @@
                 var url = '{{ route("teams.detail", "") }}';
                 url+=`/${id}`
                 window.location.href=url;
+
+
             }
         });
 
+        // confirm delete user
+        $('#btnUserDelete').click(function (e) {
+            e.preventDefault();
+            showConfirmMessage();
+
+        });
+        function showConfirmMessage() {
+            swal({
+                title: "Esta seguro de eliminar al usuario?",
+                text: "Esta accion no se puede deshacer!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Si, eliminar!",
+                closeOnConfirm: false,
+                cancelButtonText: 'Cancelar'
+            }, function () {
+                swal("Deleted!", "El usuario a sido eliminado", "success");
+            });
+        }
 
 
     });

@@ -74,8 +74,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/categories/get', 'CategoryController@get')->name('categories.get');
     Route::post('/categories/update', 'CategoryController@update')->name('categories.update');
     Route::post('/categories/delete', 'CategoryController@delete')->name('categories.delete');
-
     Route::get('/categories/getAll', 'CategoryController@getAll')->name('categories.getAll');
+
+     // Rutas de Chellange
+     Route::any('/challenges/list', 'TeamController@list')->name('challenges.list');
+     Route::get('/challenges/register', 'TeamController@register')->name('challenges.register');
+     Route::get('/challenges/get/{$id}', 'TeamController@get')->name('challenges.get');
+     Route::get('/challenges/detail/{id}', 'TeamController@detail')->name('challenges.detail');
+     Route::post('/challenges/update', 'TeamController@update')->name('challenges.update');
+     Route::post('/challenges/delete', 'TeamController@delete')->name('challenges.delete');
 });
 
 // Routes Team
