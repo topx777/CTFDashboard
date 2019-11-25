@@ -176,4 +176,29 @@ class TeamController extends Controller
             return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
         }
     }
+
+    /**
+     * dashboard
+     *
+     *  vista perfil de equipo
+     *
+     * @return View
+     **/
+    public function dashboard(Request $request)
+    {
+        return view('team.dashboard');
+
+    }
+
+    /**
+     * challenges
+     *
+     * vista de retos en perfil de equipo
+
+     * @return View
+     **/
+    public function challenges(Request $request)
+    {
+        return view('team.challenges');
+    }
 }

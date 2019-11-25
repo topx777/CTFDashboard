@@ -718,24 +718,6 @@
 
         <div id="main-content">
             <div class="container">
-                <div class="block-header">
-                    <div class="row clearfix">
-                        <div class="col-md-6 col-sm-12">
-                            <h2>Stater Page</h2>
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Oculux</a></li>
-                                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Stater Page</li>
-                                </ol>
-                            </nav>
-                        </div>
-                        <div class="col-md-6 col-sm-12 text-right hidden-xs">
-                            <a href="javascript:void(0);" class="btn btn-sm btn-primary btn-round" title="">Add New</a>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row clearfix">
                     {{-- ContentPage --}}
                    @yield('content')

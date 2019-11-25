@@ -87,12 +87,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
 // Routes Team
 Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
-    // Route::get('layout', function () {
-    //     return view('teamLayout.master');
-    // });
-    Route::get('/dashboard', function () {
-        return view('team/dashboard');
-    });
+    Route::get('/dashboard', 'TeamController@dashboard')->name('team.dashboard');
+    
+    Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
 });
 
 
