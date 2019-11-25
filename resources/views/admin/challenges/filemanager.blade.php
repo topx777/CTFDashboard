@@ -27,9 +27,16 @@
             <div class="col-md-12">
                 <div class="card">
                     <h2>Cargar Archivo</h2>
-                    <div class="body">
-                        <input type="file" class="dropify">
-                    </div>
+                    <form action="" method="POST" class="">
+                        <div class="body">
+                            <input type="file" class="dropify">
+                        </div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-success btn-round mt-3">Subir Archivo</button>
+                            <button type="button"
+                                class="btn btn-sm btn-primary btn-round btn-danger mt-3">Cancelar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
