@@ -66,5 +66,14 @@ class TeamsSeeder extends Seeder
             'avatar' => 'direccion del equipo',
             'couch' => 'Transporte',
         ]);
+        DB::table('teams')->insert([
+            'id' => 7,
+            'idUser' => 7,
+            'name' => 'noadmins',
+            'score' => 0,
+            'phrase' => 'noadmins',
+            'avatar' => 'noadmins',
+            'couch' => 'noadmins',
+        ]);
     }
 }
