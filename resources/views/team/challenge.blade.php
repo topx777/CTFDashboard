@@ -10,19 +10,13 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="card-value float-right text-muted"><i class="wi wi-fog"></i></div>
-                    <h3 class="mb-1">12°C</h3>
-                    <div>London</div>
+                    <h3 class="mb-1">NIVEL</h3>
                 </div>
                 <div class="carousel-item">
                     <div class="card-value float-right text-muted"><i class="wi wi-day-cloudy"></i></div>
-                    <h3 class="mb-1">18°C</h3>
-                    <div>New York</div>
+                    <h3 class="mb-1">UNO</h3>
                 </div>
-                <div class="carousel-item">
-                    <div class="card-value float-right text-muted"><i class="wi wi-sunrise"></i></div>
-                    <h3 class="mb-1">37°C</h3>
-                    <div>New Delhi</div>
-                </div>
+                
             </div>
         </div>
     </div>
