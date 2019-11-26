@@ -177,9 +177,21 @@
 
     $(document).on('submit', '#uploadFileForm', function(e) {
         let form = $(this);
+
         e.preventDefault();
         e.stopPropagation();
 
+
+
+        $.ajax({
+            type: "method",
+            url: "url",
+            data: "data",
+            dataType: "dataType",
+            success: function (response) {
+
+            }
+        });
 
     });
 

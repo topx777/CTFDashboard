@@ -55,6 +55,9 @@ class FileController extends Controller
     public function upload(Request $request)
     {
         $resp["status"] = false;
+
+
+
         try { } catch (\Throwable $ex) {
             $resp["status"] = false;
             $resp["msgError"] = $ex->getMessage();
