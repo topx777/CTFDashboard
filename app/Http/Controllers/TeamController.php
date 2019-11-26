@@ -210,6 +210,25 @@ class TeamController extends Controller
     }
     public function showChallenge(Request $request)
     {
+        if ($request->ajax()) {
+
+            if ($request->has('search') && !is_null($request->search["value"])) {
+                $search = $request->search["value"];
+
+                $data = User::where('username', 'LIKE', "%$search%")
+                    ->where('admin', 1)->get();
+            } else {
+                $data = User::where('admin', 1)->get();
+            }
+
+            return DataTables::of($data)
+                ->addColumn('DT_RowId', function ($row) {
+                    $row = $row->id;
+                    return $row;
+                })
+                ->make(true);
+        }
+
         return view('team.challenge');
     }
 }
