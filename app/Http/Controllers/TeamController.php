@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Team;
+use App\Member;
+use App\Option;
 use Illuminate\Http\Request;
 use DataTables;
 use Faker;
@@ -185,8 +187,13 @@ class TeamController extends Controller
      **/
     public function dashboard(Request $request)
     {
-        
-        return view('team.dashboard');
+        $id=auth()->user()->id;
+        $teamData = Team::select('id','name', 'score', 'phrase', 'avatar', 'couch')->where('idUser',$id)->first();
+        $membersTeam = Member::select('name','lastName','email','career','university')
+                        ->where('idTeam',$teamData->id)
+                        ->get();
+        $options= Option::select('rules','startTime','endTime')->first();
+        return view('team.dashboard', compact('teamData', 'membersTeam', 'options'));
 
     }
 
