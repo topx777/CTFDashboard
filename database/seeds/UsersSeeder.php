@@ -62,6 +62,14 @@ class UsersSeeder extends Seeder
             'password' => Hash::make('Luis123'),
             'admin' => true
         ]);
+        DB::table('users')->insert([
+            'id' => 7,
+            'username' => 'noadmin',
+            'email' => 'noadmin@hotmail.com',
+            'email_verified_at' => $now,
+            'password' => Hash::make('noadmin123'),
+            'admin' => false
+        ]);
         //la clase llamada y el monto que se creara
         factory(User::class, 2)->create();
     }

@@ -19,7 +19,7 @@ class ChallengesSeeder extends Seeder
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
             'hint' => 'Pista para el reto',
-            'flag'=>'Respuesta del reto'
+            'flag' => 'Respuesta del reto'
         ]);
         DB::table('challenges')->insert([
             'id' => 2,
@@ -28,7 +28,7 @@ class ChallengesSeeder extends Seeder
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
             'hint' => 'Pista para el reto',
-            'flag'=>'Respuesta del reto'
+            'flag' => 'Respuesta del reto'
         ]);
         DB::table('challenges')->insert([
             'id' => 3,
@@ -37,7 +37,7 @@ class ChallengesSeeder extends Seeder
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
             'hint' => 'Pista para el reto',
-            'flag'=>'Respuesta del reto'
+            'flag' => 'Respuesta del reto'
         ]);
         DB::table('challenges')->insert([
             'id' => 4,
@@ -46,7 +46,7 @@ class ChallengesSeeder extends Seeder
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
             'hint' => 'Pista para el reto',
-            'flag'=>'Respuesta del reto'
+            'flag' => 'Respuesta del reto'
         ]);
         DB::table('challenges')->insert([
             'id' => 5,
@@ -55,7 +55,7 @@ class ChallengesSeeder extends Seeder
             'name' => 'Nombre del Reto',
             'description' => 'Descripcion del reto',
             'hint' => 'Pista para el reto',
-            'flag'=>'Respuesta del reto'
+            'flag' => 'Respuesta del reto'
         ]);
     }
 }
