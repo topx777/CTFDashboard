@@ -16,37 +16,43 @@ class LevelsSeeder extends Seeder
             'id' => 1,
             'name' => 'Nivel 1',
             'score' => 0,
-            'hintDiscount' => 1.5
+            'hintDiscount' => 1.5,
+            'order' => 1
         ]);
         DB::table('levels')->insert([
             'id' => 2,
             'name' => 'Nivel 2',
             'score' => 0,
-            'hintDiscount' => 2.5
+            'hintDiscount' => 2.5,
+            'order' => 1
         ]);
         DB::table('levels')->insert([
             'id' => 3,
             'name' => 'Nivel 2',
             'score' => 0,
-            'hintDiscount' => 3.3
+            'hintDiscount' => 3.3,
+            'order' => 3
         ]);
         DB::table('levels')->insert([
             'id' => 4,
             'name' => 'Nivel 3',
             'score' => 0,
-            'hintDiscount' => 4.1
+            'hintDiscount' => 4.1,
+            'order' => 5
         ]);
         DB::table('levels')->insert([
             'id' => 5,
             'name' => 'Nivel 4',
             'score' => 0,
-            'hintDiscount' => 5.2
+            'hintDiscount' => 5.2,
+            'order' => 6
         ]);
         DB::table('levels')->insert([
             'id' => 6,
             'name' => 'Nivel 5',
             'score' => 0,
-            'hintDiscount' => 6.1
+            'hintDiscount' => 6.1,
+            'order' => 6
         ]);
     }
 }

@@ -185,17 +185,15 @@
                 },
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('team.tshowChallenge') }}",.
+                ajax: "{{ route('team.tshowChallenge') }}",
                 columns: [{
                     data: 'name',
                     name: 'name'
                 }, {
                     data: 'description',
                     name: 'description'
-                }, {
-                    data: 'order',
-                    name: 'order'
-                }, {
+                },  
+                {
                     data: 'DT_RowId',
                     name: 'DT_RowId',
                     visible: false
