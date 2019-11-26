@@ -21,7 +21,7 @@
                                 name="userData[username]"
                                 autofocus
                                 type="text"
-                                class="form-control"
+                                class="form-control username"
                                 required
                                 maxlength="40"
                             />
@@ -34,15 +34,14 @@
                         <div class="form-group">
                             <label for="">Password</label>
                             <input
-                                id="password"
                                 name="userData[password]"
                                 type="password"
-                                class="form-control"
+                                class="form-control password"
                                 required
                                 confirmed
                                 maxlength="35"
                             />
-                            <div id="p" class="invalid-feedback">
+                            <div class="invalid-feedback">
                                 El campo password es obligatorio
                             </div>
                         </div>
@@ -97,10 +96,15 @@
 </div>
 @endsection @section('script')
 <script>
+    $(document).on("keyup", "input", function() {
+        $(this).removeClass("is-invalid");
+    });
+
     var form = document.getElementById("userRegister");
     form.addEventListener(
         "submit",
         function(event) {
+            $("input").removeClass("is-invalid");
             event.preventDefault();
             event.stopPropagation();
             if (form.checkValidity() === true) {
@@ -117,9 +121,57 @@
                         if (response.status) {
                             window.location.href = response.intended;
                         } else {
-                            alert("Error");
-                            console.log(response.msgError);
-                            console.log(response.errors);
+                            $("#userRegister").removeClass("was-validated");
+                            if (response.errorsUser !== undefined) {
+                                let keys = Object.keys(response.errorsUser);
+                                let errors = response.errorsUser;
+
+                                let node, node2;
+                                keys.forEach(key => {
+                                    node = $("#userRegister").find(
+                                        `input[name^="userData[${key}]"]`
+                                    );
+                                    if (key == "password") {
+                                        node2 = $("#userRegister").find(
+                                            `input[name^="userData[${key}_confirmation]"]`
+                                        );
+                                    }
+
+                                    if (node !== undefined) {
+                                        node.addClass("is-invalid");
+                                    }
+                                    if (
+                                        node2 !== undefined &&
+                                        key == "password"
+                                    ) {
+                                        node2.addClass("is-invalid");
+                                    }
+
+                                    let errores = "";
+                                    errors[`${key}`].forEach(error => {
+                                        errores += error + ". \n  ";
+                                    });
+
+                                    if (node !== undefined) {
+                                        if (key == "password") {
+                                            $(node2[0])
+                                                .parent()
+                                                .find(".invalid-feedback")
+                                                .html(errores);
+                                        }
+                                        $(node[0])
+                                            .parent()
+                                            .find(".invalid-feedback")
+                                            .html(errores);
+                                    }
+                                });
+                            } else {
+                                swal({
+                                    type: "error",
+                                    title: "Error",
+                                    text: response.msgError
+                                });
+                            }
                         }
                     },
                     error: function(err) {
@@ -131,5 +183,7 @@
         },
         false
     );
+
+    //   $(`input[name=userData[${password}]]`).parent()
 </script>
 @endsection
