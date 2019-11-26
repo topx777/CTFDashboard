@@ -101,8 +101,9 @@ class FileController extends Controller
             $file->ext = $file_extension;
             $file->upload_date = Carbon::now();
 
+            $file->path = $file_uploaded;
             $imageUrl = asset(Storage::disk('local')->url($file_uploaded));
-            $file->path = $imageUrl;
+            $file->url = $imageUrl;
 
             if (!$file->save()) {
                 Storage::disk('local')->delete($file_uploaded);
@@ -136,23 +137,20 @@ class FileController extends Controller
             }
 
             if (!$request->has('id')) {
-                throw new Exception("No se encontro el archivo");
+                throw new \Exception("No se encontro el archivo");
             }
 
             $file = File::find($request->id);
 
             if (is_null($file)) {
-                throw new Exception("No se encontro el archivo");
+                throw new \Exception("No se encontro el archivo");
             }
 
-            $url = $file->path;
+            $path = $file->path;
 
             if ($file->delete()) {
-                Storage::disk('local')->delete($url);
-                throw new \Exception("No se pudo subir el archivo");
+                Storage::disk('local')->delete($path);
             }
-
-            $resp["file"] = $file;
         } catch (\Throwable $ex) {
             $resp["status"] = false;
             $resp["msgError"] = $ex->getMessage();

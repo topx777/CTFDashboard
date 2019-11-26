@@ -21,13 +21,15 @@
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="card">
-                                <form id="uploadFileForm" action="{{ route('files.upload') }}" method="POST" enctype="multipart/form-data">
+                                <form id="uploadFileForm" action="{{ route('files.upload') }}" method="POST"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     <div class="body">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="name">Nombre del Archivo</label>
-                                                <input type="text" class="form-control" name="name" id="name" placeholder="Nombre del Archivo">
+                                                <input type="text" class="form-control" name="name" id="name"
+                                                    placeholder="Nombre del Archivo">
                                                 <div class="invalid-feedback">
                                                     Campo requerido
                                                 </div>
@@ -136,43 +138,58 @@
 
     }
 
-    $(document).on('click', '.deleteFile', function() {
+    $(document).on('click', '.deleteFile', function () {
         let button = $(this);
         let id = button.data('id');
         let index = button.data('pos');
 
-        $.ajax({
-            type: "POST",
-            url: "{{ route('files.delete') }}",
-            data: {
-                _token: "{{ csrf_token }}",
-                id: id
-            },
-            dataType: "JSON",
-            success: function (response) {
-                if(response.status) {
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        text: 'Archivo Eliminado con exito'
-                    });
-                    filesList.splice(index, 1);
-                    syncFiles();
-                } else {
+        swal({
+            title: 'Esta seguro de eliminar el archivo?',
+            text: "Esta accion no se puede deshacer!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "Si, eliminar!",
+            closeOnConfirm: true,
+            cancelButtonText: 'Cancelar'
+        }, function () {
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('files.delete') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id
+                },
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.status) {
+                        swal({
+                            type: 'success',
+                            title: 'Correcto',
+                            text: 'Archivo Eliminado con exito'
+                        });
+                        filesList.splice(index, 1);
+                        syncFiles();
+                    } else {
+                        swal({
+                            type: 'error',
+                            title: 'Error',
+                            text: response.msgError
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
                     swal({
                         type: 'error',
-                        text: response.msgError
+                        title: 'Error',
+                        text: 'Error Desconocido, intente nuevamente'
                     });
                 }
-            },
-            error: function(err) {
-                console.log(err);
-                swal({
-                    type: 'error',
-                    text: 'Error Desconocido, intente nuevamente'
-                });
-            }
+            });
         });
+
     });
 
     function syncFiles() {
@@ -180,7 +197,7 @@
         filesHTML.fadeOut().html('');
         let filesHTMLstr = ""
 
-        filesList.forEach(function(file, index) {
+        filesList.forEach(function (file, index) {
             filesHTMLstr += `
             <div class="col-md-3">
                 <div class="card shadow">
@@ -189,7 +206,7 @@
                         <h5 class="card-title mt-3">${file.name}.${file.ext}</h5>
                         <p class="card-text">${parseFloat(file.size / 1024).toFixed(2)}kb</p>
                         <div class="btn-group-sm">
-                            <a href="${file.path}" download class="btn btn-success" title="Descargar">
+                            <a href="${file.url}" download class="btn btn-success" title="Descargar">
                                 <i class="fa fa-download"></i>
                             </a>
                             <button type="button" class="btn btn-danger deleteFile" data-pos="${index}" data-id="${file.id}" title="Eliminar">
@@ -235,7 +252,7 @@
             case 'jpeg':
                 icon = 'fa-file-image-o';
                 break;
-            case 'ico':            
+            case 'ico':
                 icon = 'fa-file-image-o';
                 break;
             case 'bmp':
@@ -244,13 +261,13 @@
             default:
                 icon = 'fa-file-archive-o';
                 break;
-        }        
+        }
 
         return icon;
     }
 
 
-    $(document).on('submit', '#uploadFileForm', function(e) {
+    $(document).on('submit', '#uploadFileForm', function (e) {
         let form = $(this);
 
         e.preventDefault();
@@ -273,7 +290,7 @@
             processData: false,
             dataType: "JSON",
             success: function (response) {
-                if(response.status) {
+                if (response.status) {
                     swal({
                         type: 'success',
                         title: 'Correcto',
@@ -283,9 +300,9 @@
                     $('#uploadFileModal').modal('hide');
                     $('.modal-backdrop.show').remove();
                 } else {
-                    if(response.errors != undefined) {
+                    if (response.errors != undefined) {
                         let errors = response.errors;
-                        let errorKeys = Object.keys(errors);      
+                        let errorKeys = Object.keys(errors);
 
                         errorKeys.forEach(element => {
                             let msgError = "";
@@ -294,7 +311,8 @@
                             });
 
                             $(form).find(`input[name=${element}]`).addClass('is-invalid');
-                            $(form).find(`input[name=${element}]`).parent().find('.invalid-feedback').text(msgError);
+                            $(form).find(`input[name=${element}]`).parent().find(
+                                '.invalid-feedback').text(msgError);
                         });
                     }
                     swal({
@@ -304,7 +322,7 @@
                     });
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log(err);
                 swal({
                     type: 'error',
@@ -312,7 +330,7 @@
                     text: 'Error desconocido.'
                 });
             },
-            complete: function() {
+            complete: function () {
                 syncFiles();
                 $(form).find('button').prop('disabled', false);
             }
@@ -320,11 +338,11 @@
 
     });
 
-    $(document).on('keyup change', 'input', function() {
+    $(document).on('keyup change', 'input', function () {
         $(this).removeClass('is-invalid');
     });
 
-    $(document).on('hide.bs.modal', '#uploadFileModal', function() {
+    $(document).on('hide.bs.modal', '#uploadFileModal', function () {
         $(this).find('input').toArray().forEach(element => {
             $(element).removeClass('is-invalid');
             $(element).parent().find('.invalid-feedback').html('El campo es requerido');
