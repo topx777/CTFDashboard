@@ -12,15 +12,15 @@ class FilesSeeder extends Seeder
     public function run()
     {
         //
-        $date = new DateTime();
-        DB::table('files')->insert([
-            'id' => 1,
-            'name' => 'Nombre del archivo',
-            'size' => 'Tamaño del archivo',
-            'ext' => 'Extension del archivo',
-            'upload_date' => $date,
-            'direction' => 'Direccion del archivo'
+        // $date = new DateTime();
+        // DB::table('files')->insert([
+        //     'id' => 1,
+        //     'name' => 'Nombre del archivo',
+        //     'size' => 10000000,
+        //     'ext' => 'Extension del archivo',
+        //     'upload_date' => $date,
+        //     'path' => 'Direccion del archivo'
 
-        ]);
+        // ]);
     }
 }

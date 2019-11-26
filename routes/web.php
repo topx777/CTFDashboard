@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,20 +21,10 @@ Route::get('/denied', function () {
     return view('error.permissionError');
 })->name('permissionError');
 
-
-
-Route::get('/test', function () {
-    return view('admin.users.list');
-});
-
-
-
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
-    Route::get('/home', function () {
-        return view('admin/home');
-    });
+    Route::get('/home', 'HomeController@index')->name('admin.home');
 
     //Rutas de Opciones
     Route::get('/options', 'OptionController@show')->name('options');
@@ -85,6 +76,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::post('/challenges/update', 'ChallengeController@update')->name('challenges.update');
     Route::post('/challenges/delete', 'ChallengeController@delete')->name('challenges.delete');
     Route::get('/challenges/filemanager', 'FilesController@upload')->name('challenges.upload');
+
+    //Administrador de Archivos
+    Route::get('/files/list', 'FileController@list')->name('files.list');
+    Route::get('/files/getAll', 'FileController@getAll')->name('files.getAll');
+    Route::post('/files/upload', 'FileController@upload')->name('files.upload');
 });
 
 // Routes Team que no son administradores
@@ -93,6 +89,3 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
     Route::get('/reto', 'TeamController@showChallenge')->name('teams.showChallenge');
 });
-    
-
-Auth::routes();
