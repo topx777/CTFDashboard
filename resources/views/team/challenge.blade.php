@@ -1,4 +1,4 @@
-@extends('adminLayout.master')
+@extends('teamLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet"
@@ -7,42 +7,6 @@
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 @endsection
 @section('content')
-<div class="col-lg-12">
-    <div class="card">
-        <div class="header">
-            <h2>Lista de usuarios<small>Seleccione una fila para ver detalles</small>
-            </h2>
-            <ul class="header-dropdown dropdown">
-                <li><a href="{{ route('users.register') }}" class="btn btn-primary text-white">Registrar</a></li>
-                <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
-                </li>
-            </ul>
-        </div>
-        <div class="body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover dataTable js-exportable">
-                    <thead>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>id</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>id</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- larg modal -->
 <div id="detailModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -156,7 +120,7 @@
 <div class="col-lg-6">
     <div class="card">
         <div class="header">
-            <h2>Lista de Categorias<small>Seleccione una fila para ver detalles</small>
+            <h2>Lista de Retos
             </h2>
             <ul class="header-dropdown dropdown">
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
@@ -185,20 +149,6 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <button class="btn btn-danger">
-                                    <i class="fa fa-ambulance fa-2x"></i>
-                                </button>
-                            </td>
-                            <td><button class="btn btn-primary">
-                                    <i class="fa fa-flag"></i>
-                                    -Enviar
-                                </button></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -242,10 +192,8 @@
                 }, {
                     data: 'description',
                     name: 'description'
-                }, {
-                    data: 'order',
-                    name: 'order'
-                }, {
+                },  
+                {
                     data: 'DT_RowId',
                     name: 'DT_RowId',
                     visible: false
