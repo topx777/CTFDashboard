@@ -694,7 +694,7 @@
                 },
                 error: function(err){
                     console.log(err);
-                    swall({
+                    swal({
                         type: 'error',
                         title:'Error',
                         text: 'Error Desconocido'

@@ -18,6 +18,7 @@
 </div>
 @endsection
 @section('script')
+
     <script>
         $(document).ready(function () {
             $.ajaxSetup({
@@ -42,7 +43,8 @@
                     let vlevel='';
                     vlevel+=` <div class="level py-2">
                                 <div class="col-12">
-                                    <h5 class=" text-info">${level.name}</h5>
+                                    <h5 class=" text-info ">${level.name}</h5>
+                                    
                                      <hr class=" bg-info">
                                 </div>
             <div class="row">`;
@@ -53,6 +55,7 @@
                                         <h2><span class="icon-fire"></span>${challenge.category[0].name}</h2>
                                     </div>
                                     <div class="${(level.lock)?'disable':''} body">
+                                        <div class="${(level.lock)?'icon-lock':''} float-right"></div>
                                         <div class="text-center">${challenge.name}</div>
                                         <br>
                                     </div>
