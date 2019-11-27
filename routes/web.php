@@ -42,7 +42,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::any('/teams/list', 'TeamController@list')->name('teams.list');
     Route::get('/teams/register', 'TeamController@register')->name('teams.register');
     Route::post('/teams/get', 'TeamController@get')->name('teams.get');
-    
+
     Route::get('/teams/detail/{id}', 'TeamController@detail')->name('teams.detail');
     Route::post('/teams/update', 'TeamController@update')->name('teams.update');
     Route::post('/teams/delete', 'TeamController@delete')->name('teams.delete');
@@ -79,12 +79,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/challenges/edit/{id}', 'ChallengeController@edit')->name('challenges.edit');
     Route::post('/challenges/update', 'ChallengeController@update')->name('challenges.update');
     Route::post('/challenges/delete', 'ChallengeController@delete')->name('challenges.delete');
-
     //Administrador de Archivos
     Route::get('/files/list', 'FileController@list')->name('files.list');
     Route::get('/files/getAll', 'FileController@getAll')->name('files.getAll');
     Route::post('/files/upload', 'FileController@upload')->name('files.upload');
     Route::post('/files/delete', 'FileController@delete')->name('files.delete');
+
+    //Estadisticas
+    Route::get('/stadisticTeam','StadisticController@teamScore')->name('team.stadisticTeam');
+    Route::get('/stadisticHint','StadisticController@teamDiscount')->name('team.stadisticHint');
 });
 
 // Routes Team que no son administradores
@@ -92,15 +95,17 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/dashboard', 'TeamController@dashboard')->name('team.dashboard');
     Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
     /* esto es para retornar el json de los datos de challenge */
-    Route::get('/retoJson', 'TeamController@showChallenge')->name('team.tshowChallenge');
+    Route::get('/retoJson', 'TeamController@getLevelChallenge')->name('team.getLevelChallenges');
     Route::get('/scoreboard', function () {
         return view('team.scoreBoard');
     })->name('team.tablescore');
-    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');//lista de niveles retos y categorias JSON
-
-    Route::get('/reto', function () {
-        return view('team.challenge');
-    })->name('team.showChallenges');
+    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');
+    /* esto es para ver la vista de retos */
+    Route::get('/challenge/{id}', 'ChallengeController@showTeamChallenge')->name('team.showChallenge');
+    /* ruta para editar si utiliza la ayuda */
+    Route::post('/help', 'TeamChallengeController@UpdateHint')->name('teamschallenge.update');
+    //ruta para enviar el flag
+    Route::post('/flag', 'ChallengeController@enterFlag')->name('challenge.flag');
 });
 
 //Routes Public 

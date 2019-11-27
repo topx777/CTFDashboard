@@ -1,9 +1,9 @@
 @extends('teamLayout.master')
 @section('style')
 <style>
-.disable{
-    background-color: #22252a !important;
-}
+    .disable {
+        background-color: #22252a !important;
+    }
 </style>
 @endsection
 @section('content')
@@ -19,8 +19,8 @@
 @endsection
 @section('script')
 
-    <script>
-        $(document).ready(function () {
+<script>
+    $(document).ready(function () {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -50,17 +50,19 @@
             <div class="row">`;
                 level.challenges.forEach(challenge => {
                     vlevel+=`<div class="col-12 col-sm-4 col-md-3">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2><span class="icon-fire"></span>${challenge.category[0].name}</h2>
+                                <a href="challenge/${challenge.id}">
+                                    <div class="card">
+                                        <div class="header">
+                                            <h2><span class="icon-fire"></span>${challenge.category[0].name}</h2>
+                                        </div>
+                                        <div class="${(level.lock)?'disable':''} body">
+                                            <div class="${(level.lock)?'icon-lock':''} float-right"></div>
+                                            <div class="text-center">${challenge.name}</div>
+                                            <br>
+                                        </div>
                                     </div>
-                                    <div class="${(level.lock)?'disable':''} body">
-                                        <div class="${(level.lock)?'icon-lock':''} float-right"></div>
-                                        <div class="text-center">${challenge.name}</div>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>`;});
+                                </a>
+                                </div>`;});
             
         level+=`</div>
     </div>`;
@@ -71,5 +73,5 @@ $('#divLevels').append(vlevel);
         }
 
         
-    </script>
+</script>
 @endsection
