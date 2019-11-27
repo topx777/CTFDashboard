@@ -79,7 +79,10 @@ class TeamController extends Controller
                 $idUser= $team->idUser;
                 $user = User::find($idUser);
                 $response["userData"]=$user;
-            
+                
+                $members=[];
+                 $members= Member::where('idTeam', $id)->get();
+                $response["membersData"]= $members;
         }
         catch(\Throwable $ex){
             $response["status"] = false;

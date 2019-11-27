@@ -72,75 +72,9 @@
                         <h6>Miembros</h6>
                         <div class="row">
                             <div class="col-8">
-                                <ul class="list-group-flush">
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-5">
-                                                <div class="form-group">
-                                                    <strong>Nombre:</strong>
-                                                    <span>Nombre_Integrante Nombre_Integrante</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <strong>Apellido:</strong>
-                                                    <span>Apellido_Integrante</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <strong>Universidad:</strong><br>
-                                                    <span>Nombre_Universidad_Sede12345</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <strong>Carrera:</strong><br>
-                                                    <span>Titulo Carreta_Integrante</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class=" form-group">
-                                                    <strong>Correo:</strong><br>
-                                                    <span>Correo_Integrante@dominio.sub.com</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-5">
-                                                <div class="form-group">
-                                                    <strong>Nombre:</strong>
-                                                    <span>Nombre_Integrante Nombre_Integrante</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <strong>Apellido:</strong>
-                                                    <span>Apellido_Integrante</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <strong>Universidad:</strong><br>
-                                                    <span>Nombre_Universidad_Sede12345</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <strong>Carrera:</strong><br>
-                                                    <span>Titulo Carreta_Integrante</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class=" form-group">
-                                                    <strong>Correo:</strong><br>
-                                                    <span>Correo_Integrante@dominio.sub.com</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
+                                <ul id="gruopMembers" class="list-group-flush">
+                                   
+                                  
                                 </ul>
                             </div>
                         </div>
@@ -151,18 +85,18 @@
                         @csrf
                         <div class="py-2">
                             <h6>Datos de Equipo</h6>
-                            <div class="row">
+                            <div id="teamDataRegister" class="row">
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="">Nombre</label>
-                                        <input class="form-control" type="text" maxlength="55" required>
+                                        <input name="teamData[name]" class="form-control" type="text" maxlength="55" required>
                                         <div class="invalid-feedback">
                                             El campo nombre es obligatorio
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Couch</label>
-                                        <input class="form-control" type="text" maxlength="55" required>
+                                        <input name=teamData[couch] class="form-control" type="text" maxlength="55" required>
                                          <div class="invalid-feedback">
                                             El campo couch es obligatorio
                                         </div>
@@ -171,7 +105,7 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="">Frase</label>
-                                        <textarea name="" class="form-control" id="" cols="30" rows="5" maxlength="65535" required></textarea>
+                                        <textarea name="teamData[phrase]" class="form-control" id="" cols="30" rows="5" maxlength="65535" required></textarea>
                                          <div class="invalid-feedback">
                                             El campo frase es obligatorio
                                         </div>
@@ -181,11 +115,11 @@
                         </div>
                         <div class="py-2">
                             <h6>Credenciales de Equipo</h6>
-                            <div class="row">
+                            <div id="userDataRegister" class="row">
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="">Usuario</label>
-                                        <input class="form-control" type="text" maxlength="40" required>
+                                        <input name="userData[username]" class="form-control" type="text" maxlength="40" required>
                                          <div class="invalid-feedback">
                                             El campo usuario es obligatorio
                                         </div>
@@ -194,17 +128,24 @@
                                 <div class="col-4">
                                     <div class="`form-group">
                                         <label for="">Contraseña</label>
-                                        <input class="form-control" type="password" maxlength="35" required>
+                                        <input cl name="userData[password]"class="form-control" type="password" maxlength="35" required>
                                          <div class="invalid-feedback">
                                             El campo contraseña es obligatorio
                                         </div>
                                     </div>
                                 </div>
+                                 
+                                <input
+                                id="admin"
+                                name="userData[admin]"
+                                type="hidden"
+                                value="false"
+                            />
                             </div>
                         </div>
                         <div class="py-2">
                             <h6>Miembros</h6>
-                            <div class="row">
+                            <div id="memberDataRegister" class="row">
                                 <div class="col-8">
                                     <ul class="list-group-flush">
                                         <li class="list-group-item">
@@ -306,8 +247,11 @@
                                     console.log(response);
                                    let divTeam = $('#teamData');
                                    let divUser = $('#userData');
+                                   let divTeamRegister = $('#teamDataRegister');
+                                   let divUserRegister = $('#userDataRegister');
                                    let data = response.teamData;
                                    let dataUser = response.userData;
+                                   let dataMembers =response.membersData;
                                    let node;
                                    node= divTeam.find('span[name="couch"]');
                                    node.text(data.couch);
@@ -318,8 +262,7 @@
                                    node.text(data.phrase);
                                    node= divTeam.find('span[name="name"]');
                                    node.text(data.name);
-                                   node= divTeam.find('span[name=""]');
-                                   node.text(data.couch);
+                                  
                                     
 
 
@@ -327,6 +270,55 @@
                                    node.text(dataUser.username);
                                    node= divUser.find('span[name="teamPassword"]');
                                    node.text(data.teamPassword);
+
+
+
+                                   //------------------------------------------recuperacion de datos
+                                 //  node = $("#formUseUpdate").find(
+                                   //     'input[name^="teamData[name]"]' 
+                                    //);
+                                    //node.text(data.name);
+
+                                   //------------------------------------------insercion de datos
+
+                                  dataMembers.forEach(element => {
+
+                                    var desing = `  <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <div class="form-group">
+                                                    <strong>Nombre:</strong>
+                                                    <span name="name">${element.name}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <strong>Apellido:</strong>
+                                                    <span name="lastname">${element.lastname}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <strong>Universidad:</strong><br>
+                                                    <span name="university">${element.university}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <strong>Carrera:</strong><br>
+                                                    <span name="career">${element.career}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class=" form-group">
+                                                    <strong>Correo:</strong><br>
+                                                    <span name="email">${element.email}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>`;
+                                      $('#gruopMembers').append(desing);
+                                  });
 
                                 } else {
                                     swal({
