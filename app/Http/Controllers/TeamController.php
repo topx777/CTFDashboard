@@ -7,10 +7,12 @@ use App\Challenge;
 use App\Team;
 use App\TeamChallenge;
 use App\Member;
+use App\User;
 use App\Option;
 use Illuminate\Http\Request;
 use DataTables;
 use Faker;
+use SebastianBergmann\Environment\Console;
 
 class TeamController extends Controller
 {
@@ -56,18 +58,32 @@ class TeamController extends Controller
      **/
     public function get(Request $request)
     {
-        if ($request->ajax()) {
-            $id = $request->id;
 
-            $team = Team::find($id);
+        $response["status"] = true;
+        try {
 
-            if (is_null($team)) {
-                return response()->json(null);
+            if (!$request->ajax()) {
+                throw new \Exception("Error de peticion");
             }
 
-            return response()->json($team);
-        } else {
-            return response()->json(null);
+            $id = $request->id;
+            $response["status"] = true;
+            $team = Team::find($id);
+
+
+            if (is_null($team)) {
+                throw new \Exception("Error, no se pudo encontrar el team");
+            }
+
+            $response["teamData"] = $team;
+            $idUser = $team->idUser;
+            $user = User::find($idUser);
+            $response["userData"] = $user;
+        } catch (\Throwable $ex) {
+            $response["status"] = false;
+            $response["msgError"] = $ex->getMessage();
+        } finally {
+            return response()->json($response);
         }
     }
 
@@ -78,9 +94,9 @@ class TeamController extends Controller
      *
      * @return view
      **/
-    public function detail(Request $request)
+    public function detail(Request $request, $id)
     {
-        return view('admin.teams.detail');
+        return view('admin.teams.detail', compact('id'));
     }
 
 
@@ -166,13 +182,15 @@ class TeamController extends Controller
                 $id = $request->id;
                 $team = Team::find($id);
 
+
+
                 if (is_null($team)) {
                     throw new \Exception("No se encontro al equipo");
                 }
                 $team->delete();
             } catch (\Throwable $th) {
                 $resp["status"] = false;
-                $resp["msgError"] = $th->getMessage();
+                $resp["msgError"] = "Error, no se puede borrar este campo debido a que comparte su llave con otras tablas.";
             } finally {
                 return response()->json($resp);
             }
@@ -210,10 +228,15 @@ class TeamController extends Controller
     {
         return view('team.challenges');
     }
-    public function showChallenge(Request $request)
+
+    public function getLevelChallenge(Request $request)
     {
-        $data = Challenge::all();
-        return response()->json(['challenges' => $data]);
+        $id = $request->id_challenge;
+        $challenge = Challenge::find($id);
+
+        $challengesLevel = Challenge::where('idLevel', $challenge->idLevel)->get();
+
+        return response()->json(['challenges' => $challengesLevel]);
     }
 
     /**
