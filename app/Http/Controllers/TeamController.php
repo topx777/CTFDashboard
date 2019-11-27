@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TeamsPositions;
 use App\Challenge;
 use App\Team;
+use App\TeamChallenge;
 use App\Member;
 use App\Option;
 use Illuminate\Http\Request;
@@ -213,6 +215,27 @@ class TeamController extends Controller
         $data = Challenge::all();
         return response()->json(['challenges' => $data]);
     }
-    public function useHelp(Request $request)
-    { }
+
+    /**
+     * data scoreboard
+     *
+     * Datos json para tabla
+     *
+     * @return JSON
+     **/
+    public function dataScoreBoard()
+    {
+        $teams = Team::orderBy('score', 'desc')->get();
+        $teamObj = [];
+        foreach ($teams as $key => $team) {
+            $teamObj[$key] = $team;
+            $teamObj[$key]->flag = TeamChallenge::where('finish', true)->where('idTeam', $team->id)->count();
+        }
+        return response()->json(['teamsScoreBoard' => $teamObj]);
+    }
+    // solo prueba borrar 
+    public function socket(Request $request)
+    {
+        event(new TeamsPositions());
+    }
 }
