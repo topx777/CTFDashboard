@@ -81,10 +81,10 @@ class RegisterController extends Controller
             }
 
             $validationErrors = [];
-            $validationErrorsUser=[];
-            $validationErrorsTeam=[];
-            $validationErrorsMember=[];
-            $validationErrorMembers=[];
+            $validationErrorsUser = [];
+            $validationErrorsTeam = [];
+            $validationErrorsMember = [];
+            $validationErrorMembers = [];
             if ($validationUser->fails()) {
                 foreach ($validationUser->getMessageBag()->getMessages() as $key => $error) {
                     $validationErrorsUser[$key] = $error;
@@ -129,47 +129,45 @@ class RegisterController extends Controller
                     foreach ($validationTeam->getMessageBag()->getMessages() as $key => $error) {
                         $validationErrorsTeam[$key] = $error;
                     }
-                    
                 }
-               $nodosError =[];
-               $cont=0;
-               $numNodo=0;
+                $nodosError = [];
+                $cont = 0;
+                $numNodo = 0;
                 foreach ($validationsMember as $validationMember) {
                     if ($validationMember->fails()) {
-                        $nodosError[$cont]=$numNodo;
-                        $cont+=1;
-                        foreach( $validationMember->getMessageBag()->getMessages() as $key => $error) {
-                            
+                        $nodosError[$cont] = $numNodo;
+                        $cont += 1;
+                        foreach ($validationMember->getMessageBag()->getMessages() as $key => $error) {
+
 
                             $validationErrorsMember[$key] = $error;
                         }
-                        
+
                         $validationErrorMembers[] = $validationErrorsMember;
                     }
-                        $numNodo+=1;
-                                    
+                    $numNodo += 1;
                 }
             }
-            if(count($validationErrorsUser)>0){
+            if (count($validationErrorsUser) > 0) {
 
-               $response["errorsUser"]= $validationErrorsUser;
-               throw new \Exception("Existen errores de validacion");
+                $response["errorsUser"] = $validationErrorsUser;
+                throw new \Exception("Existen errores de validacion");
             }
             if (count($validationErrors) > 0) {
                 $response["errors"] = $validationErrors;
                 throw new \Exception("Existen errores de validacion");
             }
-            
+
             if (count($validationErrorsTeam) > 0) {
                 $response["errorsTeam"] = $validationErrorsTeam;
                 throw new \Exception("Existen errores de validacion");
             }
             if (count($validationErrorMembers) > 0) {
                 $response["errorsMembers"] = $validationErrorMembers;
-                $response["nodosError"] =$nodosError;
+                $response["nodosError"] = $nodosError;
                 throw new \Exception("Existen errores de validacion");
             }
-           
+
 
             $user = new User;
             $user->username = $userData["username"];
@@ -179,12 +177,6 @@ class RegisterController extends Controller
             }
             $user->password = Hash::make($userData["password"]);
             $user->admin = $userData["admin"] == "true" ? true : false;
-
-
-
-
-
-
 
 
             $response["intended"] = $this->redirectPath();
@@ -197,9 +189,10 @@ class RegisterController extends Controller
                 $team->name = $teamData["name"];
                 //    $team->score = $teamData["score"];
                 $team->phrase = $teamData["phrase"];
-                //    $team->avatar = $teamData["avatar"];
                 $team->couch = $teamData["couch"];
                 $team->teamPassword = $userData["password"];
+
+                // $team->avatar = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($team->name . $team->teamPassword))) . "&s=" . 40;
 
                 $team->saveOrFail();
 
