@@ -7,10 +7,12 @@ use App\Challenge;
 use App\Team;
 use App\TeamChallenge;
 use App\Member;
+use App\User;
 use App\Option;
 use Illuminate\Http\Request;
 use DataTables;
 use Faker;
+use SebastianBergmann\Environment\Console;
 
 class TeamController extends Controller
 {
@@ -54,21 +56,39 @@ class TeamController extends Controller
      *
      * @return view
      **/
-    public function get(Request $request)
+    public function get(Request $request )
     {
-        if ($request->ajax()) {
-            $id = $request->id;
+        
+        $response["status"] = true;
+        try{
 
-            $team = Team::find($id);
-
-            if (is_null($team)) {
-                return response()->json(null);
+            if (!$request->ajax()) {
+                throw new \Exception("Error de peticion");
             }
+        
+                $id = $request->id;
+                $response["status"]=true;
+                $team = Team::find($id);
 
-            return response()->json($team);
-        } else {
-            return response()->json(null);
+    
+                if (is_null($team)) {                                 
+                    throw new \Exception("Error, no se pudo encontrar el team");
+                }
+    
+                $response["teamData"]=$team;
+                $idUser= $team->idUser;
+                $user = User::find($idUser);
+                $response["userData"]=$user;
+            
         }
+        catch(\Throwable $ex){
+            $response["status"] = false;
+            $response["msgError"] = $ex->getMessage();
+        }
+        finally{
+            return response()->json($response);
+        }
+       
     }
 
     /**
@@ -78,9 +98,9 @@ class TeamController extends Controller
      *
      * @return view
      **/
-    public function detail(Request $request)
+    public function detail(Request $request, $id)
     {
-        return view('admin.teams.detail');
+        return view('admin.teams.detail', compact('id'));
     }
 
 
@@ -165,18 +185,22 @@ class TeamController extends Controller
             try {
                 $id = $request->id;
                 $team = Team::find($id);
-
+                    
+                 
+               
                 if (is_null($team)) {
                     throw new \Exception("No se encontro al equipo");
                 }
                 $team->delete();
-            } catch (\Throwable $th) {
+            }
+             catch (\Throwable $th) {
                 $resp["status"] = false;
-                $resp["msgError"] = $th->getMessage();
+                $resp["msgError"] = "Error, no se puede borrar este campo debido a que comparte su llave con otras tablas.";
             } finally {
                 return response()->json($resp);
             }
-        } else {
+        }
+         else {
             return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
         }
     }
