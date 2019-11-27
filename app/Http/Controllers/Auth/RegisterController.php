@@ -102,7 +102,7 @@ class RegisterController extends Controller
                     $teamData,
                     [
                         //Cambiar validacion
-                        'name' => ['required', 'string', 'max:255', 'unique:teams'],
+                        'name' => ['required', 'string', 'max:255'],
                         'couch' => ['required', 'string', 'max:255'],
                         'phrase' => ['required', 'string', 'max:255'],
 
@@ -131,16 +131,23 @@ class RegisterController extends Controller
                     }
                     
                 }
-               
+               $nodosError =[];
+               $cont=0;
+               $numNodo=0;
                 foreach ($validationsMember as $validationMember) {
                     if ($validationMember->fails()) {
+                        $nodosError[$cont]=$numNodo;
+                        $cont+=1;
                         foreach( $validationMember->getMessageBag()->getMessages() as $key => $error) {
-                            $validationErrorsMember[$key]=$error;
+                            
 
-                            $validationErrorMembers[$key] = $validationErrorsMember;
+                            $validationErrorsMember[$key] = $error;
                         }
-                        $validationErrorsMember[] = "Error de validacion de Miembros";
+                        
+                        $validationErrorMembers[] = $validationErrorsMember;
                     }
+                        $numNodo+=1;
+                                    
                 }
             }
             if(count($validationErrorsUser)>0){
@@ -152,15 +159,17 @@ class RegisterController extends Controller
                 $response["errors"] = $validationErrors;
                 throw new \Exception("Existen errores de validacion");
             }
-            if (count($validationErrorMembers) > 0) {
-                $response["errorsMembers"] = $validationErrorMembers;
-                throw new \Exception("Existen errores de validacion");
-            }
+            
             if (count($validationErrorsTeam) > 0) {
                 $response["errorsTeam"] = $validationErrorsTeam;
                 throw new \Exception("Existen errores de validacion");
             }
-
+            if (count($validationErrorMembers) > 0) {
+                $response["errorsMembers"] = $validationErrorMembers;
+                $response["nodosError"] =$nodosError;
+                throw new \Exception("Existen errores de validacion");
+            }
+           
 
             $user = new User;
             $user->username = $userData["username"];

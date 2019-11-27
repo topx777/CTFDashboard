@@ -94,6 +94,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/dashboard', 'TeamController@dashboard')->name('team.dashboard');
     Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
+    /* esto es para retornar el json de los datos de challenge */
     Route::get('/retoJson', 'TeamController@showChallenge')->name('team.tshowChallenge');
     Route::get('/scoreboard', function () {
         return view('team.scoreBoard');
@@ -110,10 +111,3 @@ Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScor
 Route::get('scoreboard', function () {
     return view('public.scoreBoard');
 });
-
-
-Route::get('/reto', function () {
-    return view('team.challenge');
-})->name('team.showChallenges');
-//controlador funcion que muestra los datos de challenge
-Route::get('/teams/challenges', 'TeamController@showChallenge')->name('team.tshowChallenge');
