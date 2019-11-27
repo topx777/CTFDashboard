@@ -11,6 +11,5 @@ class TeamChallengeController extends Controller
 {
     public function list(Request $request)
     {
-        $lavels=Level::
     }
 }
