@@ -95,8 +95,8 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/scoreboard', function () {
         return view('team.scoreBoard');
     })->name('team.tablescore');
-    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');
-    /* esto es para ver la vista de retos */
+    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');//lista de niveles retos y categorias JSON
+
     Route::get('/reto', function () {
         return view('team.challenge');
     })->name('team.showChallenges');
