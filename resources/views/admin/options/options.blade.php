@@ -14,82 +14,84 @@
 <link rel="stylesheet" href="{{asset('vendor/bootstrap-multiselect/bootstrap-multiselect.css')}}"/>
 <link rel="stylesheet" href="{{asset('vendor/multi-select/css/multi-select.css')}}"/>
 
-<link rel="stylesheet" href="{{asset('vendor/nouislider/nouislider.min.css')}}"/>
-<!-- VENDOR CSS -->
-
 @endsection
 @section('content')
-<div class="demo-masked-input">
-    <div class="row clearfix">
-<div class="col-lg-6 col-md-6">
-        <label><b>Fecha de Inicio</b></label>
-                <div class="input-group mb-3">                                        
-                    <input data-provide="datepicker" placeholder="dd/mm/yyyy" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
-                </div>
-    </div>
+<div class="col-md-12">
+    <div class="demo-masked-input">
+        <div class="row clearfix">
+            <input type="hidden" id="id" value="{{ $option->id }}">
 
-    <div class="col-lg-6 col-md-6">
-            
-        <label><b>Hora de Inicio</b></label>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text"><i class="icon-clock"></i></span>
-            </div>
-            <input type="text" class="form-control time24" placeholder="Ex: 23:59">
-        </div>
-    </div>
-    <div class="col-lg-6 col-md-6">
-            <label><b>Fecha de Fin</b></label>
-                    <div class="input-group mb-3">                                        
-                        <input placeholder="dd/mm/yyyy" data-provide="datepicker" data-date-autoclose="true" class="form-control" data-date-format="dd/mm/yyyy">
-                    </div>
-        </div>
-        <div class="col-lg-6 col-md-6">
-              
-            <label><b>Hora Fin</b></label>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="icon-clock"></i></span>
+            <div class="col-lg-6 col-md-6">
+                <label><b>Fecha de Inicio</b></label>
+                <div class="input-group mb-3">
+                    <input id="dateStart"
+                        value="{{ Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $option->startTime)->format('d/m/Y') }}"
+                        data-provide="datepicker" placeholder="dd/mm/yyyy" data-date-autoclose="true" class="form-control"
+                        data-date-format="dd/mm/yyyy">
                 </div>
-                <input type="text" class="form-control time24" placeholder="Ex: 23:59">
             </div>
-        </div>
-    </div>
-</div>
+            <div class="col-lg-6 col-md-6">
     
+                <label><b>Hora de Inicio</b></label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-clock"></i></span>
+                    </div>
+                    <input id="timeStart"
+                        value="{{ Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $option->startTime)->format('H:i') }}"
+                        type="text" class="form-control time24" placeholder="Ex: 23:59">
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <label><b>Fecha de Fin</b></label>
+                <div class="input-group mb-3">
+                    <input id="dateEnd"
+                        value="{{ Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $option->startTime)->format('d/m/Y') }}"
+                        placeholder="dd/mm/yyyy" data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                        data-date-format="dd/mm/yyyy">
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+    
+                <label><b>Hora Fin</b></label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-clock"></i></span>
+                    </div>
+                    <input id="timeEnd"
+                        value="{{ Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $option->startTime)->format('H:i') }}"
+                        type="text" class="form-control time24" placeholder="Ex: 23:59">
+                </div>
+            </div>
             <div class="col-lg-4 col-md-5 m-0 p-0 mb-5">
                 <div class="list-group-item">
                     Estado de la competencia
-                        <div class="float-right">
-                            <label class="switch">
-                                <input type="checkbox">
-                                    <span class="slider round"></span>
-                            </label>
-                        </div>
+                    <div class="float-right">
+                        <label class="switch">
+                            <input id="state" type="checkbox" {{ $option->state ? 'checked' : '' }}>
+                            <span class="slider round"></span>
+                        </label>
                     </div>
-                                     
-            </div>    
-          <div class="col-lg-6 col-md-6 ml-5 mb-5 px-5 py-2">
-                  <button class="btn btn-success btn-round mr-4 ml-5 " type="button">Aceptar</button>  
-                  <button class="btn btn-danger btn-round ml-5" type="button">Cancelar</button>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 ml-5 mb-5 px-5 py-2">
+                <button id="send" class="btn btn-success btn-round mr-4 ml-5 " type="button">Guardar</button>
+                <button class="btn btn-danger btn-round ml-5" type="button">Cancelar</button>
             </div>
             <div class="col-md-12 col-lg-12">
                 <h3>Reglas de juego</h3>
                 <div class="card mt-3">
                     <div class="body">
-                        <div class="summernote">
-                            Hi dada
-                            <br/><br/>
-                            <p>The toolbar can be customized and it also supports various callbacks such as <code>oninit</code>, <code>onfocus</code>, <code>onpaste</code> and many more.</p>
-                            <p><strong>Note:</strong> The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English</p>                                
-                            <br/><br/>
-                            <p>Thank you!</p>
-                            <h6>Summer Note</h6>
+                        <div class="summernote" id="rules">
+                            {!! $option->rules !!}
                         </div>
                     </div>
                 </div>
             </div>
-        
+        </div>
+    </div>
+</div>
+
 <!-- larg modal -->
 
 @endsection
@@ -108,10 +110,7 @@
 
 <script src="{{asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
 
-<script src="{{asset('vendor/nouislider/nouislider.js')}}"></script>
-
 <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
-<script src="{{asset('js/pages/forms/advanced-form-elements.js')}}"></script>
 
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>
@@ -128,53 +127,108 @@
 
 <script>
     $(document).ready(function () {
+        
+        $('#rules').summernote();
+        
+        var $demoMaskedInput = $('.demo-masked-input');
+        $demoMaskedInput.find('.date').inputmask('dd/mm/yyyy', {
+            placeholder: '__/__/____'
+        });
+        $demoMaskedInput.find('.time12').inputmask('hh:mm t', {
+            placeholder: '__:__ _m',
+            alias: 'time12',
+            hourFormat: '12'
+        });
+        $demoMaskedInput.find('.time24').inputmask('hh:mm', {
+            placeholder: '__:__ _m',
+            alias: 'time24',
+            hourFormat: '24'
+        });
+        $demoMaskedInput.find('.datetime').inputmask('d/m/y h:s', {
+            placeholder: '__/__/____ __:__',
+            alias: "datetime",
+            hourFormat: '24'
+        });
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
-        var table = $('.dataTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('users.list') }}",
-            columns: [
-                { data: 'username', name: 'username' },
-                { data: 'email', name: 'email' },
-                { data: 'DT_RowId', name: 'DT_RowId', visible: false }
-            ]
-        });
-        // row id 
-        $('.dataTable').on('click', 'tr', function () {
-            var id = table.row(this).id();
-            if (id) {
-                id = id.replace(/\D/g, '');
-                id = parseInt(id, 10);
-                console.log('id ' + id);
-                $('#detailModal').modal('show');
-            }
-        });
+        $(document).on('click', '#send', function () {
+            let button = $(this);
 
-        // confirm delete user
-        $('#btnUserDelete').click(function (e) {
-            e.preventDefault();
-            showConfirmMessage();
-
-        });
-        function showConfirmMessage() {
             swal({
-                title: "Esta seguro de eliminar al usuario?",
+                title: "Esta seguro de modificar las opciones?",
                 text: "Esta accion no se puede deshacer!",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#dc3545",
-                confirmButtonText: "Si, eliminar!",
+                confirmButtonText: "Si, modificar!",
                 closeOnConfirm: false,
                 cancelButtonText: 'Cancelar'
             }, function () {
-                swal("Deleted!", "El usuario a sido eliminado", "success");
+                let form = new FormData();
+
+                let id = $('#id').val();
+                let startDate = $('#dateStart').val() + ' ' + $('#timeStart').val();
+                let endDate = $('#dateEnd').val() + ' ' + $('#timeEnd').val();
+                let state = $('#state').prop('checked') ? 1 : 0;
+                let rules = $('#rules').summernote('code');
+
+                form.append('_token', "{{ csrf_token() }}");
+                form.append('id', id);
+                form.append('startDate', startDate);
+                form.append('endDate', endDate);
+                form.append('state', state);
+                form.append('rules', rules);
+
+                console.log(startDate, endDate, state, rules);
+
+                button.prop('disabled', true);
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('options.update') }}",
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    dataType: "JSON",
+                    success: function (response) {
+                        if(response.status) {
+                            swal({
+                                type: 'success',
+                                title: 'Correcto',
+                                text: 'Configuraciones Actualizadas Correctamente'
+                            });
+
+                        } else {
+                            swal({
+                                type: 'error',
+                                title: 'Error',
+                                text: response.msgError
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        swal({
+                            type: 'error',
+                            title: 'Error',
+                            text: 'Error Desconocido'
+                        });
+                    },
+                    complete: function () {
+                        button.prop('disabled', false);
+                    }
+                });
+
             });
-        }
+        });
+
+
     });
+
 </script>
 @endsection

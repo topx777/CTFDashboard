@@ -14,9 +14,7 @@
                 <span>Bienvenido,</span>
                 <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong> {{auth()->user()->username}} </strong></a>
                 <ul class="dropdown-menu dropdown-menu-right account vivify flipInY">
-                    <li><a href="page-profile.html"><i class="icon-user"></i>Mi Perfil</a></li>
-                    {{-- <li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Messages</a></li> --}}
-                    <li><a href="javascript:void(0);"><i class="icon-settings"></i>Opciones</a></li>
+                    <li><a href="{{ route('options') }}"><i class="icon-settings"></i>Opciones</a></li>
                     <li>
                         <a href="{{ route('logout') }}"
                         class="icon-menu"
@@ -34,6 +32,7 @@
         </div>
         <nav id="left-sidebar-nav" class="sidebar-nav">
             <ul id="main-menu" class="metismenu">
+                <li class="{{( explode('.', Route::currentRouteName())[0] =='options')?'active open':''}}"><a href="{{route('options')}}"><i class="icon-settings"></i><span>Opciones</span></a></li>
                 <li class="header">Menu</li>
                 <li class="{{( explode('.', Route::currentRouteName())[0] =='users')?'active open':''}}"><a href="{{route('users.list')}}"><i class="icon-user"></i><span>Usuarios</span></a></li>
                 <li class="{{( explode('.', Route::currentRouteName())[0] =='teams')?'active open':''}}"><a href="{{route('teams.list')}}"><i class="icon-users"></i><span>Equipos</span></a></li>

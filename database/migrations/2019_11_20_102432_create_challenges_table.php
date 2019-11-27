@@ -18,8 +18,8 @@ class CreateChallengesTable extends Migration
             $table->bigInteger('idLevel')->unsigned();
             $table->bigInteger('idCategory')->unsigned();
             $table->string('name', 40);
-            $table->text('description');
-            $table->text('hint');
+            $table->text('description')->nullable();
+            $table->text('hint')->nullable();
             $table->text('flag');
             $table->timestamps();
             $table->foreign('idLevel')->references('id')->on('levels');
