@@ -21,6 +21,12 @@ Route::get('/denied', function () {
     return view('error.permissionError');
 })->name('permissionError');
 
+
+
+Route::get('/test', function () {
+    return view('admin.users.list');
+});
+
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
@@ -88,9 +94,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/dashboard', 'TeamController@dashboard')->name('team.dashboard');
     Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
-    Route::get('/reto', function () {
-        return view('team.challenge');
-    })->name('team.showChallenges');
-    //controlador funcion que muestra los datos de challenge
-    Route::get('/teams/challenges', 'TeamController@showChallenge')->name('team.tshowChallenge');
+    Route::get('/reto', 'TeamController@showChallenge')->name('teams.showChallenge');
+    Route::get('/scoreboard', function (){return view('team.scoreBoard');})->name('team.tablescore');    
+    Route::get('/socket', 'TeamController@socket');
+    Route::get('/teamChallenges','TeamChallengeController@list')->name('team.teamChallenges');
 });
+
+//Routes Public 
+Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScore'); //Datos score json table positions
+Route::get('scoreboard', function () {return view('public.scoreBoard');});
+
+
+Route::get('/reto', function () {
+    return view('team.challenge');
+})->name('team.showChallenges');
+//controlador funcion que muestra los datos de challenge
+Route::get('/teams/challenges', 'TeamController@showChallenge')->name('team.tshowChallenge');
