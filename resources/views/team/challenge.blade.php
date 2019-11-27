@@ -234,18 +234,18 @@
             dataType: "JSON",
             success: function (data) {
                 console.log(data);
-                if (response.status) {
+                if (data.status) {
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         text: 'La bandera coincide!'
-                    })
+                    });
                     window.location.href = "{{route('team.teamChallenges')}}";
                 } else {
                     swal({
                         type: 'error',
                         title: 'Error',
-                        text: response.msgError
+                        text: data.msgError
                     });
                 }
             }
