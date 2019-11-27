@@ -11,5 +11,6 @@ class TeamChallengeController extends Controller
 {
     public function list(Request $request)
     {
+        
     }
 }
