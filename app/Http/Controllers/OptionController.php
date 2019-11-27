@@ -58,8 +58,8 @@ class OptionController extends Controller
 
                 $option->state = $request->state;
                 $option->rules = $request->rules;
-                $option->startTime = $request->startTime;
-                $option->endTime = $request->endTime;
+                $option->startTime = Carbon::createFromFormat('d/m/Y H:i', $request->startDate);
+                $option->endTime = Carbon::createFromFormat('d/m/Y H:i', $request->endDate);
 
                 $option->saveOrFail();
             } catch (\Throwable $ex) {

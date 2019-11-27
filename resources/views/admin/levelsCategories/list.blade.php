@@ -371,6 +371,9 @@
         });
 
         levelTable = $('#levelTable').DataTable({
+            language: {
+                url: "{{asset('lenguage/Spanish.json')}}"
+            },
             processing: true,
             serverSide: true,
             ajax: "{{ route('levels.list') }}",
@@ -395,6 +398,9 @@
         });
 
         categoryTable = $('#categoryTable').DataTable({
+            language: {
+                url: "{{asset('lenguage/Spanish.json')}}"
+            },
             processing: true,
             serverSide: true,
             ajax: "{{ route('categories.list') }}",
@@ -694,7 +700,7 @@
                 },
                 error: function(err){
                     console.log(err);
-                    swall({
+                    swal({
                         type: 'error',
                         title:'Error',
                         text: 'Error Desconocido'

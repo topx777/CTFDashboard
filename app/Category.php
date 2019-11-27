@@ -8,4 +8,9 @@ class Category extends Model
 {
     //
     protected $table = 'categories';
+
+    static function getCategories()
+    {
+        return Category::all();
+    }
 }

@@ -22,11 +22,6 @@ Route::get('/denied', function () {
 })->name('permissionError');
 
 
-
-Route::get('/test', function () {
-    return view('admin.users.list');
-});
-
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
@@ -78,11 +73,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     // Rutas de Chellange
     Route::any('/challenges/list', 'ChallengeController@list')->name('challenges.list');
     Route::get('/challenges/register', 'ChallengeController@register')->name('challenges.register');
+    Route::post('/challenges/store', 'ChallengeController@store')->name('challenges.store');
     Route::get('/challenges/get/{$id}', 'ChallengeController@get')->name('challenges.get');
     Route::get('/challenges/detail/{id}', 'ChallengeController@detail')->name('challenges.detail');
+    Route::get('/challenges/edit/{id}', 'ChallengeController@edit')->name('challenges.edit');
     Route::post('/challenges/update', 'ChallengeController@update')->name('challenges.update');
     Route::post('/challenges/delete', 'ChallengeController@delete')->name('challenges.delete');
-    Route::get('/challenges/filemanager', 'FilesController@upload')->name('challenges.upload');
 
     //Administrador de Archivos
     Route::get('/files/list', 'FileController@list')->name('files.list');
@@ -100,8 +96,8 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/scoreboard', function () {
         return view('team.scoreBoard');
     })->name('team.tablescore');
-    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');
-    /* esto es para ver la vista de retos */
+    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');//lista de niveles retos y categorias JSON
+
     Route::get('/reto', function () {
         return view('team.challenge');
     })->name('team.showChallenges');

@@ -1,4 +1,14 @@
 @extends('teamLayout.master')
+@section('style')
+<style>
+    #avatar{
+        background-image: url('{{asset("images/{$teamData->avatar}")}}') !important;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+</style>
+@endsection
 @section('content')
 <div class="col-12 py-3">
 <h4 class=" text-info">
@@ -12,8 +22,7 @@
             <div>
                 <h5>{{$teamData->name}}</h5>
             </div>
-            <div style="width:300px; height: 400px" class=" rounded bg-white">
-                <span class="text-danger">{{$teamData->avatar}}</span>
+            <div id="avatar" style="width:300px; height: 320px" class="bgimage rounded bg-white">
                 
             </div>
             <div>

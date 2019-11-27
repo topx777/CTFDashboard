@@ -125,7 +125,7 @@
             cache: false,
             success: function (data) {
                 data.forEach(file => {
-                    filesList.push(file);
+                    filesList.unshift(file);
                 });
             },
             error: function (err) {
