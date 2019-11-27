@@ -20,6 +20,7 @@ class CreateFilesTable extends Migration
             $table->string('ext', 20);
             $table->dateTime('upload_date');
             $table->string('path');
+            $table->string('url');
             $table->timestamps();
         });
     }

@@ -87,6 +87,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/files/list', 'FileController@list')->name('files.list');
     Route::get('/files/getAll', 'FileController@getAll')->name('files.getAll');
     Route::post('/files/upload', 'FileController@upload')->name('files.upload');
+    Route::post('/files/delete', 'FileController@delete')->name('files.delete');
 });
 
 // Routes Team que no son administradores
