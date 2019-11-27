@@ -233,9 +233,4 @@ class TeamController extends Controller
         }
         return response()->json(['teamsScoreBoard' => $teamObj]);
     }
-    // solo prueba borrar 
-    public function socket(Request $request)
-    {
-        event(new TeamsPositions());
-    }
 }
