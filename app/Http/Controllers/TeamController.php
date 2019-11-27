@@ -212,17 +212,8 @@ class TeamController extends Controller
     }
     public function showChallenge(Request $request)
     {
-        if ($request->ajax()) {
-            $data = Challenge::all();
-            return DataTables::of($data)
-                ->addColumn('DT_RowId', function ($row) {
-                    $row = $row->id;
-
-                    return $row;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+        $data = Challenge::all();
+        return response()->json(['challenges' => $data]);
     }
 
     /**
@@ -234,13 +225,13 @@ class TeamController extends Controller
      **/
     public function dataScoreBoard()
     {
-        $teams=Team::orderBy('score', 'desc')->get();
-        $teamObj=[];
+        $teams = Team::orderBy('score', 'desc')->get();
+        $teamObj = [];
         foreach ($teams as $key => $team) {
-            $teamObj[$key]=$team;
-            $teamObj[$key]->flag=TeamChallenge::where('finish', true)->where('idTeam',$team->id)->count();
+            $teamObj[$key] = $team;
+            $teamObj[$key]->flag = TeamChallenge::where('finish', true)->where('idTeam', $team->id)->count();
         }
-        return response()->json(['teamsScoreBoard'=>$teamObj]);
+        return response()->json(['teamsScoreBoard' => $teamObj]);
     }
     // solo prueba borrar 
     public function socket(Request $request)

@@ -7,8 +7,48 @@
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 @endsection
 @section('content')
+<div class="col-lg-6">
+    <div class="card">
+        <div class="body">
+            <div id="slider2" class="carousel vert slide" data-ride="carousel" data-interval="1700">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="card-value float-right text-muted"><i class="fa fa-key"></i></div>
+                        <h3 class="mb-1">CRIPTOGRAFIA</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="body">
+        <blockquote class="blockquote mb-0">
+            <p>El reto consiste en saber cuanto se enbolsillo el evo con el juancito pinto gobierno para los ninos con
+                el bomo jauncito pinto es para escuelas fiscales</p>
+        </blockquote>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-hover table-custom spacing8">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Ayuda</th>
+                    <th>flag</th>
+                </tr>
+            </thead>
+            <tbody id="tableChallenge">
+
+            </tbody>
+        </table>
+    </div>
+</div>
 <!-- larg modal -->
-<div id="detailModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+<div id="detailModalHelp" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -95,67 +135,6 @@
         </div>
     </div>
 </div>
-<div class="col-lg-6">
-    <div class="card">
-        <div class="body">
-            <div id="slider2" class="carousel vert slide" data-ride="carousel" data-interval="1700">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="card-value float-right text-muted"><i class="fa fa-key"></i></div>
-                        <h3 class="mb-1">CRIPTOGRAFIA</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="card">
-    <div class="body">
-        <blockquote class="blockquote mb-0">
-            <p>El reto consiste en saber cuanto se enbolsillo el evo con el juancito pinto gobierno para los ninos con
-                el bomo jauncito pinto es para escuelas fiscales</p>
-        </blockquote>
-    </div>
-</div>
-<div class="col-lg-6">
-    <div class="card">
-        <div class="header">
-            <h2>Lista de Retos
-            </h2>
-            <ul class="header-dropdown dropdown">
-                <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
-                </li>
-            </ul>
-        </div>
-        <div class="body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover dataTable js-exportable">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Descripcion</th>
-                            <th scope="col">Nivel</th>
-                            <th scope="col">Ayuda</th>
-                            <th scope="col">Bandera</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Descripcion</th>
-                            <th scope="col">Nivel</th>
-                            <th scope="col">Ayuda</th>
-                            <th scope="col">Bandera</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 @section('script')
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
@@ -171,7 +150,7 @@
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 
 <script>
-    //Codigo AJX CONEXION DE PARTE DEL SERVIDOR
+    //Codigo AJX CONEXION DE PARTE DEL SERVIDOR    
     $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
@@ -179,26 +158,66 @@
                 }
             });
 
-            var table = $('.dataTable').DataTable({
-                language: {
-                    url: "{{asset('lenguage/Spanish.json')}}"
-                },
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('team.tshowChallenge') }}",
-                columns: [{
-                    data: 'name',
-                    name: 'name'
-                }, {
-                    data: 'description',
-                    name: 'description'
-                },  
-                {
-                    data: 'DT_RowId',
-                    name: 'DT_RowId',
-                    visible: false
-                }]
-            });
-        }) //final del document ready
+            $.ajax({
+                type: "GET",
+                url: "{{route('team.tshowChallenge')}}",
+                dataType: "JSON",
+                success: function (data) {
+                    if (data.challenges.length>0) {
+                        $('#tableChallenge').html('');
+                        var i=0;
+                        data.challenges.forEach(challenge => {
+                        $('.help').click(function (e) {
+                            e.preventDefault();
+                            showConfirmMessage();
+
+                        });
+                        function showConfirmMessage() {
+                            swal({
+                                title: "Esta seguro de usar tu ayuda",
+                                text: "Solo se puede usar una ayuda por reto",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#dc3545",
+                                confirmButtonText: "Si, ayuda por favor!",
+                                closeOnConfirm: false,
+                                cancelButtonText: 'No no quiero yo puedo solo'
+                            }, function () {
+                                swal("Debil!", "Utilizaste la ayuda suerte!", "success");
+                            });
+                        }
+                            /* esto es para el flag del modal */
+                            $('.flag').on('click',function () {
+                            $('#detailModalFlag').modal('show');});
+                            /* esto es para llenar la tabla */
+                            i+=1;
+                            $('#tableChallenge').append(` <tr>
+                        <td class="w60">
+                            ${i} 
+                        </td>
+                        <td>
+                            ${challenge.name}
+                        </td>
+                        <td>
+                            ${challenge.description}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger help">
+                                <i class="fa fa-ambulance fa-2x"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary">
+                                <i class="fa fa-flag"></i>    
+                                -Enviar  
+                            </button>
+                        </td>
+                    </tr>`);
+                    });
+                    }
+                }
+            });//esto es el ajax
+        }); //final del document ready
+
 </script>
 @endsection

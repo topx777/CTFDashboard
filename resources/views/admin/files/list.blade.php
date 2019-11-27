@@ -1,16 +1,14 @@
 @extends('adminLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
-<link rel="stylesheet" href="{{asset('vendor/dropify/css/dropify.min.css')}}" />
 <!-- VENDOR CSS -->
 @endsection
 @section('content')
 
 <!-- Button trigger modal -->
 <!-- Modal -->
-<div class="modal fade" id="uploadFileModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal" id="uploadFileModal">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Subir Archivo</h5>
@@ -23,20 +21,32 @@
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="card">
-                                <form id="uploadFileForm" action="{{ route('files.upload') }}" method="POST" enctype="multipart/form-data">
+                                <form id="uploadFileForm" action="{{ route('files.upload') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
                                     <div class="body">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="name">Nombre del Archivo</label>
-                                                <input type="text" class="form-control" name="name" id="name" placeholder="Nombre del Archivo">
+                                                <input type="text" class="form-control" name="name" id="name"
+                                                    placeholder="Nombre del Archivo">
+                                                <div class="invalid-feedback">
+                                                    Campo requerido
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <input type="file" class="dropify">
+                                            <div class="form-group">
+                                                <label for="file">Archivos</label>
+                                                <input type="file" name="file" class="form-control">
+                                                <div class="invalid-feedback">
+                                                    Campo requerido
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="text-right">
-                                        <button type="button" class="btn btn-success btn-round mt-3">Subir
+                                        <button type="submit" class="btn btn-success btn-round mt-3">Subir
                                             Archivo</button>
                                         <button type="button" data-dismiss="modal"
                                             class="btn btn-sm btn-primary btn-round btn-danger mt-3">Cancelar</button>
@@ -61,7 +71,7 @@
                 </div>
                 <div class="col-2">
                     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
-                        data-target="#uploadFileModal">
+                        data-target="#uploadFileModal" ata-backdrop="static" data-keyboard="false">
                         Subir Archivo
                     </button>
                 </div>
@@ -79,8 +89,6 @@
 <script src="{{asset('bundles/libscripts.bundle.js')}}"></script>
 
 <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
-
-<script src="{{asset('vendor/dropify/js/dropify.js')}}"></script>
 
 <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
 
@@ -103,19 +111,6 @@
 
 
         loadFiles();
-
-
-        $('.dropify').dropify();
-
-        var drEvent = $('#dropify-event').dropify();
-        drEvent.on('dropify.beforeClear', function(event, element) {
-            return confirm("Estas seguro de Eliminar \"" + element.file.name + "\" ?");
-        });
-
-        drEvent.on('dropify.afterClear', function(event, element) {
-            alert('Archivo Eliminado');
-        });
-
     });
 
     function loadFiles() {
@@ -130,7 +125,7 @@
             cache: false,
             success: function (data) {
                 data.forEach(file => {
-                    filesList.add(file);
+                    filesList.push(file);
                 });
             },
             error: function (err) {
@@ -143,25 +138,78 @@
 
     }
 
+    $(document).on('click', '.deleteFile', function () {
+        let button = $(this);
+        let id = button.data('id');
+        let index = button.data('pos');
+
+        swal({
+            title: 'Esta seguro de eliminar el archivo?',
+            text: "Esta accion no se puede deshacer!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "Si, eliminar!",
+            closeOnConfirm: true,
+            cancelButtonText: 'Cancelar'
+        }, function () {
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('files.delete') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id
+                },
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.status) {
+                        swal({
+                            type: 'success',
+                            title: 'Correcto',
+                            text: 'Archivo Eliminado con exito'
+                        });
+                        filesList.splice(index, 1);
+                        syncFiles();
+                    } else {
+                        swal({
+                            type: 'error',
+                            title: 'Error',
+                            text: response.msgError
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Error Desconocido, intente nuevamente'
+                    });
+                }
+            });
+        });
+
+    });
 
     function syncFiles() {
 
-        filesHTML.html('');
+        filesHTML.fadeOut().html('');
         let filesHTMLstr = ""
 
-        filesList.forEach(file => {
+        filesList.forEach(function (file, index) {
             filesHTMLstr += `
             <div class="col-md-3">
                 <div class="card shadow">
                     <div class="card-body text-center">
-                        <i class="fa fa-5x fa-file-text"></i>
-                        <h5 class="card-title mt-3">Archivo</h5>
-                        <p class="card-text">200kb</p>
+                        <i class="fa fa-5x ${getExtensionIcon(file.ext)}"></i>
+                        <h5 class="card-title mt-3">${file.name}.${file.ext}</h5>
+                        <p class="card-text">${parseFloat(file.size / 1024).toFixed(2)}kb</p>
                         <div class="btn-group-sm">
-                            <button type="button" class="btn btn-success" title="Delete">
+                            <a href="${file.url}" download class="btn btn-success" title="Descargar">
                                 <i class="fa fa-download"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger" title="Delete">
+                            </a>
+                            <button type="button" class="btn btn-danger deleteFile" data-pos="${index}" data-id="${file.id}" title="Eliminar">
                                 <i class="fa fa-trash-o"></i>
                             </button>
                         </div>
@@ -171,30 +219,136 @@
             `;
         });
 
-        filesHTML.html(filesHTMLstr);
+        filesHTML.fadeIn().html(filesHTMLstr);
+    }
+
+    function getExtensionIcon(ext) {
+        let icon = '';
+        switch (ext) {
+            case 'txt':
+                icon = 'fa-file-text-o';
+                break;
+            case 'img':
+                icon = 'fa-file-image-o';
+                break;
+            case 'pdf':
+                icon = 'fa-file-pdf-o';
+                break;
+            case 'pptx':
+                icon = 'fa-file-powerpoint-o';
+                break;
+            case 'docx':
+                icon = 'fa-file-word-o';
+                break;
+            case 'xlsx':
+                icon = 'fa-file-excel-o';
+                break;
+            case 'png':
+                icon = 'fa-file-image-o';
+                break;
+            case 'jpg':
+                icon = 'fa-file-image-o';
+                break;
+            case 'jpeg':
+                icon = 'fa-file-image-o';
+                break;
+            case 'ico':
+                icon = 'fa-file-image-o';
+                break;
+            case 'bmp':
+                icon = 'fa-file-image-o';
+                break;
+            default:
+                icon = 'fa-file-archive-o';
+                break;
+        }
+
+        return icon;
     }
 
 
-    $(document).on('submit', '#uploadFileForm', function(e) {
+    $(document).on('submit', '#uploadFileForm', function (e) {
         let form = $(this);
 
         e.preventDefault();
         e.stopPropagation();
 
+        $(form).find('button').prop('disabled', true);
 
+        let formData = new FormData;
+
+        formData.append('_token', form.find('input[name=_token]').val());
+        formData.append('name', form.find('input[name=name]').val());
+        formData.append('file', form.find('input[name=file]')[0].files[0]);
 
         $.ajax({
-            type: "method",
-            url: "url",
-            data: "data",
-            dataType: "dataType",
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
             success: function (response) {
+                if (response.status) {
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        text: 'Archivo Subido con exito'
+                    });
+                    filesList.unshift(response.file);
+                    $('#uploadFileModal').modal('hide');
+                    $('.modal-backdrop.show').remove();
+                } else {
+                    if (response.errors != undefined) {
+                        let errors = response.errors;
+                        let errorKeys = Object.keys(errors);
 
+                        errorKeys.forEach(element => {
+                            let msgError = "";
+                            errors[`${element}`].forEach(error => {
+                                msgError += (error + "\n");
+                            });
+
+                            $(form).find(`input[name=${element}]`).addClass('is-invalid');
+                            $(form).find(`input[name=${element}]`).parent().find(
+                                '.invalid-feedback').text(msgError);
+                        });
+                    }
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: response.msgError
+                    });
+                }
+            },
+            error: function (err) {
+                console.log(err);
+                swal({
+                    type: 'error',
+                    title: 'Error',
+                    text: 'Error desconocido.'
+                });
+            },
+            complete: function () {
+                syncFiles();
+                $(form).find('button').prop('disabled', false);
             }
         });
 
     });
 
+    $(document).on('keyup change', 'input', function () {
+        $(this).removeClass('is-invalid');
+    });
+
+    $(document).on('hide.bs.modal', '#uploadFileModal', function () {
+        $(this).find('input').toArray().forEach(element => {
+            $(element).removeClass('is-invalid');
+            $(element).parent().find('.invalid-feedback').html('El campo es requerido');
+        });
+        document.getElementById('uploadFileForm').reset();
+    });
 
 </script>
 
