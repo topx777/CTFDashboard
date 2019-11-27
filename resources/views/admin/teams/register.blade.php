@@ -151,9 +151,15 @@
 @endsection @section('script')
 <script>
     var members = 0;
-
+    
     $(document).ready(function() {
         addMember();
+        createNewPassword();
+    });
+
+
+    $(document).on("keyup", "input", function() {
+        $(this).removeClass("is-invalid");
     });
 
     var form = document.getElementById("userRegister");
@@ -174,18 +180,130 @@
                     cache: false,
                     dataType: "JSON",
                     success: function(response) {
-                        console.log(response);
+                       
                         if (response.status) {
                             window.location.href = response.intended;
                         } else {
-                            alert("Error");
-                           
-                            console.log(response.msgError);
-                            console.log(response.errorsTeam);
-                            console.log(response.errorsmembers);
-                            console.log(response.errorsUser);                          
-                            console.log(response.errors);
                             
+                            //codigo de validacion
+
+                            $("#userRegister").removeClass("was-validated");
+                            if (response.errorsUser !== undefined ) {
+                                let keys = Object.keys(response.errorsUser);
+                                let errors = response.errorsUser;
+
+                                let node, node2;
+                                keys.forEach(key => {
+                                    node = $("#userRegister").find(
+                                        `input[name^="userData[${key}]"]`
+                                    );
+                                    
+
+                                    if (node !== undefined) {
+                                        node.addClass("is-invalid");
+                                        }      
+                                  
+
+                                    let errores = "";
+                                    errors[`${key}`].forEach(error => {
+                                        errores += error + ". \n  ";
+                                    });
+
+                                    if (node !== undefined) {
+                                      
+                                        $(node[0])
+                                            .parent()
+                                            .find(".invalid-feedback")
+                                            .html(errores);
+                                    }
+                                });
+                            }
+                            else if(response.errorsTeam !== undefined){
+                                //-------------------------------------
+                                let keysTeam = Object.keys(response.errorsTeam);
+                                let errorsTeam = response.errorsTeam;
+
+                                let nodeTeam;
+                                keysTeam.forEach(key => {
+                                    nodeTeam = $("#userRegister").find(
+                                        `input[name^="teamData[${key}]"]`
+                                    );
+                                    
+
+                                    if (nodeTeam !== undefined) {
+                                        nodeTeam.addClass("is-invalid");
+                                        }      
+                                  
+
+                                    let erroresTeam = "";
+                                    errorsTeam[`${key}`].forEach(error => {
+                                        erroresTeam += error + ". \n  ";
+                                    });
+
+                                    if (nodeTeam !== undefined) {
+                                      
+                                        $(nodeTeam[0])
+                                            .parent()
+                                            .find(".invalid-feedback")
+                                            .html(erroresTeam);
+                                    }
+                                });
+                                //-------------------------------------
+                            }
+                            else if(response.errorsMembers !== undefined)
+                            {
+                                  //-------------------------------------
+                                  let keysMembers;
+                                  let errorsMember;
+                                  let nodeMember;
+                                  let arrayMembers = response.errorsMembers;
+                                  let nodesErrors = response.nodosError;
+                                  var cont =0 ;
+                                  arrayMembers.forEach(nodeMemberC => {   
+                                                                
+                                     keysMembers = Object.keys(nodeMemberC);
+                                     errorsMember = nodeMemberC;
+
+                                     keysMembers.forEach(key => {
+                                     nodeMember = $("#userRegister").find(
+                                        `input[name^="membersData[${nodesErrors[cont]}][${key}]"]`
+                                    );
+                                    
+                                   
+
+                                    if (nodeMember !== undefined) {
+                                        nodeMember.addClass("is-invalid");
+                                        }      
+                                  
+
+                                    let erroresMember = "";
+                                    errorsMember[`${key}`].forEach(error => {
+                                        erroresMember += error + ". \n  ";
+                                    });
+
+                                    if (nodeMember !== undefined) {
+                                      
+                                      $(nodeMember[0])
+                                          .parent()
+                                          .find(".invalid-feedback")
+                                          .html(erroresMember);
+                                  }
+
+                                  });
+                                  cont++;
+                             });
+                            }
+                             else{
+                                swal({
+                                    type: "error",
+                                    title: "Error",
+                                    text: response.msgError
+                                });
+                            }
+                           
+                          
+
+                            // fin de codigo de validacion
                         }
                     },
                     error: function(err) {
@@ -266,70 +384,11 @@
     }
 
     $("#createPassword").click(function() {
-        var abecedario = [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f",
-            "g",
-            "h",
-            "i",
-            "j",
-            "k",
-            "l",
-            "m",
-            "n",
-            "o",
-            "p",
-            "q",
-            "r",
-            "s",
-            "t",
-            "u",
-            "v",
-            "w",
-            "x",
-            "y",
-            "z",
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-            "F",
-            "G",
-            "H",
-            "I",
-            "J",
-            "K",
-            "L",
-            "M",
-            "N",
-            "O",
-            "P",
-            "Q",
-            "R",
-            "S",
-            "T",
-            "U",
-            "V",
-            "W",
-            "X",
-            "Y",
-            "Z"
-        ];
+       createNewPassword();
+    });
+
+    function createNewPassword(){
+        var abecedario = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
         var letras = "";
         for (var i = 0; i < 10; i++) {
             letras +=
@@ -339,6 +398,6 @@
         }
 
         $("#password").val(letras);
-    });
+    }
 </script>
 @endsection

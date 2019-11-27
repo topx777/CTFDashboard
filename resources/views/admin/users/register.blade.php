@@ -122,7 +122,7 @@
                             window.location.href = response.intended;
                         } else {
                             $("#userRegister").removeClass("was-validated");
-                            if (response.errorsUser !== undefined) {
+                            if (response.errorsUser !== undefined  ) {
                                 let keys = Object.keys(response.errorsUser);
                                 let errors = response.errorsUser;
 
@@ -172,6 +172,8 @@
                                     text: response.msgError
                                 });
                             }
+
+                         
                         }
                     },
                     error: function(err) {
@@ -183,6 +185,8 @@
         },
         false
     );
+
+    
 
     //   $(`input[name=userData[${password}]]`).parent()
 </script>
