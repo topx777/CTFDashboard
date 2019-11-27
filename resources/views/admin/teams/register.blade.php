@@ -186,9 +186,9 @@
                         } else {
                             
                             //codigo de validacion
-
+                            alert(response.msgError);
                             $("#userRegister").removeClass("was-validated");
-                            if (response.errorsUser !== undefined ) {
+                            if(response.errorsUser !== undefined ) {
                                 let keys = Object.keys(response.errorsUser);
                                 let errors = response.errorsUser;
 
@@ -249,6 +249,7 @@
                                     }
                                 });
                                 //-------------------------------------
+                              //  alert(response.msgError);
                             }
                             else if(response.errorsMembers !== undefined)
                             {
