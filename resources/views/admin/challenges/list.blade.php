@@ -23,6 +23,7 @@
                 <table class="table table-striped table-hover dataTable js-exportable">
                     <thead>
                         <tr>
+                            <th> </th>
                             <th>Nombre</th>
                             <th>Descripcion</th>
                             <th>Pista</th>
@@ -30,6 +31,7 @@
                     </thead>
                     <tfoot>
                         <tr>
+                            <th> </th>
                             <th>Nombre</th>
                             <th>Descripcion</th>
                             <th>Pista</th>
@@ -69,35 +71,22 @@
             serverSide: true,
             ajax: "{{ route('challenges.list') }}",
             columns: [
+                { data: 'action', name: 'action'},
                 { data: 'name', name: 'name' },
                 { data: 'description', name: 'description' },
                 { data: 'hint', name: 'hint' },
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });
-        // row id 
-        $('.dataTable').on('click', 'tr', function () {
-            var id = table.row(this).id();
-            if (id) {
-                id = id.replace(/\D/g, '');
-                id = parseInt(id, 10);
-                var url = '{{ route("challenges.detail", "") }}';
-                url+=`/${id}`
-                window.location.href=url;
-
-
-            }
-        });
 
         // confirm delete user
-        $('#btnUserDelete').click(function (e) {
+        $(document).on('click', '.deleteChallenge', function (e) {
             e.preventDefault();
-            showConfirmMessage();
+            let button = $(this);
+            let id = button.data('id');
 
-        });
-        function showConfirmMessage() {
             swal({
-                title: "Esta seguro de eliminar al usuario?",
+                title: "Esta seguro de eliminar el reto?",
                 text: "Esta accion no se puede deshacer!",
                 type: "warning",
                 showCancelButton: true,
@@ -106,10 +95,38 @@
                 closeOnConfirm: false,
                 cancelButtonText: 'Cancelar'
             }, function () {
-                swal("Deleted!", "El usuario a sido eliminado", "success");
-            });
-        }
+                
+                button.prop('disabled', true);
 
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('challenges.delete') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id
+                    },
+                    cache: false,
+                    dataType: "JSON",
+                    success: function (response) {
+                        if(response.status) {
+                            swal("Correcto!", "Reto Eliminado Correctamente", "success");
+                            table.ajax.reload();
+                        } else {
+                            swal("Error!", response.msgError, "error");
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        swal("Error!", "Error Desconocido", "error");
+                    },
+                    complete: function() {
+                        button.prop('disabled', false);
+                    }
+                });
+                
+            });
+
+        });
 
     });
 </script>

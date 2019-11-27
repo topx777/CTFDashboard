@@ -22,11 +22,6 @@ Route::get('/denied', function () {
 })->name('permissionError');
 
 
-
-Route::get('/test', function () {
-    return view('admin.users.list');
-});
-
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
@@ -46,7 +41,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     // Rutas de Team
     Route::any('/teams/list', 'TeamController@list')->name('teams.list');
     Route::get('/teams/register', 'TeamController@register')->name('teams.register');
-    Route::get('/teams/get/{$id}', 'TeamController@get')->name('teams.get');
+    Route::post('/teams/get', 'TeamController@get')->name('teams.get');
+
     Route::get('/teams/detail/{id}', 'TeamController@detail')->name('teams.detail');
     Route::post('/teams/update', 'TeamController@update')->name('teams.update');
     Route::post('/teams/delete', 'TeamController@delete')->name('teams.delete');
@@ -77,11 +73,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     // Rutas de Chellange
     Route::any('/challenges/list', 'ChallengeController@list')->name('challenges.list');
     Route::get('/challenges/register', 'ChallengeController@register')->name('challenges.register');
+    Route::post('/challenges/store', 'ChallengeController@store')->name('challenges.store');
     Route::get('/challenges/get/{$id}', 'ChallengeController@get')->name('challenges.get');
     Route::get('/challenges/detail/{id}', 'ChallengeController@detail')->name('challenges.detail');
+    Route::get('/challenges/edit/{id}', 'ChallengeController@edit')->name('challenges.edit');
     Route::post('/challenges/update', 'ChallengeController@update')->name('challenges.update');
     Route::post('/challenges/delete', 'ChallengeController@delete')->name('challenges.delete');
-    Route::get('/challenges/filemanager', 'FilesController@upload')->name('challenges.upload');
     //Administrador de Archivos
     Route::get('/files/list', 'FileController@list')->name('files.list');
     Route::get('/files/getAll', 'FileController@getAll')->name('files.getAll');

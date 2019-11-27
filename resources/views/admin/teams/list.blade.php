@@ -180,12 +180,14 @@
         // confirm delete user
         $('#btnUserDelete').click(function (e) {
             e.preventDefault();
+
+            
             showConfirmMessage();
 
         });
         function showConfirmMessage() {
             swal({
-                title: "Esta seguro de eliminar al usuario?",
+                title: `Esta seguro de eliminar al usuario`,
                 text: "Esta accion no se puede deshacer!",
                 type: "warning",
                 showCancelButton: true,
@@ -194,7 +196,9 @@
                 closeOnConfirm: false,
                 cancelButtonText: 'Cancelar'
             }, function () {
-                swal("Deleted!", "El usuario a sido eliminado", "success");
+
+               
+                
             });
         }
 
