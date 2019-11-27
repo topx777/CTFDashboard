@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,9 +30,7 @@ Route::get('/test', function () {
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
-    Route::get('/home', function () {
-        return view('admin/home');
-    });
+    Route::get('/home', 'HomeController@index')->name('admin.home');
 
     //Rutas de Opciones
     Route::get('/options', 'OptionController@show')->name('options');
@@ -83,6 +82,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::post('/challenges/update', 'ChallengeController@update')->name('challenges.update');
     Route::post('/challenges/delete', 'ChallengeController@delete')->name('challenges.delete');
     Route::get('/challenges/filemanager', 'FilesController@upload')->name('challenges.upload');
+
+    //Administrador de Archivos
+    Route::get('/files/list', 'FileController@list')->name('files.list');
+    Route::get('/files/getAll', 'FileController@getAll')->name('files.getAll');
+    Route::post('/files/upload', 'FileController@upload')->name('files.upload');
 });
 
 // Routes Team que no son administradores
@@ -94,10 +98,13 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/socket', 'TeamController@socket');
 });
 
-Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScore');
-Route::get('scoreboard', function () {
-    return view('public.scoreBoard');
-});
-    
+//Routes Public 
+Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScore'); //Datos score json table positions
+Route::get('scoreboard', function () {return view('public.scoreBoard');});
 
-Auth::routes();
+
+Route::get('/reto', function () {
+    return view('team.challenge');
+})->name('team.showChallenges');
+//controlador funcion que muestra los datos de challenge
+Route::get('/teams/challenges', 'TeamController@showChallenge')->name('team.tshowChallenge');

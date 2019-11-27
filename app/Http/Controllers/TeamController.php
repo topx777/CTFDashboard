@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\TeamsPositions;
+use App\Challenge;
 use App\Team;
 use App\TeamChallenge;
 use App\Member;
@@ -189,14 +190,13 @@ class TeamController extends Controller
      **/
     public function dashboard(Request $request)
     {
-        $id=auth()->user()->id;
-        $teamData = Team::select('id','name', 'score', 'phrase', 'avatar', 'couch')->where('idUser',$id)->first();
-        $membersTeam = Member::select('name','lastName','email','career','university')
-                        ->where('idTeam',$teamData->id)
-                        ->get();
-        $options= Option::select('rules','startTime','endTime')->first();
+        $id = auth()->user()->id;
+        $teamData = Team::select('id', 'name', 'score', 'phrase', 'avatar', 'couch')->where('idUser', $id)->first();
+        $membersTeam = Member::select('name', 'lastName', 'email', 'career', 'university')
+            ->where('idTeam', $teamData->id)
+            ->get();
+        $options = Option::select('rules', 'startTime', 'endTime')->first();
         return view('team.dashboard', compact('teamData', 'membersTeam', 'options'));
-
     }
 
     /**
@@ -212,7 +212,17 @@ class TeamController extends Controller
     }
     public function showChallenge(Request $request)
     {
-        return view('team.challenge');
+        if ($request->ajax()) {
+            $data = Challenge::all();
+            return DataTables::of($data)
+                ->addColumn('DT_RowId', function ($row) {
+                    $row = $row->id;
+
+                    return $row;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
     }
 
     /**

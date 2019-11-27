@@ -81,14 +81,17 @@ class RegisterController extends Controller
             }
 
             $validationErrors = [];
-
+            $validationErrorsUser=[];
+            $validationErrorsTeam=[];
+            $validationErrorsMember=[];
+            $validationErrorMembers=[];
             if ($validationUser->fails()) {
                 foreach ($validationUser->getMessageBag()->getMessages() as $key => $error) {
-                    $validationErrors[$key] = $error;
+                    $validationErrorsUser[$key] = $error;
                 }
             }
 
-            if (!$userData['admin'] == "true") {
+            if ($userData['admin'] != "true") {
                 $teamData = $request->teamData;
                 $membersData = [];
                 foreach ($request->membersData as $key => $memberData) {
@@ -99,9 +102,10 @@ class RegisterController extends Controller
                     $teamData,
                     [
                         //Cambiar validacion
-                        'username' => ['required', 'string', 'max:255', 'unique:users'],
-                        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                        'password' => ['required', 'string', 'min:8', 'confirmed'],
+                        'name' => ['required', 'string', 'max:255', 'unique:teams'],
+                        'couch' => ['required', 'string', 'max:255'],
+                        'phrase' => ['required', 'string', 'max:255'],
+
                     ]
                 );
 
@@ -112,30 +116,51 @@ class RegisterController extends Controller
                         $memberData,
                         [
                             //Cambiar validacion
-                            'username' => ['required', 'string', 'max:255', 'unique:users'],
-                            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                            'password' => ['required', 'string', 'min:8', 'confirmed'],
+                            'name' => ['required', 'string', 'max:255',],
+                            'lastname' => ['required', 'string', 'max:255'],
+                            'email' => ['required', 'string', 'email', 'max:255', 'unique:members'],
+                            'career' => ['required', 'string', 'max:255'],
+                            'university' => ['required', 'string', 'max:255'],
                         ]
                     );
                 }
 
                 if ($validationTeam->fails()) {
                     foreach ($validationTeam->getMessageBag()->getMessages() as $key => $error) {
-                        $validationErrors[$key] = $error;
+                        $validationErrorsTeam[$key] = $error;
                     }
+                    
                 }
-
+               
                 foreach ($validationsMember as $validationMember) {
                     if ($validationMember->fails()) {
-                        $validationErrors[] = "Error de validacion de Miembros";
+                        foreach( $validationMember->getMessageBag()->getMessages() as $key => $error) {
+                            $validationErrorsMember[$key]=$error;
+
+                            $validationErrorMembers[$key] = $validationErrorsMember;
+                        }
+                        $validationErrorsMember[] = "Error de validacion de Miembros";
                     }
                 }
             }
+            if(count($validationErrorsUser)>0){
 
+               $response["errorsUser"]= $validationErrorsUser;
+               throw new \Exception("Existen errores de validacion");
+            }
             if (count($validationErrors) > 0) {
                 $response["errors"] = $validationErrors;
                 throw new \Exception("Existen errores de validacion");
             }
+            if (count($validationErrorMembers) > 0) {
+                $response["errorsMembers"] = $validationErrorMembers;
+                throw new \Exception("Existen errores de validacion");
+            }
+            if (count($validationErrorsTeam) > 0) {
+                $response["errorsTeam"] = $validationErrorsTeam;
+                throw new \Exception("Existen errores de validacion");
+            }
+
 
             $user = new User;
             $user->username = $userData["username"];
@@ -146,6 +171,13 @@ class RegisterController extends Controller
             $user->password = Hash::make($userData["password"]);
             $user->admin = $userData["admin"] == "true" ? true : false;
 
+
+
+
+
+
+
+
             $response["intended"] = $this->redirectPath();
 
             $user->saveOrFail();
@@ -154,9 +186,9 @@ class RegisterController extends Controller
                 $team = new Team;
                 $team->idUser = $user->id;
                 $team->name = $teamData["name"];
-                $team->score = $teamData["score"];
+                //    $team->score = $teamData["score"];
                 $team->phrase = $teamData["phrase"];
-                $team->avatar = $teamData["avatar"];
+                //    $team->avatar = $teamData["avatar"];
                 $team->couch = $teamData["couch"];
                 $team->teamPassword = $userData["password"];
 

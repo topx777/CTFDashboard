@@ -36,7 +36,7 @@
     </div>
 
     <!-- Theme Setting -->
-    <div class="themesetting">
+    {{-- <div class="themesetting">
         <a href="javascript:void(0);" class="theme_btn"><i class="icon-magic-wand"></i></a>
         <div class="card theme_color">
             <div class="header">
@@ -141,7 +141,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
@@ -716,8 +716,8 @@
         @include('adminLayout.components.sidebar')
 
         <div id="main-content">
-            <div class="container-fluid">
-                <div class="block-header">
+            <div class="container-fluid pt-5">
+                {{-- <div class="block-header">
                     <div class="row clearfix">
                         <div class="col-md-6 col-sm-12">
                             <h2>Stater Page</h2>
@@ -730,7 +730,7 @@
                             </nav>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row clearfix">
                     {{-- ContentPage --}}
@@ -749,7 +749,7 @@
     <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
     <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
     @section('script')
-        
+
     @show
 </body>
 
