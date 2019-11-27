@@ -51,7 +51,11 @@ class ChallengeController extends Controller
 
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->editColumn('description', function ($row) {
+                    $desc = '<p>' . $row->description . '</p>';
+                    return $desc;
+                })
+                ->rawColumns(['action', 'description'])
                 ->make(true);
         }
 
