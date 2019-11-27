@@ -24,7 +24,7 @@ class LevelsSeeder extends Seeder
             'name' => 'Nivel 2',
             'score' => 0,
             'hintDiscount' => 2.5,
-            'order' => 1
+            'order' => 2
         ]);
         DB::table('levels')->insert([
             'id' => 3,
@@ -38,14 +38,14 @@ class LevelsSeeder extends Seeder
             'name' => 'Nivel 3',
             'score' => 0,
             'hintDiscount' => 4.1,
-            'order' => 5
+            'order' => 4
         ]);
         DB::table('levels')->insert([
             'id' => 5,
             'name' => 'Nivel 4',
             'score' => 0,
             'hintDiscount' => 5.2,
-            'order' => 6
+            'order' => 5
         ]);
         DB::table('levels')->insert([
             'id' => 6,

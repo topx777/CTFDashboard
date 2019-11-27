@@ -1,9 +1,36 @@
-@extends('teamLayout.master') @section('style')
+@extends('teamLayout.master') 
+
+@section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet"
     href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
-<link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" /> @endsection @section('content')
+<link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" /> 
+@endsection 
+
+@section('content')
+
+<div id="hintModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myLargeModalLabel">Pista</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-pane vivify flipInX">
+                    <div id="hintText" class="pt-4 px-3">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="col-lg-12">
     <div class="card">
         <div class="body">
@@ -23,7 +50,7 @@
 <div class="card">
     <div class="body">
         <blockquote class="blockquote mb-0">
-            <p>{!! $challenge->description !!}}</p>
+            <p>{!! $challenge->description !!}</p>
         </blockquote>
     </div>
 </div>
@@ -94,7 +121,7 @@
 <script>
     var id_challenge = '';
     //Codigo AJX CONEXION DE PARTE DEL SERVIDOR    
-    $(document).ready(function() {
+    $(document).ready(function () {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -109,12 +136,12 @@
                 id_challenge: $('#id_challenge').val()
             },
             dataType: "JSON",
-            success: function(data) {
+            success: function (data) {
                 if (data.challenges.length > 0) {
                     $('#tableChallenge').html('');
                     data.challenges.forEach(challenge => {
                         /* esto es para el flag del modal */
-                        $('.mflag').on('click', function() {
+                        $('.mflag').on('click', function () {
                             $('#detailModalFlag').modal('show');
                         });
                         $('#tableChallenge').append(` <tr>
@@ -154,7 +181,7 @@
             confirmButtonText: "Si, ayuda por favor!",
             closeOnConfirm: false,
             cancelButtonText: 'No no quiero yo puedo solo'
-        }, function() {
+        }, function () {
             var t = true;
             $.ajax({
                 url: "{{ route('teamschallenge.update') }}",
@@ -164,15 +191,37 @@
                     _token: '{{csrf_token()}}'
                 },
                 dataType: "JSON",
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
+                    if(response.status) {
+                        swal({
+                            type: 'success',
+                            title: 'Felicidades',
+                            text: 'Desbloqueaste la ayuda, usalo con sabiduria.'
+                        });
+                        $('#hintModal').modal('show');
+                        $('#hintText').html(response.hint);
+                    } else {
+                        swal({
+                            type: 'error',
+                            title: 'Error',
+                            text: response.msgError
+                        })
+                    }
+                },
+                error: function (err) {
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: 'Error Desconocido'
+                    })
                 }
             });
             swal("Debil!", "Utilizaste la ayuda suerte!", "error");
-        } /* funcion de mostrar el mensaje de confirmacion */ ) /* funcion que abarca el mensaje y sus atributos */ ;
+        } /* funcion de mostrar el mensaje de confirmacion */) /* funcion que abarca el mensaje y sus atributos */;
     }
 
-    $('#btnFlag').click(function(e) {
+    $('#btnFlag').click(function (e) {
         e.preventDefault();
         $.ajax({
             url: "{{ route('challenge.flag')}}",
@@ -183,8 +232,22 @@
                 flag: $('#flag').val()
             },
             dataType: "JSON",
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
+                if (response.status) {
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        text: 'La bandera coincide!'
+                    })
+                    window.location.href = "{{route('team.teamChallenges')}}";
+                } else {
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: response.msgError
+                    });
+                }
             }
         });
 

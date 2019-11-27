@@ -90,6 +90,8 @@ class TeamChallengeController extends Controller
             $team_challenge->whithHint = true;
             $team_challenge->saveOrFail();
 
+            $resp["hint"] = $team_challenge->Challenge->hint;
+
             $totalDiscount = $team_challenge->Challenge->Level->hintDiscount * $team_challenge->Challenge->Level->score;
             $team->score = ($team->score - $totalDiscount) > 0 ? ($team->score - $totalDiscount) : 0;
             $team->saveOrFail();
