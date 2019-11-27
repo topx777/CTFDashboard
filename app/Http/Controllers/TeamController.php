@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TeamsPositions;
+use App\Challenge;
 use App\Team;
+use App\TeamChallenge;
 use App\Member;
 use App\Option;
 use Illuminate\Http\Request;
@@ -187,14 +190,13 @@ class TeamController extends Controller
      **/
     public function dashboard(Request $request)
     {
-        $id=auth()->user()->id;
-        $teamData = Team::select('id','name', 'score', 'phrase', 'avatar', 'couch')->where('idUser',$id)->first();
-        $membersTeam = Member::select('name','lastName','email','career','university')
-                        ->where('idTeam',$teamData->id)
-                        ->get();
-        $options= Option::select('rules','startTime','endTime')->first();
+        $id = auth()->user()->id;
+        $teamData = Team::select('id', 'name', 'score', 'phrase', 'avatar', 'couch')->where('idUser', $id)->first();
+        $membersTeam = Member::select('name', 'lastName', 'email', 'career', 'university')
+            ->where('idTeam', $teamData->id)
+            ->get();
+        $options = Option::select('rules', 'startTime', 'endTime')->first();
         return view('team.dashboard', compact('teamData', 'membersTeam', 'options'));
-
     }
 
     /**
@@ -210,6 +212,25 @@ class TeamController extends Controller
     }
     public function showChallenge(Request $request)
     {
-        return view('team.challenge');
+        $data = Challenge::all();
+        return response()->json(['challenges' => $data]);
+    }
+
+    /**
+     * data scoreboard
+     *
+     * Datos json para tabla
+     *
+     * @return JSON
+     **/
+    public function dataScoreBoard()
+    {
+        $teams = Team::orderBy('score', 'desc')->get();
+        $teamObj = [];
+        foreach ($teams as $key => $team) {
+            $teamObj[$key] = $team;
+            $teamObj[$key]->flag = TeamChallenge::where('finish', true)->where('idTeam', $team->id)->count();
+        }
+        return response()->json(['teamsScoreBoard' => $teamObj]);
     }
 }

@@ -21,6 +21,12 @@ Route::get('/denied', function () {
     return view('error.permissionError');
 })->name('permissionError');
 
+
+
+Route::get('/test', function () {
+    return view('admin.users.list');
+});
+
 // Routes Admin
 Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
@@ -81,11 +87,27 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/files/list', 'FileController@list')->name('files.list');
     Route::get('/files/getAll', 'FileController@getAll')->name('files.getAll');
     Route::post('/files/upload', 'FileController@upload')->name('files.upload');
+    Route::post('/files/delete', 'FileController@delete')->name('files.delete');
 });
 
 // Routes Team que no son administradores
 Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/dashboard', 'TeamController@dashboard')->name('team.dashboard');
     Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
-    Route::get('/reto', 'TeamController@showChallenge')->name('teams.showChallenge');
+    /* esto es para retornar el json de los datos de challenge */
+    Route::get('/retoJson', 'TeamController@showChallenge')->name('team.tshowChallenge');
+    Route::get('/scoreboard', function () {
+        return view('team.scoreBoard');
+    })->name('team.tablescore');
+    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');
+    /* esto es para ver la vista de retos */
+    Route::get('/reto', function () {
+        return view('team.challenge');
+    })->name('team.showChallenges');
+});
+
+//Routes Public 
+Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScore'); //Datos score json table positions
+Route::get('scoreboard', function () {
+    return view('public.scoreBoard');
 });
