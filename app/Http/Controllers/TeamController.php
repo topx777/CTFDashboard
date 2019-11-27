@@ -65,21 +65,23 @@ class TeamController extends Controller
             if (!$request->ajax()) {
                 throw new \Exception("Error de peticion");
             }
-
-            $id = $request->id;
-            $response["status"] = true;
-            $team = Team::find($id);
-
-
-            if (is_null($team)) {
-                throw new \Exception("Error, no se pudo encontrar el team");
-            }
-
-            $response["teamData"] = $team;
-            $idUser = $team->idUser;
-            $user = User::find($idUser);
-            $response["userData"] = $user;
-        } catch (\Throwable $ex) {
+                $id = $request->id;
+                $team = Team::find($id);
+    
+                if (is_null($team)) {                                 
+                    throw new \Exception("Error, no se pudo encontrar el team");
+                }
+    
+                $response["teamData"]=$team;
+                $idUser= $team->idUser;
+                $user = User::find($idUser);
+                $response["userData"]=$user;
+                
+                $members=[];
+                 $members= Member::where('idTeam', $id)->get();
+                $response["membersData"]= $members;
+        }
+        catch(\Throwable $ex){
             $response["status"] = false;
             $response["msgError"] = $ex->getMessage();
         } finally {
