@@ -49,4 +49,5 @@ class TeamsChallengesSeeder extends Seeder
         //     'time' => $hours
         // ]);
     }
+        /*SEMILLA DEL JUEGO */ 
 }
