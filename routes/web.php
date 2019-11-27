@@ -82,7 +82,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::post('/challenges/update', 'ChallengeController@update')->name('challenges.update');
     Route::post('/challenges/delete', 'ChallengeController@delete')->name('challenges.delete');
     Route::get('/challenges/filemanager', 'FilesController@upload')->name('challenges.upload');
-
     //Administrador de Archivos
     Route::get('/files/list', 'FileController@list')->name('files.list');
     Route::get('/files/getAll', 'FileController@getAll')->name('files.getAll');
@@ -95,15 +94,17 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::get('/dashboard', 'TeamController@dashboard')->name('team.dashboard');
     Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
     /* esto es para retornar el json de los datos de challenge */
-    Route::get('/retoJson', 'TeamController@showChallenge')->name('team.tshowChallenge');
+    Route::get('/retoJson', 'TeamController@getLevelChallenge')->name('team.getLevelChallenges');
     Route::get('/scoreboard', function () {
         return view('team.scoreBoard');
     })->name('team.tablescore');
     Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');
     /* esto es para ver la vista de retos */
-    Route::get('/reto', function () {
-        return view('team.challenge');
-    })->name('team.showChallenges');
+    Route::get('/challenge', 'ChallengeController@showTeamChallenge')->name('team.showChallenge');
+    /* ruta para editar si utiliza la ayuda */
+    Route::post('/help', 'TeamChallengeController@UpdateHint')->name('teamschallenge.update');
+    //ruta para enviar el flag
+    Route::post('/flag', 'ChallengeController@enterFlag')->name('challenge.flag');
 });
 
 //Routes Public 

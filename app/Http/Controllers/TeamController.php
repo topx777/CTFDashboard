@@ -210,7 +210,7 @@ class TeamController extends Controller
     {
         return view('team.challenges');
     }
-    public function showChallenge(Request $request)
+    public function getLevelChallenge(Request $request)
     {
         $data = Challenge::all();
         return response()->json(['challenges' => $data]);

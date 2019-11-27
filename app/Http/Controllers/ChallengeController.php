@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Challenge;
+use App\Level;
+use App\Team;
+use App\TeamChallenge;
 use DataTables;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ChallengeController extends Controller
 {
@@ -100,9 +105,7 @@ class ChallengeController extends Controller
      * @throws \Throwable
      **/
     public function update(Request $request)
-    {
-     
-    }
+    { }
 
     /**
      * Funcion para Eliminar el reto
@@ -134,5 +137,60 @@ class ChallengeController extends Controller
         } else {
             return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
         }
+    }
+
+    public function enterFlag(Request $request)
+    {
+        $resp["status"] = true;
+        try {
+            DB::beginTransaction();
+            $team_challenge = new TeamChallenge();
+            $flag = $request->flag;
+            $challenge = Challenge::where('id', $request->id_challenge)->first();
+
+            if (is_null($challenge)) {
+                throw new \Exception("No se encontro el reto");
+            }
+
+            if ($flag != $challenge->flag) {
+                throw new \Exception("La flag no corresponde");
+            }
+            $team = Team::where('idUser', auth()->user()->id)->first();
+
+            if (is_null($team)) {
+                throw new \Exception("Equipo no encontrado");
+            }
+
+            $team_challenge->idTeam = $team->id;/* agregar autentificacion */
+            $team_challenge->idChallenge = $challenge->id;
+            $team_challenge->time = Carbon::now();
+            $team_challenge->finish = true;
+
+
+            $countDiscountPoints = TeamChallenge::where('finish', true)->Where('idChallenge', $challenge->id)->count();
+            $team_challenge->score = ($challenge->Level->score - $countDiscountPoints) > 0 ? $challenge->Level->score - $countDiscountPoints : 0;
+
+            $team_challenge->saveOrFail();
+
+            $team = Team::findOrFail($team_challenge->idTeam);
+            $team->score = $team->score + $team_challenge->score;
+
+            $team->saveOrFail();
+
+            DB::commit();
+            //recuperar de la base de datos la bandera */
+        } catch (\Throwable $ex) {
+            DB::rollback();
+            $resp["status"] = false;
+            $resp["msgError"] = $ex->getMessage();
+        } finally {
+            return response()->json($resp);
+        }
+    }
+
+    public function showTeamChallenge($id)
+    {
+        $challenge = Challenge::find($id);
+        return view('team.challenge', compact('challenge'));
     }
 }
