@@ -56,39 +56,35 @@ class TeamController extends Controller
      *
      * @return view
      **/
-    public function get(Request $request )
+    public function get(Request $request)
     {
-        
+
         $response["status"] = true;
-        try{
+        try {
 
             if (!$request->ajax()) {
                 throw new \Exception("Error de peticion");
             }
-        
-                $id = $request->id;
-                $response["status"]=true;
-                $team = Team::find($id);
 
-    
-                if (is_null($team)) {                                 
-                    throw new \Exception("Error, no se pudo encontrar el team");
-                }
-    
-                $response["teamData"]=$team;
-                $idUser= $team->idUser;
-                $user = User::find($idUser);
-                $response["userData"]=$user;
-            
-        }
-        catch(\Throwable $ex){
+            $id = $request->id;
+            $response["status"] = true;
+            $team = Team::find($id);
+
+
+            if (is_null($team)) {
+                throw new \Exception("Error, no se pudo encontrar el team");
+            }
+
+            $response["teamData"] = $team;
+            $idUser = $team->idUser;
+            $user = User::find($idUser);
+            $response["userData"] = $user;
+        } catch (\Throwable $ex) {
             $response["status"] = false;
             $response["msgError"] = $ex->getMessage();
-        }
-        finally{
+        } finally {
             return response()->json($response);
         }
-       
     }
 
     /**
@@ -185,22 +181,20 @@ class TeamController extends Controller
             try {
                 $id = $request->id;
                 $team = Team::find($id);
-                    
-                 
-               
+
+
+
                 if (is_null($team)) {
                     throw new \Exception("No se encontro al equipo");
                 }
                 $team->delete();
-            }
-             catch (\Throwable $th) {
+            } catch (\Throwable $th) {
                 $resp["status"] = false;
                 $resp["msgError"] = "Error, no se puede borrar este campo debido a que comparte su llave con otras tablas.";
             } finally {
                 return response()->json($resp);
             }
-        }
-         else {
+        } else {
             return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
         }
     }
@@ -234,10 +228,15 @@ class TeamController extends Controller
     {
         return view('team.challenges');
     }
+
     public function getLevelChallenge(Request $request)
     {
-        $data = Challenge::all();
-        return response()->json(['challenges' => $data]);
+        $id = $request->id_challenge;
+        $challenge = Challenge::find($id);
+
+        $challengesLevel = Challenge::where('idLevel', $challenge->idLevel)->get();
+
+        return response()->json(['challenges' => $challengesLevel]);
     }
 
     /**

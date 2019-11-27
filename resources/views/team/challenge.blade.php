@@ -11,7 +11,9 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <div class="card-value float-right text-muted"><i class="fa fa-key"></i></div>
-                        <h3 class="mb-1">CRIPTOGRAFIA</h3>
+                        <h3 class="mb-1">{{ $challenge->Category->name }}</h3>
+                        <p class="lead">{{ $challenge->name }}</p>
+                        <input type="hidden" value="{{ $challenge->id }}" id="id_challenge">
                     </div>
                 </div>
             </div>
@@ -21,8 +23,7 @@
 <div class="card">
     <div class="body">
         <blockquote class="blockquote mb-0">
-            <p>El reto consiste en saber cuanto se enbolsillo el evo con el juancito pinto gobierno para los ninos con
-                el bomo jauncito pinto es para escuelas fiscales</p>
+            <p>{!! $challenge->description !!}}</p>
         </blockquote>
     </div>
 </div>
@@ -103,7 +104,10 @@
         $.ajax({
             type: "GET",
             url: "{{route('team.getLevelChallenges')}}",
-            
+            data: {
+                _token: "{{ csrf_token() }}",
+                id_challenge: $('#id_challenge').val()
+            },
             dataType: "JSON",
             success: function(data) {
                 if (data.challenges.length > 0) {

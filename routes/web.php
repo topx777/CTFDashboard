@@ -97,7 +97,7 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     })->name('team.tablescore');
     Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');
     /* esto es para ver la vista de retos */
-    Route::get('/challenge', 'ChallengeController@showTeamChallenge')->name('team.showChallenge');
+    Route::get('/challenge/{id}', 'ChallengeController@showTeamChallenge')->name('team.showChallenge');
     /* ruta para editar si utiliza la ayuda */
     Route::post('/help', 'TeamChallengeController@UpdateHint')->name('teamschallenge.update');
     //ruta para enviar el flag
