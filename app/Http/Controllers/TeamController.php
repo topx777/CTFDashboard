@@ -11,8 +11,6 @@ use App\User;
 use App\Option;
 use Illuminate\Http\Request;
 use DataTables;
-use Faker;
-use SebastianBergmann\Environment\Console;
 
 class TeamController extends Controller
 {
@@ -65,23 +63,22 @@ class TeamController extends Controller
             if (!$request->ajax()) {
                 throw new \Exception("Error de peticion");
             }
-                $id = $request->id;
-                $team = Team::find($id);
-    
-                if (is_null($team)) {                                 
-                    throw new \Exception("Error, no se pudo encontrar el team");
-                }
-    
-                $response["teamData"]=$team;
-                $idUser= $team->idUser;
-                $user = User::find($idUser);
-                $response["userData"]=$user;
-                
-                $members=[];
-                 $members= Member::where('idTeam', $id)->get();
-                $response["membersData"]= $members;
-        }
-        catch(\Throwable $ex){
+            $id = $request->id;
+            $team = Team::find($id);
+
+            if (is_null($team)) {
+                throw new \Exception("Error, no se pudo encontrar el team");
+            }
+
+            $response["teamData"] = $team;
+            $idUser = $team->idUser;
+            $user = User::find($idUser);
+            $response["userData"] = $user;
+
+            $members = [];
+            $members = Member::where('idTeam', $id)->get();
+            $response["membersData"] = $members;
+        } catch (\Throwable $ex) {
             $response["status"] = false;
             $response["msgError"] = $ex->getMessage();
         } finally {
@@ -231,12 +228,21 @@ class TeamController extends Controller
         return view('team.challenges');
     }
 
+
     public function getLevelChallenge(Request $request)
     {
         $id = $request->id_challenge;
         $challenge = Challenge::find($id);
 
-        $challengesLevel = Challenge::where('idLevel', $challenge->idLevel)->get();
+        $team = Team::where('idUser', auth()->user()->id)->first();
+
+        $challengesLevel[] = $challenge;
+        $challengesLevel[0]->Level = $challenge->Level;
+
+        $team_challenge = TeamChallenge::where('idTeam', $team->id)->where('idChallenge', $challenge->id)->first();
+
+        $challengesLevel[0]->TeamChallenge = $team_challenge;
+        // $challengesLevel = Challenge::where('idLevel', $challenge->idLevel)->get();
 
         return response()->json(['challenges' => $challengesLevel]);
     }

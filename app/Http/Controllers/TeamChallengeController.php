@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Events\TeamsPositions;
 use App\Level;
 use App\Challenge;
 use App\Category;
 use App\Team;
 use App\TeamChallenge;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class TeamChallengeController extends Controller
 {
@@ -18,7 +21,11 @@ class TeamChallengeController extends Controller
         $levels = Level::select('id', 'name', 'order')->orderBy('order', 'asc')->get();
         $lockeds = [];
         foreach ($levels as $key => $level) {
-            $level->challenges = Challenge::select('id', 'name', 'idCategory')->where('idLevel', $level->id)->get();
+            $level->challenges = DB::table('challenges')
+                ->leftjoin('teams_challenges', 'challenges.id', '=', 'teams_challenges.idChallenge')
+                ->select('challenges.id', 'challenges.name', 'challenges.idCategory', 'teams_challenges.finish')
+                ->where('challenges.idLevel', $level->id)
+                ->get();
 
             $teamid = Team::where('idUser', auth()->user()->id)->first()->id;
             $level->challengesTotal = Challenge::where('idLevel', $level->id)->count(); //retos totales de nivel
@@ -60,7 +67,7 @@ class TeamChallengeController extends Controller
         //     $level->lock;
 
         //     $level->challenges->map(function($challenge)
-        //     {   
+        //     {
         //         $challenge->category=Category::select('id','name')->where('id', $challenge->idCategory)->get();
         //     });
         // });
@@ -70,6 +77,15 @@ class TeamChallengeController extends Controller
     { }
 
 
+    /**
+     * Pedir ayuda
+     *
+     * Funcion para actulizar la pedida de ayuda de un reto
+     *
+     * @param Request $request Peticion
+     * @return JSON
+     * @throws Throwable
+     **/
     public function UpdateHint(Request $request)
     {
         $resp["status"] = true;
@@ -77,8 +93,8 @@ class TeamChallengeController extends Controller
             DB::beginTransaction();
             $team = Team::where('idUser', auth()->user()->id)->first();
 
-            if (is_null($team)) {
-                throw new \Exception("No se encontro el equipo");
+            if (is_null($team) || !$request->has('id_challenge')) {
+                throw new \Exception("No se encontro el equipo, ni el reto");
             }
 
             $score = $team->score;
@@ -86,7 +102,14 @@ class TeamChallengeController extends Controller
                 throw new \Exception("Usted no cuenta con suficientes puntos para obtener ayuda");
             }   /* te voy a romper las piernas mejor vas tener que cuerrer */
 
-            $team_challenge = TeamChallenge::where('idChallenge', $request->id_challenge)->first();
+            $team_challenge = TeamChallenge::where('idChallenge', $request->id_challenge)->where('idTeam', $team->id)->first();
+            if (is_null($team_challenge)) {
+                $team_challenge = new TeamChallenge();
+                $team_challenge->idChallenge = $request->id_challenge;
+                $team_challenge->idTeam = $team->id;
+                $team_challenge->score = 0;
+                $team_challenge->time = Carbon::now();
+            }
             $team_challenge->whithHint = true;
             $team_challenge->saveOrFail();
 
@@ -96,9 +119,43 @@ class TeamChallengeController extends Controller
             $team->score = ($team->score - $totalDiscount) > 0 ? ($team->score - $totalDiscount) : 0;
             $team->saveOrFail();
 
+            \event(new TeamsPositions());
+
             DB::commit();
         } catch (\Throwable $ex) {
             DB::rollback();
+            $resp["status"] = false;
+            $resp["msgError"] = $ex->getMessage();
+        } finally {
+            return response()->json($resp);
+        }
+    }
+
+
+    /**
+     * Obtener la ayuda
+     *
+     * Obtener la ayuda del reto
+     *
+     * @param Request $request Peticion
+     * @return JSON
+     * @throws Throwable
+     **/
+    public function getHint(Request $request)
+    {
+        $resp["status"] = true;
+        try {
+
+            if (!$request->has('id_challenge')) {
+                throw new \Exception("No se encontro el reto");
+            }
+
+            $challenge = Challenge::find($request->id_challenge);
+
+            if (is_null($challenge)) throw new \Exception("No se encontro la ayuda");
+
+            $resp["hint"] = $challenge->hint;
+        } catch (Throwable $ex) {
             $resp["status"] = false;
             $resp["msgError"] = $ex->getMessage();
         } finally {

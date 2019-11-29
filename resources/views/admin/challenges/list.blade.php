@@ -27,6 +27,8 @@
                             <th>Nombre</th>
                             <th>Descripcion</th>
                             <th>Pista</th>
+                            <th>Nivel</th>
+                            <th>Categoria</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -35,6 +37,8 @@
                             <th>Nombre</th>
                             <th>Descripcion</th>
                             <th>Pista</th>
+                            <th>Nivel</th>
+                            <th>Categoria</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -75,6 +79,8 @@
                 { data: 'name', name: 'name' },
                 { data: 'description', name: 'description' },
                 { data: 'hint', name: 'hint' },
+                { data: 'idLevel', name: 'idLevel' },
+                { data: 'idCategory', name: 'idCategory' },
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });
@@ -95,7 +101,7 @@
                 closeOnConfirm: false,
                 cancelButtonText: 'Cancelar'
             }, function () {
-                
+
                 button.prop('disabled', true);
 
                 $.ajax({
@@ -123,7 +129,7 @@
                         button.prop('disabled', false);
                     }
                 });
-                
+
             });
 
         });

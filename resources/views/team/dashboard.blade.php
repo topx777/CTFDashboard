@@ -23,7 +23,7 @@
                 <h5>{{$teamData->name}}</h5>
             </div>
             <div id="avatar" style="width:300px; height: 320px" class="bgimage rounded bg-white">
-                
+
             </div>
             <div>
                 <hr>
@@ -104,7 +104,8 @@
             <div class="card">
                 <div class="card-body">
                     <span>Puntos:</span>
-                    <H4>{{$teamData->score}}</H4>
+                    <h4>{{$teamData->score}}</h4>
+                    <small><b>Totales</b></small>
                 </div>
             </div>
         </div>
@@ -114,7 +115,7 @@
             <h5 class="text-info">Reglas CTF</h5>
             <hr>
             <p>
-                {{$options->rules}}
+                {!!$options->rules!!}
             </p>
         </div>
     </div>

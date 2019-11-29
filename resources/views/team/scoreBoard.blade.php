@@ -61,24 +61,26 @@
             let pos=1;
             $('#teamScore').html('');
             teams.forEach(team => {
-                $('#teamScore').append(` <tr>
-                                <td class="w60 text-center">
-                                   ${pos}
-                                </td>
-                                <td>
-                                    <span>${team.name}</span>
-                                </td>
-                                <td class="w40 px-5 text-center">
-                                    4
-                                </td>
-                                <td class="w40 px-5 text-center">
-                                    ${team.score}
-                                </td>
-                            </tr>`);
+                $('#teamScore').append(`
+                <tr ${team.id == "{{ App\Team::getTeamID(auth()->user()->id) }}" ? 'class="text-cyan"' : ''}>
+                    <td class="w60 text-center">
+                        ${pos}
+                    </td>
+                    <td>
+                        <span>${team.name}</span>
+                    </td>
+                    <td class="w40 px-5 text-center">
+                        ${team.flag}
+                    </td>
+                    <td class="w40 px-5 text-center">
+                        ${team.score}
+                    </td>
+                </tr>
+                `);
                 pos+=1;
             });
 
             }
-          }
+        }
     </script>
 @endsection

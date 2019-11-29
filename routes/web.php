@@ -86,8 +86,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::post('/files/delete', 'FileController@delete')->name('files.delete');
 
     //Estadisticas
-    Route::get('/stadisticTeam','StadisticController@teamScore')->name('team.stadisticTeam');
-    Route::get('/stadisticHint','StadisticController@teamDiscount')->name('team.stadisticHint');
+    Route::get('/stadisticTeam', 'StadisticController@teamScore')->name('team.stadisticTeam');
+    Route::get('/stadisticHint', 'StadisticController@teamDiscount')->name('team.stadisticHint');
 });
 
 // Routes Team que no son administradores
@@ -106,9 +106,11 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::post('/help', 'TeamChallengeController@UpdateHint')->name('teamschallenge.update');
     //ruta para enviar el flag
     Route::post('/flag', 'ChallengeController@enterFlag')->name('challenge.flag');
+
+    Route::get('/getHint', 'TeamChallengeController@getHint')->name('team.getHint');
 });
 
-//Routes Public 
+//Routes Public
 Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScore'); //Datos score json table positions
 Route::get('scoreboard', function () {
     return view('public.scoreBoard');

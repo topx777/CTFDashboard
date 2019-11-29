@@ -26,4 +26,9 @@ class Team extends Model
     {
         return $this->hasMany(TeamChallenge::class, 'idTeam', 'id');
     }
+
+    static function getTeamID($idUser)
+    {
+        return (Team::where('idUser', $idUser)->first())->id;
+    }
 }

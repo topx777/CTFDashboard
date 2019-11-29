@@ -1,18 +1,18 @@
-@extends('teamLayout.master') 
+@extends('teamLayout.master')
 
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet"
     href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
-<link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" /> 
-@endsection 
+<link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
+@endsection
 
 @section('content')
 
-<div id="hintModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+<div id="hintModal" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title h4" id="myLargeModalLabel">Pista</h5>
@@ -22,8 +22,11 @@
             </div>
             <div class="modal-body">
                 <div class="tab-pane vivify flipInX">
-                    <div id="hintText" class="pt-4 px-3">
-                        
+                    <div class="pt-4 px-3">
+                        <blockquote class="blockquote mb-0">
+                            <h3 class="text-cyan">AYUDA</h3>
+                            <p id="hintText"></p>
+                        </blockquote>
                     </div>
                 </div>
             </div>
@@ -31,79 +34,81 @@
     </div>
 </div>
 
-<div class="col-lg-12">
-    <div class="card">
-        <div class="body">
-            <div id="slider2" class="carousel vert slide" data-ride="carousel" data-interval="1700">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="card-value float-right text-muted"><i class="fa fa-key"></i></div>
-                        <h3 class="mb-1">{{ $challenge->Category->name }}</h3>
-                        <p class="lead">{{ $challenge->name }}</p>
-                        <input type="hidden" value="{{ $challenge->id }}" id="id_challenge">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="card">
-    <div class="body">
-        <blockquote class="blockquote mb-0">
-            <p>{!! $challenge->description !!}</p>
-        </blockquote>
-    </div>
-</div>
-<div class="col-lg-12">
-    <form id="updateTeamForm" action="{{ route('teamschallenge.update') }}" method="POST">
-        <div class="table-responsive">
-            <table class="table table-hover table-custom spacing8">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th>Ayuda</th>
-                        <th>flag</th>
-                    </tr>
-                </thead>
-                <tbody id="tableChallenge">
-                </tbody>
-            </table>
-        </div>
-    </form>
-</div>
 <!-- larg modal -->
-<div id="detailModalFlag" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+<div id="detailModalFlag" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title h4" id="myLargeModalLabel">Ingrese el flag</h5>
-
             </div>
-
             <div class="modal-body">
                 <div class="tab-pane vivify flipInX" id="tabUserEdit">
                     <div class="pt-4 px-3">
-                        <form action="">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="form-group">
-                                        <input name="tflag" id="flag" type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <button id="btnFlag" type="button" class="btn btn-primary">OK</button>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input id="flag" type="text" class="form-control">
                                 </div>
                             </div>
-                        </form>
+                            <div class="col-4">
+                                <button id="btnFlag" type="button" class="btn btn-primary">OK</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card mt-5">
+            <div class="body">
+                <div id="slider2" class="carousel vert slide">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="card-value float-right text-muted"><i class="fa fa-key"></i></div>
+                            <h3 class="mb-1">{{ $challenge->Category->name }}</h3>
+                            <p class="lead">{{ $challenge->name }}</p>
+                            <input type="hidden" value="{{ $challenge->id }}" id="id_challenge">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="body">
+                <blockquote class="blockquote mb-0">
+                    <h4 class="text-cyan">DESCRIPCION</h4>
+                    <p>{!! $challenge->description !!}</p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <form id="updateTeamForm" action="{{ route('teamschallenge.update') }}" method="POST">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom spacing8">
+                    <thead>
+                        <tr>
+                            <th>NIVEL</th>
+                            <th>RETO</th>
+                            <th>RETO PUNTOS</th>
+                            <th>PUNTOS CONSEGUIDOS</th>
+                            <th class="text-center">PEDIR AYUDA</th>
+                            <th class="text-center">ENVIAR FLAG</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableChallenge">
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection @section('script')
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
@@ -119,8 +124,8 @@
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 
 <script>
-    var id_challenge = '';
-    //Codigo AJX CONEXION DE PARTE DEL SERVIDOR    
+    var id_challenge = null;
+    //Codigo AJX CONEXION DE PARTE DEL SERVIDOR
     $(document).ready(function () {
         $.ajaxSetup({
             headers: {
@@ -128,6 +133,11 @@
             }
         });
 
+        CargarReto();
+        //esto es el ajax
+    });
+
+    function CargarReto() {
         $.ajax({
             type: "GET",
             url: "{{route('team.getLevelChallenges')}}",
@@ -145,36 +155,86 @@
                             $('#detailModalFlag').modal('show');
                         });
                         $('#tableChallenge').append(` <tr>
-                        <td class="w60">
-                            ${challenge.id} 
+                        <td>
+                            ${challenge.Level.name}
                         </td>
                         <td>
                             ${challenge.name}
                         </td>
                         <td>
-                            ${challenge.description}
+                            ${challenge.Level.score}
                         </td>
                         <td>
-                            <button id="${challenge.id}" type="button" onclick="update(this.id)" class="btn btn-danger help">
-                                <i class="fa fa-ambulance fa-2x"></i>
+                            ${challenge.TeamChallenge !== null ? challenge.TeamChallenge.score : 0}
+                        </td>
+                        <td class="text-center">
+                            <button id="hint_${challenge.id}" ${challenge.hint === null ? 'disabled' : ''} type="button" data-score="${challenge.Level.score}" data-hint="${challenge.Level.hintDiscount}" data-id="${challenge.id}" class="btn ${challenge.TeamChallenge !== null ? (challenge.TeamChallenge.whithHint == 1 ? 'btn-info help-enabled' : 'btn-danger help-disabled') : 'btn-danger help-disabled'}">
+                                <i class="fa ${challenge.hint === null ? 'fa-ban' : (challenge.TeamChallenge !== null ? (challenge.TeamChallenge.whithHint == 1 ? 'fa-question' : 'fa-ambulance') : 'fa-ambulance')} fa-2x"></i>
                             </button>
                         </td>
-                        <td>
-                            <button id="${challenge.id}" onclick="setIdChallenge(this.id)" type="button" class="btn btn-primary mflag">
-                                <i class="fa fa-flag"></i>    
-                                -Enviar  
+                        <td class="text-center">
+                            <button id="flag_${challenge.id}" data-id="${challenge.id}" type="button" class="btn ${challenge.TeamChallenge !== null ? (challenge.TeamChallenge.finish == 1 ? 'btn-success' : 'btn-primary mFlag') : 'btn-primary mFlag'}">
+                                <i class="fa ${challenge.TeamChallenge !== null ? (challenge.TeamChallenge.finish == 1 ? 'fa-check' : 'fa-flag') : 'fa-flag'} fa-2x"></i>
                             </button>
                         </td>
                     </tr>`);
                     });
                 }
             }
-        }); //esto es el ajax
-    }); //final del document ready
-    function update(id_challenge) {
+        });
+    }
+
+    $(document).on('click', '.help-enabled', function(e) {
+        let button = $(this);
+        let id_challenge = button.data('id');
+
+        $.ajax({
+            type: "GET",
+            url: "{{ route('team.getHint') }}",
+            data: {
+                _token: '{{csrf_token()}}',
+                id_challenge: id_challenge
+            },
+            dataType: "JSON",
+            cache: false,
+            success: function (response) {
+                if(response.status) {
+                    $('#hintText').html(response.hint);
+                    $('#hintModal').modal('show');
+                } else {
+                    swal({
+                        type: 'error',
+                        title: 'Error',
+                        text: response.msgError
+                    })
+                }
+            },
+            error: function(err) {
+                console.log(err);
+                swal({
+                    type: 'error',
+                    title: 'Error',
+                    text: 'Error Desconocido'
+                })
+            }
+        });
+    });
+
+    //final del document ready
+    $(document).on('click', '.help-disabled', function (e) {
+
+        let button = $(this);
+        let id_challenge = button.data('id');
+
+        let score = button.data('score');
+        let hintDiscount = button.data('hint');
+
+        let scoreDiscount = parseFloat(score) * parseFloat(hintDiscount);
+        console.log(score, hintDiscount, scoreDiscount);
+
         swal({
-            title: "Esta seguro de usar tu ayuda",
-            text: "Solo se puede usar una ayuda por reto",
+            title: "¿Esta seguro?",
+            text: "Al usar la ayuda, se te descontara " + scoreDiscount + " puntos a tu puntuación, logres o no el reto.",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#dc3545",
@@ -199,8 +259,9 @@
                             title: 'Felicidades',
                             text: 'Desbloqueaste la ayuda, usalo con sabiduria.'
                         });
-                        $('#hintModal').modal('show');
                         $('#hintText').html(response.hint);
+                        $('#hintModal').modal('show');
+                        CargarReto();
                     } else {
                         swal({
                             type: 'error',
@@ -210,6 +271,7 @@
                     }
                 },
                 error: function (err) {
+                    console.log(err);
                     swal({
                         type: 'error',
                         title: 'Error',
@@ -217,19 +279,59 @@
                     })
                 }
             });
-            swal("Debil!", "Utilizaste la ayuda suerte!", "error");
         } /* funcion de mostrar el mensaje de confirmacion */) /* funcion que abarca el mensaje y sus atributos */;
-    }
+    });
 
-    $('#btnFlag').click(function (e) {
+    $(document).on('click', '.mFlag', function() {
+        let button = $(this);
+        let challenge = button.data('id');
+
+        id_challenge = challenge;
+
+        let modal = $('#detailModalFlag');
+
+        if(id_challenge === null || id_challenge === undefined) {
+            swal({
+                type: "error",
+                title: "Error",
+                text: "No se definio correctamente la bandera."
+            })
+            return;
+        }
+
+        modal.modal('show');
+    });
+
+    $(document).on('click','#btnFlag', function (e) {
         e.preventDefault();
+
+        if(id_challenge === null || id_challenge === undefined) {
+            swal({
+                type: "error",
+                title: "Error",
+                text: "No se definio correctamente la bandera."
+            })
+            return;
+        }
+
+        let flag = $('#flag').val();
+
+        if($.trim(flag) == "") {
+            swal({
+                type: "error",
+                title: "Error",
+                text: "La bandera es necesaria."
+            })
+            return;
+        }
+
         $.ajax({
             url: "{{ route('challenge.flag')}}",
             method: "POST",
             data: {
                 _token: '{{csrf_token()}}',
                 id_challenge: id_challenge,
-                flag: $('#flag').val()
+                flag: flag
             },
             dataType: "JSON",
             success: function (data) {
@@ -240,7 +342,7 @@
                         title: 'Correcto',
                         text: 'La bandera coincide!'
                     });
-                    window.location.href = "{{route('team.teamChallenges')}}";
+                    window.location.href = "{{route('team.challenges')}}";
                 } else {
                     swal({
                         type: 'error',
@@ -253,8 +355,12 @@
 
     });
 
-    function setIdChallenge(id) {
-        id_challenge = id;
-    }
+    $(document).on('hide.bs.modal', '#detailModalFlag', function() {
+        $('#flag').val('');
+    });
+
+    $(document).on('hide.bs.modal', '#hintModal', function() {
+        $('#hintText').html('');
+    });
 </script>
 @endsection

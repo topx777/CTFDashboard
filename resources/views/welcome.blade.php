@@ -120,22 +120,22 @@
     <span class="green"></span>
     <span class="orange"></span>
 </div>
-    
-<div class="auth-main particles_js">            
-                    <div class="content">
-                        <h1 class="text m-b-md title">Capture The Flag</h1>
-                        <h4 class="subtitle">By: Breaking Code</h4>
-                        @if (Route::has('login'))
-                            <div class="links">         
-                                <a class="btn btn-outline-primary text" href="{{ route('login') }}">Login</a>
-                            </div>
-                        @endif
-                    </div>
+
+<div class="auth-main particles_js">
+    <div class="content">
+        <h1 class="text m-b-md title">Capture The Flag</h1>
+        <h4 class="subtitle">By: Breaking Code</h4>
+        @if (Route::has('login'))
+            <div class="links">
+                <a class="btn btn-outline-primary text" href="{{ route('login') }}">Login</a>
+            </div>
+        @endif
+    </div>
     <div id="particles-js"></div>
 </div>
 <!-- END WRAPPER -->
-    
-<script src="{{asset('bundles/libscripts.bundle.js')}}"></script>    
+
+<script src="{{asset('bundles/libscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
 <script src="{{asset('js/login.js')}}"></script>

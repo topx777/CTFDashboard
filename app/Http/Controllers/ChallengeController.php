@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Events\TeamsPositions;
 use App\Challenge;
 use App\Level;
 use App\Team;
@@ -59,6 +60,12 @@ class ChallengeController extends Controller
                 ->editColumn('description', function ($row) {
                     $desc = '<p>' . $row->description . '</p>';
                     return $desc;
+                })
+                ->editColumn('idLevel', function ($row) {
+                    return $row->Level->name;
+                })
+                ->editColumn('idCategory', function ($row) {
+                    return $row->Category->name;
                 })
                 ->rawColumns(['action', 'description'])
                 ->make(true);
@@ -128,7 +135,7 @@ class ChallengeController extends Controller
     /**
      * Guardar un Reto
      *
-     * Funcion para 
+     * Funcion para
      *
      * @param Type $var Description
      * @return type
@@ -299,9 +306,24 @@ class ChallengeController extends Controller
         $resp["status"] = true;
         try {
             DB::beginTransaction();
-            $team_challenge = new TeamChallenge();
+
+            $id_challenge = $request->has('id_challenge') ? $request->id_challenge : null;
+            $team = Team::where('idUser', auth()->user()->id)->first();
+
+            $id_team = !is_null($team) ? $team->id : null;
+
+            if (is_null($id_challenge) || is_null($id_team)) throw new \Exception("No se encontro el equipo, intentar nuevamente");
+
+            $team_challenge = TeamChallenge::where('idChallenge', $id_challenge)->where('idTeam', $id_team)->first();
+
+            if (is_null($team_challenge)) {
+                $team_challenge = new TeamChallenge();
+                $team_challenge->idTeam = $id_team;
+                $team_challenge->idChallenge = $id_challenge;
+            }
+
             $flag = $request->flag;
-            $challenge = Challenge::where('id', $request->id_challenge)->first();
+            $challenge = Challenge::where('id', $id_challenge)->first();
 
             if (is_null($challenge)) {
                 throw new \Exception("No se encontro el reto");
@@ -310,17 +332,9 @@ class ChallengeController extends Controller
             if ($flag != $challenge->flag) {
                 throw new \Exception("La flag no corresponde");
             }
-            $team = Team::where('idUser', auth()->user()->id)->first();
 
-            if (is_null($team)) {
-                throw new \Exception("Equipo no encontrado");
-            }
-
-            $team_challenge->idTeam = $team->id;/* agregar autentificacion */
-            $team_challenge->idChallenge = $challenge->id;
             $team_challenge->time = Carbon::now();
             $team_challenge->finish = true;
-
 
             $countDiscountPoints = TeamChallenge::where('finish', true)->Where('idChallenge', $challenge->id)->count();
             $team_challenge->score = ($challenge->Level->score - $countDiscountPoints) > 0 ? $challenge->Level->score - $countDiscountPoints : 0;
@@ -331,6 +345,8 @@ class ChallengeController extends Controller
             $team->score = $team->score + $team_challenge->score;
 
             $team->saveOrFail();
+
+            \event(new TeamsPositions());
 
             DB::commit();
             //recuperar de la base de datos la bandera */
