@@ -14,3 +14,5 @@ yarn-error.log
 ._.DS_Store
 **/.DS_Store
 **/._.DS_Store
+public/error_log
+public/acces_log
