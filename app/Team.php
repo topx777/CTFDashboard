@@ -27,6 +27,13 @@ class Team extends Model
         return $this->hasMany(TeamChallenge::class, 'idTeam', 'id');
     }
 
+
+    public function Competition()
+    {
+        return $this->belongsTo(Competition::class, 'idCompetition', 'id');
+    }
+
+
     static function getTeamID($idUser)
     {
         return (Team::where('idUser', $idUser)->first())->id;

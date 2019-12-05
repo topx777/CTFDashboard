@@ -41,6 +41,11 @@ class User extends Authenticatable
 
     public function Team()
     {
-        $this->hasOne(Team::class, 'idUser', 'id');
+        return $this->hasOne(Team::class, 'idUser', 'id');
+    }
+
+    public function Judge()
+    {
+        return $this->hasOne(Judge::class, 'idUser', 'id');
     }
 }
