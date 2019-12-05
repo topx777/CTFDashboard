@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOptionsTable extends Migration
+class CreateCompetitionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,19 @@ class CreateOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('competitions', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name', 50);
             $table->boolean('state')->default(false);
             $table->text('rules');
             $table->dateTime('startTime');
             $table->dateTime('endTime');
+            $table->bigInteger('idJudge')->unsigned();
+            $table->tinyInteger('dificulty');
+            $table->tinyInteger('unlockType');
+            $table->tinyInteger('gameMode');
             $table->timestamps();
+            $table->foreign('idJudge')->references('id')->on('judges');
         });
     }
 
@@ -30,6 +36,6 @@ class CreateOptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('competitions');
     }
 }

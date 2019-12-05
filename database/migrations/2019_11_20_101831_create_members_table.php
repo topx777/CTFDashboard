@@ -18,7 +18,7 @@ class CreateMembersTable extends Migration
             $table->biginteger('idTeam')->unsigned();
             $table->string('name', 40);
             $table->string('lastname', 55);
-            $table->string('email', 55)->unique();
+            $table->string('email', 55);
             $table->string('career', 50)->nullable();
             $table->string('university', 40)->nullable();
             $table->foreign('idTeam')->references('id')->on('teams');

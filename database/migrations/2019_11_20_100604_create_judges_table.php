@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChallengesTable extends Migration
+class CreateJudgesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,13 @@ class CreateChallengesTable extends Migration
      */
     public function up()
     {
-        Schema::create('challenges', function (Blueprint $table) {
+        Schema::create('judges', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('idCategory')->unsigned();
+            $table->bigInteger('idUser')->unsigned();
             $table->string('name', 40);
-            $table->text('description')->nullable();
-            $table->text('hint')->nullable();
-            $table->text('flag');
-            $table->string('dificulty');
+            $table->string('lastname', 55);
             $table->timestamps();
-            $table->foreign('idCategory')->references('id')->on('categories');
+            $table->foreign('idUser')->references('id')->on('users');
         });
     }
 
@@ -33,6 +30,6 @@ class CreateChallengesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('challenges');
+        Schema::dropIfExists('judges');
     }
 }

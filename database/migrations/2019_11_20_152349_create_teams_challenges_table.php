@@ -16,13 +16,13 @@ class CreateTeamsChallengesTable extends Migration
         Schema::create('teams_challenges', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('idTeam')->unsigned();
-            $table->bigInteger('idChallenge')->unsigned();
+            $table->bigInteger('idCompetitionChallenge')->unsigned();
             $table->integer('score');
             $table->dateTime('time')->nullable();
             $table->boolean('whithHint')->default(false);
             $table->boolean('finish')->default(false);
             $table->foreign('idTeam')->references('id')->on('teams');
-            $table->foreign('idChallenge')->references('id')->on('challenges');
+            $table->foreign('idCompetitionChallenge')->references('id')->on('competition_challenges');
             $table->timestamps();
         });
     }
