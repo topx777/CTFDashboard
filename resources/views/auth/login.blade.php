@@ -77,7 +77,7 @@
                     <button type="submit" class="btn btn-secondary btn-round btn-block">INICIAR</button>
                     @if (isset($reference_comp) && !is_null($reference_comp))
                     <div class="bottom">
-                    <span class="helper-text m-b-10" style="font-size: 18px;"><i class="fa fa-code"></i> <a href="#">Registrar mi equipo</a></span>
+                    <span class="helper-text m-b-10" style="font-size: 18px;"><i class="fa fa-code"></i> <a href="#">Registrar mi Equipo</a></span>
                     </div>
                     @endif
                 </form>

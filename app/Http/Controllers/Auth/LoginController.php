@@ -91,10 +91,15 @@ class LoginController extends Controller
                 if ($this->guard()->validate($this->credentials($request))) {
                     if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                         $response["auth"] = true;
-                        if (auth()->user()->admin == 1) {
+                        if (auth()->user()->role == 0) {
                             $this->redirectTo = '/admin/home';
-                        } else {
+                        } else if (auth()->user()->role == 1) {
+                            $this->redirectTo = '/judge/home';
+                        } else if (auth()->user()->role == 2) {
                             $this->redirectTo = '/team/dashboard';
+                        } else {
+                            auth()->logout();
+                            $this->redirectTo = '/';
                         }
                         $response['intended'] = $this->redirectPath();
                     } else {

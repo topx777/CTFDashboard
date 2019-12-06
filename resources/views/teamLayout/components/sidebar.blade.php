@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="navbar-brand">
-                    <a href="index.html"><img src="{{asset('images/icon.svg')}}" alt="Oculux Logo"
+                    <a href="#"><img src="{{asset('images/icon.svg')}}" alt="Oculux Logo"
                             class="img-fluid logo"><span>CTF-UPDS</span></a>
                     <button type="button" class="btn-toggle-offcanvas btn btn-sm float-right"><i
                             class="lnr lnr-menu icon-close"></i></button>
