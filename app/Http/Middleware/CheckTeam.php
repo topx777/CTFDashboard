@@ -15,10 +15,14 @@ class CheckTeam
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->admin == 0) {
+        if (auth()->user()->role == 2) {
             return $next($request);
         } else {
-            return redirect()->route('permissionError');
+            if (!$request->ajax()) {
+                return redirect()->route('permissionError');
+            } else {
+                return response()->json(["status" => false, "msgError" => "Usted no tiene permiso!"]);
+            }
         }
     }
 }

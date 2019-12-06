@@ -51,6 +51,11 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\Authenticate::class,
             \App\Http\Middleware\CheckTeam::class,
         ],
+
+        'judge' => [
+            \App\Http\Middleware\Authenticate::class,
+            \App\Http\Middleware\CheckJudge::class,
+        ],
     ];
 
     /**

@@ -47,7 +47,13 @@
     <div class="auth_div vivify popIn">
         <div class="card">
             <div class="body">
-                <h4>LOGIN CTF</h4>
+                @if (isset($reference_comp) && !is_null($reference_comp))
+                <h4>{{ $reference_comp->name }}</h4>
+                <p>CHALLENGE</p>
+                @else
+                <h4>LOGIN CTF UPDS</h4>
+                @endif
+
                 <p class="lead"><small>Bienvenido</small></p>
                 <p>Ingrese sus credenciales</p>
                 <div id="JSONresp" class="alert alert-danger alert-dismissible fade" style="display: none;" role="alert">
@@ -69,9 +75,11 @@
                         </label>
                     </div>
                     <button type="submit" class="btn btn-secondary btn-round btn-block">INICIAR</button>
-                    {{-- <div class="bottom">
-                        <span class="helper-text m-b-10"><i class="fa fa-lock"></i> <a href="#">¿Olvidaste tu contraseña?</a></span>
-                    </div> --}}
+                    @if (isset($reference_comp) && !is_null($reference_comp))
+                    <div class="bottom">
+                    <span class="helper-text m-b-10" style="font-size: 18px;"><i class="fa fa-code"></i> <a href="#">Registrar mi equipo</a></span>
+                    </div>
+                    @endif
                 </form>
             </div>
         </div>

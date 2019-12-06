@@ -22,8 +22,10 @@ Route::get('/denied', function () {
 })->name('permissionError');
 
 
+Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () { });
+
 // Routes Admin
-Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
+Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
 
     Route::get('/home', 'HomeController@index')->name('admin.home');
 
