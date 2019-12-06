@@ -21,9 +21,9 @@ class CreateCompetitionsTable extends Migration
             $table->dateTime('startTime');
             $table->dateTime('endTime');
             $table->bigInteger('idJudge')->unsigned();
-            $table->tinyInteger('dificulty');
-            $table->tinyInteger('unlockType');
-            $table->tinyInteger('gameMode');
+            $table->tinyInteger('dificulty'); // 0: facil (25) ; 1: medio (50), 2: dificil 75; 3:extremo 100
+            $table->tinyInteger('unlockType'); // 0: general ; 1: por nivel
+            $table->tinyInteger('gameMode'); // 0: presencial ; 1: remoto
             $table->timestamps();
             $table->foreign('idJudge')->references('id')->on('judges');
         });

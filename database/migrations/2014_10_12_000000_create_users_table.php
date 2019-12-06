@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->tinyInteger('role')->default(1);
+            $table->tinyInteger('role')->default(1); // 0: Administrador 1: Juez 2: Equipo
         });
     }
 
