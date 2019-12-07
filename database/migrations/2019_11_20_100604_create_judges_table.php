@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOptionsTable extends Migration
+class CreateJudgesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('judges', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('state')->default(false);
-            $table->text('rules');
-            $table->dateTime('startTime');
-            $table->dateTime('endTime');
+            $table->bigInteger('idUser')->unsigned();
+            $table->string('name', 40);
+            $table->string('lastname', 55);
             $table->timestamps();
+            $table->foreign('idUser')->references('id')->on('users');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateOptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('judges');
     }
 }

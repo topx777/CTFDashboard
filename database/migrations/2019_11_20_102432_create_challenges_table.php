@@ -15,14 +15,13 @@ class CreateChallengesTable extends Migration
     {
         Schema::create('challenges', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('idLevel')->unsigned();
             $table->bigInteger('idCategory')->unsigned();
             $table->string('name', 40);
             $table->text('description')->nullable();
             $table->text('hint')->nullable();
             $table->text('flag');
+            $table->string('dificulty');
             $table->timestamps();
-            $table->foreign('idLevel')->references('id')->on('levels');
             $table->foreign('idCategory')->references('id')->on('categories');
         });
     }

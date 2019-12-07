@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Competition;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request as IlluminateRequest;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Request;
 
 class LoginController extends Controller
 {
@@ -45,6 +45,27 @@ class LoginController extends Controller
         return 'username';
     }
 
+
+    /**
+     * Mostrar Login Form
+     *
+     * Form de Login
+     *
+     * @param Request $request Peticion
+     * @return view
+     **/
+    public function showLoginForm(Request $request)
+    {
+        $reference_comp = null;
+        if ($request->has('ref')) {
+            $reference_comp = decrypt($request->ref);
+            $reference_comp = Competition::find($reference_comp);
+        }
+
+        return view('auth.login', compact('reference_comp'));
+    }
+
+
     /**
      * Function Logueo
      *
@@ -70,10 +91,15 @@ class LoginController extends Controller
                 if ($this->guard()->validate($this->credentials($request))) {
                     if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
                         $response["auth"] = true;
-                        if (auth()->user()->admin == 1) {
+                        if (auth()->user()->role == 0) {
                             $this->redirectTo = '/admin/home';
-                        } else {
+                        } else if (auth()->user()->role == 1) {
+                            $this->redirectTo = '/judge/home';
+                        } else if (auth()->user()->role == 2) {
                             $this->redirectTo = '/team/dashboard';
+                        } else {
+                            auth()->logout();
+                            $this->redirectTo = '/';
                         }
                         $response['intended'] = $this->redirectPath();
                     } else {

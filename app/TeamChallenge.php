@@ -16,8 +16,8 @@ class TeamChallenge extends Model
         return $this->belongsTo(Team::class, 'idTeam', 'id');
     }
 
-    public function Challenge()
+    public function CompetitionChallenge()
     {
-        return $this->belongsTo(Challenge::class, 'idChallenge', 'id');
+        return $this->belongsTo(CompetitionChallenge::class, 'idCompetitionChallenge', 'id');
     }
 }

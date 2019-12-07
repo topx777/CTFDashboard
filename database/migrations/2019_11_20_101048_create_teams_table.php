@@ -15,15 +15,17 @@ class CreateTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->biginteger('idUser')->unsigned();
+            $table->bigInteger('idUser')->unsigned();
             $table->string('name', 55);
             $table->integer('score')->default(0);
             $table->text('phrase')->nulleable();
             $table->string('avatar', 255)->nullable();
             $table->string('couch', 55)->nullable();
             $table->string('teamPassword')->nullable();
+            $table->bigInteger('idCompetition')->unsigned();
             $table->timestamps();
             $table->foreign('idUser')->references('id')->on('users');
+            $table->foreign('idCompetition')->references('id')->on('competitions');
         });
     }
 

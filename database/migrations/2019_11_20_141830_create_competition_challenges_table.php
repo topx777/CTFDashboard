@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLevelsTable extends Migration
+class CreateCompetitionChallengesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateLevelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('levels', function (Blueprint $table) {
+        Schema::create('competition_challenges', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 25);
-            $table->smallInteger('score');
-            $table->decimal('hintDiscount', 3, 2);
-            $table->smallInteger('order');
             $table->bigInteger('idCompetition')->unsigned();
+            $table->bigInteger('idChallenge')->unsigned();
+            $table->bigInteger('idLevel')->unsigned();
             $table->timestamps();
             $table->foreign('idCompetition')->references('id')->on('competitions');
+            $table->foreign('idChallenge')->references('id')->on('challenges');
+            $table->foreign('idLevel')->references('id')->on('levels');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateLevelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('levels');
+        Schema::dropIfExists('competition_challenges');
     }
 }

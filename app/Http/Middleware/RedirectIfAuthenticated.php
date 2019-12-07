@@ -18,10 +18,15 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            if (auth()->user()->admin == 1) {
+            if (auth()->user()->role == 0) {
                 return redirect('/admin/home');
-            } else {
+            } else if (auth()->user()->role == 1) {
+                return redirect('/judge/home');
+            } else if (auth()->user()->role == 2) {
                 return redirect('/team/dashboard');
+            } else {
+                auth()->logout();
+                return redirect('/denied');
             }
         }
 

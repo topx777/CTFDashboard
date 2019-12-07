@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\User; //la clase de donde esta el faker
 
 class UsersSeeder extends Seeder
@@ -16,61 +18,21 @@ class UsersSeeder extends Seeder
         //
         DB::table('users')->insert([
             'id' => 1,
-            'username' => 'Marcelo',
-            'email' => 'marcelo@hotmail.com',
+            'username' => 'Administrador',
+            'email' => 'topx777@gmail.com',
             'email_verified_at' => $now,
-            'password' => Hash::make('Marcelo123'),
-            'admin' => true
+            'password' => Hash::make('Admin123'),
+            'role' => 0
         ]);
         DB::table('users')->insert([
             'id' => 2,
             'username' => 'Abel',
-            'email' => 'abel@hotmail.com',
+            'email' => 'abelopezpaniagua@gmail.com',
             'email_verified_at' => $now,
             'password' => Hash::make('Abel123'),
-            'admin' => true
-        ]);
-        DB::table('users')->insert([
-            'id' => 3,
-            'username' => 'Pablo',
-            'email' => 'pablo@hotmail.com',
-            'email_verified_at' => $now,
-            'password' => Hash::make('Pablo123'),
-            'admin' => true
-        ]);
-        DB::table('users')->insert([
-            'id' => 4,
-            'username' => 'Christopher',
-            'email' => 'christopher@hotmail.com',
-            'email_verified_at' => $now,
-            'password' => Hash::make('Christopher123'),
-            'admin' => true
-        ]);
-        DB::table('users')->insert([
-            'id' => 5,
-            'username' => 'Rodrigo',
-            'email' => 'rodrigo@hotmail.com',
-            'email_verified_at' => $now,
-            'password' => Hash::make('Rodrigo123'),
-            'admin' => true
-        ]);
-        DB::table('users')->insert([
-            'id' => 6,
-            'username' => 'Luis',
-            'email' => 'luis@hotmail.com',
-            'email_verified_at' => $now,
-            'password' => Hash::make('Luis123'),
-            'admin' => true
-        ]);
-        DB::table('users')->insert([
-            'id' => 7,
-            'username' => 'noadmin',
-            'email' => 'noadmin@hotmail.com',
-            'email_verified_at' => $now,
-            'password' => Hash::make('noadmin123'),
-            'admin' => false
+            'role' => 1
         ]);
         //la clase llamada y el monto que se creara
-        factory(User::class, 2)->create();
+        // factory(User::class, 2)->create();
     }
 }

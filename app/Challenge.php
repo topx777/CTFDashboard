@@ -2,10 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Category;
-use App\Level;
-use App\TeamChallenge;
+use App\CompetitionChallenge;
+use Illuminate\Database\Eloquent\Model;
 
 class Challenge extends Model
 {
@@ -16,13 +15,8 @@ class Challenge extends Model
         return $this->belongsTo(Category::class, 'idCategory', 'id');
     }
 
-    public function Level()
+    public function Competition()
     {
-        return $this->belongsTo(Level::class, 'idLevel', 'id');
-    }
-
-    public function Teams()
-    {
-        return $this->hasMany(TeamChallenge::class, 'idChallenge', 'id');
+        return $this->hasMany(CompetitionChallenge::class, 'idChallenge', 'id');
     }
 }

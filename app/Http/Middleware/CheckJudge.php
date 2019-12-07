@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CheckAdmin
+class CheckJudge
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class CheckAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->role == 0) {
+        if (auth()->user()->role == 1) {
             return $next($request);
         } else {
             if (!$request->ajax()) {
