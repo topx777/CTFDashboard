@@ -1,5 +1,6 @@
 import Echo from 'laravel-echo'
 
+window.Vue = require('vue');
 window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
@@ -10,7 +11,19 @@ window.Echo = new Echo({
     disableStats: true
 });
 
-window.Echo.channel('scoreBoard')
-    .listen('TeamsPositions', (e) => {
-        setOrden(e.teams);
-    });
+// window.Echo.channel('scoreBoard')
+//     .listen('TeamsPositions', (e) => {
+//         setOrden(e.teams);
+//     });
+
+const app = new Vue({
+    el: '#flip-list-demo',
+    data: {
+      items: [1,2,3,4,5,6,7,8,9]
+    },
+    methods: {
+      shuffle: function () {
+        this.items = _.shuffle(this.items)
+      }
+    }
+  })
