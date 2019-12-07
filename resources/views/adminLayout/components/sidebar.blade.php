@@ -37,7 +37,7 @@
                 <li class="{{( explode('.', Route::currentRouteName())[0] =='users')?'active open':''}}"><a href="{{route('users.list')}}"><i class="icon-user"></i><span>Usuarios</span></a></li>
                 <li class="{{( explode('.', Route::currentRouteName())[0] =='teams')?'active open':''}}"><a href="{{route('teams.list')}}"><i class="icon-users"></i><span>Equipos</span></a></li>
                 <li class="{{( explode('.', Route::currentRouteName())[0] =='challenges')?'active open':''}}"><a href="{{route('challenges.list')}}"><i class="icon-flag"></i><span>Retos</span></a></li>
-                <li class="{{( explode('.', Route::currentRouteName())[0] =='levelsCategories')?'active open':''}}" ><a href="{{ route('levelsCategories.list') }}"><i class="icon-layers"></i><span>Niveles Categorias</span></a></li>
+                <li class="{{( explode('.', Route::currentRouteName())[0] =='categories')?'active open':''}}" ><a href="{{ route('categories.list') }}"><i class="icon-layers"></i><span>Niveles Categorias</span></a></li>
                 <li class="{{( explode('.', Route::currentRouteName())[0] =='files')?'active open':''}}" ><a href="{{ route('files.list') }}"><i class="icon-grid"></i><span>FileManager</span></a></li>
             </ul>
         </nav>

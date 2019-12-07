@@ -1,4 +1,4 @@
-@extends('adminLayout.master')
+@extends('judgeLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet"
@@ -163,7 +163,7 @@
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });
-        // row id 
+        // row id
         $('.dataTable').on('click', 'tr', function () {
             var id = table.row(this).id();
             if (id) {
@@ -181,7 +181,7 @@
         $('#btnUserDelete').click(function (e) {
             e.preventDefault();
 
-            
+
             showConfirmMessage();
 
         });
@@ -197,8 +197,8 @@
                 cancelButtonText: 'Cancelar'
             }, function () {
 
-               
-                
+
+
             });
         }
 

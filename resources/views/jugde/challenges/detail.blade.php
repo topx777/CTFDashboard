@@ -1,4 +1,4 @@
-@extends('adminLayout.master')
+@extends('judgeLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 @endsection

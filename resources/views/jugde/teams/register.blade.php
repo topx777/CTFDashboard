@@ -1,4 +1,4 @@
-@extends('adminLayout.master') @section('content')
+@extends('judgeLayout.master') @section('content')
 <div class="col-12">
     <form
         id="userRegister"
@@ -49,7 +49,7 @@
                             <label for="">Frase</label>
                             <textarea
                                 name="teamData[phrase]"
-                                class="form-control"                               
+                                class="form-control"
                                 cols="30"
                                 rows="5"
                                 required
@@ -151,7 +151,7 @@
 @endsection @section('script')
 <script>
     var members = 0;
-    
+
     $(document).ready(function() {
         addMember();
         createNewPassword();
@@ -180,11 +180,11 @@
                     cache: false,
                     dataType: "JSON",
                     success: function(response) {
-                       
+
                         if (response.status) {
                             window.location.href = response.intended;
                         } else {
-                            
+
                             //codigo de validacion
                             alert(response.msgError);
                             $("#userRegister").removeClass("was-validated");
@@ -197,12 +197,12 @@
                                     node = $("#userRegister").find(
                                         `input[name^="userData[${key}]"]`
                                     );
-                                    
+
 
                                     if (node !== undefined) {
                                         node.addClass("is-invalid");
-                                        }      
-                                  
+                                        }
+
 
                                     let errores = "";
                                     errors[`${key}`].forEach(error => {
@@ -210,7 +210,7 @@
                                     });
 
                                     if (node !== undefined) {
-                                      
+
                                         $(node[0])
                                             .parent()
                                             .find(".invalid-feedback")
@@ -228,12 +228,12 @@
                                     nodeTeam = $("#userRegister").find(
                                         `input[name^="teamData[${key}]"]`
                                     );
-                                    
+
 
                                     if (nodeTeam !== undefined) {
                                         nodeTeam.addClass("is-invalid");
-                                        }      
-                                  
+                                        }
+
 
                                     let erroresTeam = "";
                                     errorsTeam[`${key}`].forEach(error => {
@@ -241,7 +241,7 @@
                                     });
 
                                     if (nodeTeam !== undefined) {
-                                      
+
                                         $(nodeTeam[0])
                                             .parent()
                                             .find(".invalid-feedback")
@@ -260,8 +260,8 @@
                                   let arrayMembers = response.errorsMembers;
                                   let nodesErrors = response.nodosError;
                                   var cont =0 ;
-                                  arrayMembers.forEach(nodeMemberC => {   
-                                                                
+                                  arrayMembers.forEach(nodeMemberC => {
+
                                      keysMembers = Object.keys(nodeMemberC);
                                      errorsMember = nodeMemberC;
 
@@ -269,13 +269,13 @@
                                      nodeMember = $("#userRegister").find(
                                         `input[name^="membersData[${nodesErrors[cont]}][${key}]"]`
                                     );
-                                    
-                                   
+
+
 
                                     if (nodeMember !== undefined) {
                                         nodeMember.addClass("is-invalid");
-                                        }      
-                                  
+                                        }
+
 
                                     let erroresMember = "";
                                     errorsMember[`${key}`].forEach(error => {
@@ -283,7 +283,7 @@
                                     });
 
                                     if (nodeMember !== undefined) {
-                                      
+
                                       $(nodeMember[0])
                                           .parent()
                                           .find(".invalid-feedback")
@@ -301,8 +301,8 @@
                                     text: response.msgError
                                 });
                             }
-                           
-                          
+
+
 
                             // fin de codigo de validacion
                         }

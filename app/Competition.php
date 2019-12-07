@@ -33,6 +33,9 @@ class Competition extends Model
         return $this->hasMany(CompetitionChallenge::class, 'idCompetition', 'id');
     }
 
-    public function getByJudge()
-    { }
+    static function getByJudge($idUser)
+    {
+        $user = User::find($idUser);
+        return $user->Judge->Competitions;
+    }
 }

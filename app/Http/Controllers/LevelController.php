@@ -40,6 +40,8 @@ class LevelController extends Controller
                 })
                 ->make(true);
         }
+
+        return view('jugde.levels.list');
     }
 
     /**
@@ -210,7 +212,7 @@ class LevelController extends Controller
                 $level->delete();
             } catch (\Throwable $ex) {
                 $resp["status"] = false;
-                if($ex->getCode() == 1451) {
+                if ($ex->getCode() == 1451) {
                     $resp["msgError"] = "El registro tiene retos relacionados";
                 } else {
                     $resp["msgError"] = $ex->getMessage();

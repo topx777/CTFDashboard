@@ -1,4 +1,4 @@
-@extends('adminLayout.master')
+@extends('judgeLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet"href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-    
+
                 <label><b>Hora de Inicio</b></label>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-    
+
                 <label><b>Hora Fin</b></label>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -127,9 +127,9 @@
 
 <script>
     $(document).ready(function () {
-        
+
         $('#rules').summernote();
-        
+
         var $demoMaskedInput = $('.demo-masked-input');
         $demoMaskedInput.find('.date').inputmask('dd/mm/yyyy', {
             placeholder: '__/__/____'

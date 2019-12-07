@@ -1,4 +1,4 @@
-@extends('adminLayout.master')
+@extends('judgeLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet"
@@ -7,44 +7,6 @@
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 @endsection
 @section('content')
-<!-- level list -->
-<div class="col-lg-6">
-    <div class="card">
-        <div class="header">
-            <h2>Lista de Niveles<small>Seleccione una fila para ver detalles</small>
-            </h2>
-            <ul class="header-dropdown dropdown">
-                <li><a data-toggle="modal" data-target="#registerlevelModal"
-                        class="btn btn-primary text-white">Registrar</a></li>
-                <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
-                </li>
-            </ul>
-        </div>
-        <div class="body">
-            <div class="table-responsive">
-                <table id="levelTable" class="table table-striped table-hover dataTable js-exportable">
-                    <thead>
-                        <tr>
-                            <th>Nivel</th>
-                            <th>Puntos</th>
-                            <th>Porcentaje descuento</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Nivel</th>
-                            <th>Puntos</th>
-                            <th>Porcentaje descuento</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Categories list -->
 <div class="col-lg-6">
     <div class="card">
         <div class="header">
@@ -370,33 +332,6 @@
             }
         });
 
-        levelTable = $('#levelTable').DataTable({
-            language: {
-                url: "{{asset('lenguage/Spanish.json')}}"
-            },
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('levels.list') }}",
-            columns: [{
-                    data: 'name',
-                    name: 'name'
-                },
-                {
-                    data: 'score',
-                    name: 'score'
-                },
-                {
-                    data: 'hintDiscount',
-                    name: 'hintDiscount'
-                },
-                {
-                    data: 'DT_RowId',
-                    name: 'DT_RowId',
-                    visible: false
-                }
-            ]
-        });
-
         categoryTable = $('#categoryTable').DataTable({
             language: {
                 url: "{{asset('lenguage/Spanish.json')}}"
@@ -420,55 +355,6 @@
             ]
         });
 
-        // row id 
-        $('#levelTable').on('click', 'tr', function () {
-            var id = levelTable.row(this).id();
-            if (id) {
-                id = id.replace(/\D/g, '');
-                id = parseInt(id, 10);
-
-                CargarNivel(id);
-            }
-        });
-
-        function CargarNivel(id) {
-            var attr = $('#btnLevelDelete').attr('id');
-
-            if (typeof attr !== typeof undefined && attr !== false) {
-                $('#btnLevelDelete').data('id', id);
-            } else {
-                $('#btnLevelDelete').attr('data-id', id);
-            }
-
-            $.ajax({
-                type: "GET",
-                url: "{{ route('levels.get') }}",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    id: id
-                },
-                dataType: "JSON",
-                success: function (data) {
-                    $('#levelID').val(data.id);
-                    $('#levelName').html(data.name);
-                    $('#levelScore').html(`#${data.score}`);
-                    $('#levelHintDiscount').html(`${(parseFloat(data.hintDiscount) * 100).toFixed(2)}%`);
-
-                    $('#updateLevelForm').find('input[name=id]').val(data.id);
-                    $('#updateLevelForm').find('input[name=name]').val(data.name);
-                    $('#updateLevelForm').find('input[name=score]').val(`${data.score}`);
-                    $('#updateLevelForm').find('input[name=hintDiscount]').val(`${(parseFloat(data.hintDiscount) * 100).toFixed(2)}`);
-                },
-                error: function (err) {
-                    console.log(err);
-                    return false;
-                },
-                complete: function() {
-                    $('#detaillevelModal').modal('show');
-                }
-            });
-
-        }
 
         $('#categoryTable').on('click', 'tr', function () {
             var id = categoryTable.row(this).id();
@@ -525,13 +411,6 @@
             showConfirmMessage(btn, 'categoria', 'la categoria', id);
         });
 
-        // confirm delete level
-        $('#btnLevelDelete').click(function (e) {
-            e.preventDefault();
-            let btn = $(this);
-            let id = btn.data('id');
-            showConfirmMessage(btn, 'nivel', 'el nivel', id);
-        });
 
         function showConfirmMessage(trigger, tipo, campo, id) {
             swal({
@@ -545,48 +424,6 @@
                 cancelButtonText: 'Cancelar'
             }, function () {
                 switch (tipo) {
-                    case 'nivel':
-                        trigger.prop('disabled', true);
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('levels.delete') }}",
-                            data: {
-                                id: id,
-                                _token: "{{ csrf_token() }}"
-                            },
-                            dataType: "JSON",
-                            cache: false,
-                            success: function (response) {
-                                if (response.status) {
-                                    swal({
-                                        title: "Correcto",
-                                        text: "Nivel eliminado correctamente",
-                                        type: 'success'
-                                    });
-                                    levelTable.ajax.reload();
-                                    $('#detaillevelModal').modal('hide');
-                                } else {
-                                    swal({
-                                        title: "Error!",
-                                        text: response.msgError,
-                                        type: "error",
-                                    });
-                                }
-                            },
-                            error: function (err) {
-                                swal({
-                                    title: "Error!",
-                                    text: "Error desconocido, intente nuevamente!",
-                                    type: "error",
-                                });
-                                console.log(err);
-                            },
-                            complete: function () {
-                                trigger.prop('disable', false);
-                            }
-                        });
-
-                        break;
                     case 'categoria':
                     trigger.prop('disabled', true);
                         $.ajax({
@@ -642,7 +479,7 @@
         event.preventDefault();
         event.stopPropagation();
         if (formRegCategory.checkValidity()==true) {
-            
+
             let formRegCategory=this;
 
             $(formRegCategory).find('button').prop('disabled',true);
@@ -717,7 +554,7 @@
     $(document).on('hide.bs.modal','registerCategoryModal',function (){
         let modal= $(this);
         let formRegCategory = modal.find('form')
-        
+
         formRegCategory[0].reset();
         $(formRegCategory).find('input').removeClass('is-invalid');
         formRegCategory.find('.invalid-feedback').toArray().forEach(element =>{
@@ -726,13 +563,13 @@
     });
 
     //Modify Category
-    
+
     var formUpdCategory = document.getElementById('updateCategoryForm');
     formUpdCategory.addEventListener('submit',function(event){
         event.preventDefault();
         event.stopPropagation();
         if (formUpdCategory.checkValidity() ===true) {
-            
+
             let formUpdCategory=this;
 
             $(formUpdCategory).find('button').prop('disabled', true);
@@ -813,7 +650,7 @@
         $('#updateCategoryForm').find('input[name=id]').val('');
         $('#updateCategoryForm').find('input[name=name]').val('');
         $('#updateCategoryForm').find('textarea[name=description]').val('');
-        
+
         formUpdCategory.reset();
         formUpdCategory.classList.remove('was-validated');
         $(formUpdCategory).find('input').removeClass('is-invalid');
@@ -821,182 +658,6 @@
             $(element).html('El Campo es obligatorio.')
         });
     });
-
-    //Register level
-    
-    var form = document.getElementById('registerLevelForm');
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        if (form.checkValidity() === true) {
-
-            let form = this;
-
-            $(form).find('button').prop('disabled', true);
-            let method = $(form).attr('method');
-            let action = $(form).attr('action');
-
-            $.ajax({
-                type: method,
-                url: action,
-                data: $(form).serialize(),
-                dataType: "JSON",
-                success: function (response) {
-                    if (response.status) {
-                        swal({
-                            type: 'success',
-                            title: 'Correcto',
-                            text: 'Nivel registrado correctamente'
-                        });
-
-                        $('#registerlevelModal').modal('hide');
-                        levelTable.ajax.reload();
-                    } else {
-                        $(form).removeClass('was-validated');
-                        if (response.validationErrors !== undefined) {
-                            let keys = Object.keys(response.validationErrors);
-                            let errors = response.validationErrors;
-                            keys.forEach(key => {
-                                let node = $(form).find(`input[name=${key}]`);
-                                console.log(node);
-                                node.addClass('is-invalid');
-                                let errores = "";
-                                errors[`${key}`].forEach(error => {
-                                    errores += error + '\n';
-                                });
-                                $(node[0]).parent().find('.invalid-feedback').html(errores);
-                            });
-
-                        } else {
-                            swal({
-                                type: 'error',
-                                title: 'Error',
-                                text: response.msgError
-                            });
-                        }
-                    }
-                },
-                error: function (err) {
-                    swal({
-                        type: 'error',
-                        title: 'Error',
-                        text: 'Error Desconocido'
-                    });
-                    console.log(err);
-                },
-                complete: function () {
-                    $(form).find('button').prop('disabled', false);
-                }
-            });
-
-        }
-        form.classList.add('was-validated');
-    }, false);
-
-
-    $(document).on('hide.bs.modal', '#registerlevelModal', function () {
-        let modal = $(this);
-        let form = modal.find('form')
-
-        form[0].reset();
-        $(form).find('input').removeClass('is-invalid');
-        form.find('.invalid-feedback').toArray().forEach(element => {
-            $(element).html('El Campo es obligatorio.')
-        });
-    });
-
-    //Modificar Nivel
-
-    var formUpdLevel = document.getElementById('updateLevelForm');
-    formUpdLevel.addEventListener('submit', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        if (formUpdLevel.checkValidity() === true) {
-
-            let formUpdLevel = this;
-
-            $(formUpdLevel).find('button').prop('disabled', true);
-            let method = $(formUpdLevel).attr('method');
-            let action = $(formUpdLevel).attr('action');
-
-            $.ajax({
-                type: method,
-                url: action,
-                data: $(formUpdLevel).serialize(),
-                dataType: "JSON",
-                success: function (response) {
-                    if (response.status) {
-                        swal({
-                            type: 'success',
-                            title: 'Correcto',
-                            text: 'Nivel actualizado correctamente'
-                        });
-
-                        $('#detaillevelModal').modal('hide');
-                        levelTable.ajax.reload();
-                    } else {
-                        $(formUpdLevel).removeClass('was-validated');
-                        if (response.validationErrors !== undefined) {
-                            let keys = Object.keys(response.validationErrors);
-                            let errors = response.validationErrors;
-                            keys.forEach(key => {
-                                let node = $(formUpdLevel).find(`input[name=${key}]`);
-                                console.log(node);
-                                node.addClass('is-invalid');
-                                let errores = "";
-                                errors[`${key}`].forEach(error => {
-                                    errores += error + '\n';
-                                });
-                                $(node[0]).parent().find('.invalid-feedback').html(errores);
-                            });
-
-                        } else {
-                            swal({
-                                type: 'error',
-                                title: 'Error',
-                                text: response.msgError
-                            });
-                        }
-                    }
-                },
-                error: function (err) {
-                    swal({
-                        type: 'error',
-                        title: 'Error',
-                        text: 'Error Desconocido'
-                    });
-                    console.log(err);
-                },
-                complete: function () {
-                    $(formUpdLevel).find('button').prop('disabled', false);
-                }
-            });
-
-        }
-        formUpdLevel.classList.add('was-validated');
-    }, false);
-
-    $(document).on('hide.bs.modal', '#detaillevelModal', function () {
-        let modal = $(this);
-
-        modal.find('#levelID').val('');
-        modal.find('#levelName').html('');
-        modal.find('#levelScore').html('');
-        modal.find('#levelHintDiscount').html('');
-
-        modal.find('#updateLevelForm').find('input[name=id]').val('');
-        modal.find('#updateLevelForm').find('input[name=name]').val('');
-        modal.find('#updateLevelForm').find('input[name=score]').val('');
-        modal.find('#updateLevelForm').find('input[name=hintDiscount]').val('');
-        
-        formUpdLevel.reset();
-        formUpdLevel.classList.remove('was-validated')
-        $(formUpdLevel).find('input').removeClass('is-invalid');
-        $(formUpdLevel).find('.invalid-feedback').toArray().forEach(element => {
-            $(element).html('El Campo es obligatorio.')
-        });
-    });
-
 
     function setInputFilter(textbox, inputFilter) {
         ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (

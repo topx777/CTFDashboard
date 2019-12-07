@@ -1,4 +1,4 @@
-@extends('adminLayout.master')
+@extends('judgeLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet"

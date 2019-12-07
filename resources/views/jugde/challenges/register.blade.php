@@ -1,4 +1,4 @@
-@extends('adminLayout.master')
+@extends('judgeLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 @endsection
@@ -288,7 +288,7 @@
                 <td>
                     <button type="button" data-url="${file.url}" class="btn btn-round btn-sm btn-primary selectFile" title="Seleccionar">
                         <i class="fa fa-arrow-left"></i>
-                    </button>     
+                    </button>
                 </td>
             </tr>
             `;

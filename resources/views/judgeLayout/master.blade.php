@@ -147,10 +147,10 @@
 
     <div id="wrapper">
         {{-- topNavbar --}}
-        @include('adminLayout.components.topNavbar')
+        @include('judgeLayout.components.topNavbar')
 
         {{-- sidebar --}}
-        @include('adminLayout.components.sidebar')
+        @include('judgeLayout.components.sidebar')
 
         <div id="main-content">
             <div class="container-fluid pt-5">

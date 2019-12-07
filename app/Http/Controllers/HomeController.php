@@ -15,4 +15,14 @@ class HomeController extends Controller
     {
         return view('admin.home');
     }
+
+    /**
+     * Mustra el dashboar de Judge
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     **/
+    public function judgeIndex()
+    {
+        return view('jugde.home');
+    }
 }

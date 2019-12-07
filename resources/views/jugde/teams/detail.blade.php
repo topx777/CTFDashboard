@@ -1,4 +1,4 @@
-@extends('adminLayout.master')
+@extends('judgeLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
 @endsection
@@ -13,7 +13,7 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabEditTeam">Editar</a></li>
                 <li class="nav-item"><a class="nav-link" id="btnTeamDel" >Eliminar</a></li>
-                
+
             </ul>
             <div class="tab-content">
                 <div class="tab-pane show vivify pullUp active" id="tabDetailTeam">
@@ -42,7 +42,7 @@
                                 <div class="form-group">
                                     <strong>Frase</strong>
                                     <p name="phrase">
-                                        
+
                                     </p>
                                 </div>
 
@@ -73,8 +73,8 @@
                         <div class="row">
                             <div class="col-8">
                                 <ul id="gruopMembers" class="list-group-flush">
-                                   
-                                  
+
+
                                 </ul>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                 
+
                                 <input
                                 id="admin"
                                 name="userData[admin]"
@@ -214,7 +214,7 @@
 @section('script')
 <script src="{{asset('vendor/sweetalert/sweetalert.min.js')}}"></script><!-- SweetAlert Plugin Js -->
 <script>
-   
+
 
    $(document).ready(function(){
 
@@ -243,7 +243,7 @@
                             cache: false,
                             success: function (response) {
                                 if (response.status) {
-                                   
+
                                     console.log(response);
                                    let divTeam = $('#teamData');
                                    let divUser = $('#userData');
@@ -255,15 +255,15 @@
                                    let node;
                                    node= divTeam.find('span[name="couch"]');
                                    node.text(data.couch);
-                                 
+
                                    node= divTeam.find('span[name="score"]');
                                    node.text(data.score);
                                    node= divTeam.find('p[name="phrase"]');
                                    node.text(data.phrase);
                                    node= divTeam.find('span[name="name"]');
                                    node.text(data.name);
-                                  
-                                    
+
+
 
 
                                    node= divUser.find('span[name="username"]');
@@ -275,7 +275,7 @@
 
                                    //------------------------------------------recuperacion de datos
                                  //  node = $("#formUseUpdate").find(
-                                   //     'input[name^="teamData[name]"]' 
+                                   //     'input[name^="teamData[name]"]'
                                     //);
                                     //node.text(data.name);
 
@@ -336,11 +336,11 @@
                                 });
                                 console.log(err);
                             }
-                           
+
                         });
 
     }
-    
+
     var form = document.getElementById('formUseUpdate');
     form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -357,10 +357,10 @@
     $('#btnTeamDel').click(function (e) {
             e.preventDefault();
             let btn = $(this);
-            
+
 
             let id={{$id}};
-            
+
             showConfirmMessage(btn, id );
 
         });
@@ -414,7 +414,7 @@
                             }
                         });
 
-        
+
                 //swal("Deleted!", "El equipo a sido eliminado", "success");
             });
         }
