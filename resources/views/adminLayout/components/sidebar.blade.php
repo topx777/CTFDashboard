@@ -33,7 +33,19 @@
         <nav id="left-sidebar-nav" class="sidebar-nav">
             <ul id="main-menu" class="metismenu">
                 <li class="header">Menu</li>
-                <li class="{{( explode('.', Route::currentRouteName())[0] =='users')?'active open':''}}"><a href="{{route('users.list')}}"><i class="icon-user"></i><span>Usuarios</span></a></li>
+                <li class="{{( explode('.', Route::currentRouteName())[0] =='judges')?'active open':''}}">
+                    <a href="{{route('judges.list')}}"><i class="icon-user"></i><span>Jueces</span></a>
+                    <ul>
+                        <li class="{{(Route::currentRouteName()=='judges.register')?'active':''}}"><a href="{{route('judges.register')}}">Registro</a></li>
+                        <li class="{{(Route::currentRouteName()=='judges.list')?'active':''}}"><a href="{{route('judges.list')}}">Lista</a></li>
+                    </ul>
+                </li>
+                <li class="{{( explode('.', Route::currentRouteName())[0] =='competitions')?'active open':''}}">
+                    <a href="{{route('competitions.list')}}"><i class="icon-user"></i><span>Competencias</span></a>
+                    <ul>
+                        <li class="{{(Route::currentRouteName()=='competitions.list')?'active':''}}"><a href="{{route('competitions.list')}}">Lista</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>
