@@ -20,7 +20,13 @@ class DatabaseSeeder extends Seeder
         // $this->call(OptionsSeeder::class);
         // $this->call(FilesSeeder::class);
         //primero las tablas que no tiene llave foranea
-        $this->call(UsersSeeder::class);
+        $this->call([
+            UsersSeeder::class,
+            JudgesSeeder::class,
+            CompetitionsSeeder::class,
+            TeamsSeeder::class,
+            MembersSeeder::class,    
+        ]);
         // $this->call(CategoriesSeeder::class);
         // $this->call(LevelsSeeder::class);
         //ahora las tablas que tiene foranea

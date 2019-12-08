@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TeamsSeeder extends Seeder
 {
@@ -11,69 +12,54 @@ class TeamsSeeder extends Seeder
      */
     public function run()
     {
-        //
+        // COMPETENCIA 1
+        // Team 1
         DB::table('teams')->insert([
             'id' => 1,
-            'idUser' => 1,
-            'name' => 'CodigoFacilito',
+            'idUser' => 3,
+            'name' => 'TEAM1',
             'score' => 0,
-            'phrase' => 'Agachate y conocelo',
-            'avatar' => 'direccion del equipo',
-            'couch' => 'Yo mismo',
+            'phrase' => 'Fr453 T34M.1',
+            'avatar' => 'avatar',
+            'couch' => 'Couch Team1',
+            'teamPassword' => 'team1abc',
+            'idCompetition' => 1
         ]);
+        // Team 2
         DB::table('teams')->insert([
             'id' => 2,
-            'idUser' => 2,
-            'name' => 'COCO',
+            'idUser' => 4,
+            'name' => 'TEAM2',
             'score' => 0,
-            'phrase' => 'Me traes un poco loco',
-            'avatar' => 'direccion del equipo',
-            'couch' => 'Nadie nos quiere',
+            'phrase' => 'Fr453 T34M.2',
+            'avatar' => 'avatar',
+            'couch' => 'Couch Team2',
+            'teamPassword' => 'team1abc',
+            'idCompetition' => 1
         ]);
+        // Team 3
         DB::table('teams')->insert([
             'id' => 3,
-            'idUser' => 3,
-            'name' => 'HP',
+            'idUser' => 5,
+            'name' => 'TEAM3',
             'score' => 0,
-            'phrase' => 'OMEN',
-            'avatar' => 'direccion del equipo',
-            'couch' => 'Algun dia',
+            'phrase' => 'Fr453 T34M.3',
+            'avatar' => 'avatar',
+            'couch' => 'Couch Team3',
+            'teamPassword' => 'team1abc',
+            'idCompetition' => 1
         ]);
+        // Team 4
         DB::table('teams')->insert([
             'id' => 4,
-            'idUser' => 4,
-            'name' => 'Legion',
-            'score' => 0,
-            'phrase' => 'Arrodillate ante la legion',
-            'avatar' => 'direccion del equipo',
-            'couch' => 'Merlin',
-        ]);
-        DB::table('teams')->insert([
-            'id' => 5,
-            'idUser' => 5,
-            'name' => 'PC Master',
-            'score' => 0,
-            'phrase' => 'Mas de 60FPS',
-            'avatar' => 'direccion del equipo',
-            'couch' => 'Patrocinadores',
-        ]);
-        DB::table('teams')->insert([
-            'id' => 6,
             'idUser' => 6,
-            'name' => 'USB',
+            'name' => 'TEAM4',
             'score' => 0,
-            'phrase' => 'Nos podemos conectar',
-            'avatar' => 'direccion del equipo',
-            'couch' => 'Transporte',
-        ]);
-        DB::table('teams')->insert([
-            'id' => 7,
-            'idUser' => 7,
-            'name' => 'noadmins',
-            'score' => 0,
-            'phrase' => 'noadmins',
-            'avatar' => 'noadmins',
-            'couch' => 'noadmins',
+            'phrase' => 'Fr453 T34M.4',
+            'avatar' => 'avatar',
+            'couch' => 'Couch Team4',
+            'teamPassword' => 'team1abc',
+            'idCompetition' => 1
         ]);
     }
 }
