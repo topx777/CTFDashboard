@@ -40,7 +40,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     
     // Route Competitions
     Route::get('/competitions/list', 'CompetitionsController@list')->name('competitions.list');
-    Route::get('/competitions/detail/{id}','CompetitionsController@detail')->name('copetitions.detail');
+    Route::get('/competitions/detail/{id}','CompetitionsController@detail')->name('competitions.detail');
 });
 
 // Routes Juez
