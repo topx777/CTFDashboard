@@ -41,7 +41,7 @@ class LevelController extends Controller
                 ->make(true);
         }
 
-        return view('jugde.levels.list');
+        return view('judge.levels.list');
     }
 
     /**

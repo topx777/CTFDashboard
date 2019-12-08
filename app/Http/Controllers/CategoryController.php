@@ -38,7 +38,7 @@ class CategoryController extends Controller
                 ->make(true);
         }
 
-        return view('jugde.categories.list');
+        return view('judge.categories.list');
     }
 
     /**

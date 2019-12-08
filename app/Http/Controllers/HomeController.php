@@ -23,6 +23,6 @@ class HomeController extends Controller
      **/
     public function judgeIndex()
     {
-        return view('jugde.home');
+        return view('judge.home');
     }
 }

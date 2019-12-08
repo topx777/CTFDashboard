@@ -23,22 +23,22 @@
                 <table class="table table-striped table-hover dataTable js-exportable">
                     <thead>
                         <tr>
-                            <th> </th>
                             <th>Nombre</th>
                             <th>Descripcion</th>
                             <th>Pista</th>
-                            <th>Nivel</th>
+                            <th>Dificultad</th>
                             <th>Categoria</th>
+                            <th> </th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th> </th>
                             <th>Nombre</th>
                             <th>Descripcion</th>
                             <th>Pista</th>
-                            <th>Nivel</th>
+                            <th>Dificultad</th>
                             <th>Categoria</th>
+                            <th> </th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -75,12 +75,12 @@
             serverSide: true,
             ajax: "{{ route('challenges.list') }}",
             columns: [
-                { data: 'action', name: 'action'},
                 { data: 'name', name: 'name' },
                 { data: 'description', name: 'description' },
                 { data: 'hint', name: 'hint' },
-                { data: 'idLevel', name: 'idLevel' },
+                { data: 'dificulty', name: 'dificulty' },
                 { data: 'idCategory', name: 'idCategory' },
+                { data: 'action', name: 'action'},
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });

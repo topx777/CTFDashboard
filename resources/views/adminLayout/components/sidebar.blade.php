@@ -14,7 +14,6 @@
                 <span>Bienvenido,</span>
                 <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong> {{auth()->user()->username}} </strong></a>
                 <ul class="dropdown-menu dropdown-menu-right account vivify flipInY">
-                    <li><a href="{{ route('options') }}"><i class="icon-settings"></i>Opciones</a></li>
                     <li>
                         <a href="{{ route('logout') }}"
                         class="icon-menu"

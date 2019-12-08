@@ -11,6 +11,7 @@ use App\User;
 use App\Option;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class TeamController extends Controller
 {
@@ -25,13 +26,33 @@ class TeamController extends Controller
     {
         if ($request->ajax()) {
 
-            if ($request->has('search') && !is_null($request->search["value"])) {
-                $search = $request->search["value"];
+            if ($request->has('competition')) {
 
-                $data = Team::where('name', 'LIKE', "%$search%")->get();
+                $id_competition = null;
+                try {
+                    $id_competition = decrypt($request->competition);
+                } catch (DecryptException $ex) {
+                    $id_competition = 0;
+                }
+
+                if ($request->has('search') && !is_null($request->search["value"])) {
+                    $search = $request->search["value"];
+
+                    $data = Team::where('name', 'LIKE', "%$search%")
+                        ->where('idCompetition', $id_competition)->get();
+                } else {
+                    $data = Team::where('idCompetition', $id_competition)->get();
+                }
             } else {
-                $data = Team::all();
+                if ($request->has('search') && !is_null($request->search["value"])) {
+                    $search = $request->search["value"];
+
+                    $data = Team::where('name', 'LIKE', "%$search%")->get();
+                } else {
+                    $data = Team::all();
+                }
             }
+
 
             return DataTables::of($data)
                 ->addColumn('DT_RowId', function ($row) {
@@ -43,7 +64,7 @@ class TeamController extends Controller
                 ->make(true);
         }
 
-        return view('admin.teams.list');
+        return view('judge.teams.list');
     }
 
 

@@ -16,7 +16,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Nombre</label>
-							<input type="text" name="name" value="{{ $challenge->name }}" readonly class="form-control" placeholder="Ingrese Nombre del Reto"
+							<input type="text" name="name" value="{{ $challenge->name }}" readonly class="form-control"
                                 required maxlength="40">
                         </div>
                     </div>
@@ -32,12 +32,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Nivel</label>
-                            <select class="form-control" disabled name="idLevel" required>
-                                @foreach (App\Level::getLevels() as $item)
-                                <option value="{{$item->id}}" @if($challenge->idLevel == $item->id) selected @endif>{{$item->name}}</option>
-                                @endforeach
-                            </select>
+                            <label>Dificultad</label>
+                            <input type="text" name="dificulty" value="{{ $challenge->dificulty }}" readonly class="form-control">
                         </div>
                     </div>
                     <div class="col-md-12">
