@@ -19,3 +19,10 @@ Broadcast::channel('scoreBoard', function()
 {
     return true;
 });
+
+// canal de puntuaciones por Competicion
+Broadcast::channel('Copetition.ScoreBoard.{competitionId}', function($user, $competitionId)
+{
+    // return((int)$user->Team->idCompetition==(int)$competitionId);
+    return true;
+});
