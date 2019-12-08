@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Events\TeamsPositions;
 use App\Challenge;
-use App\Level;
 use App\Team;
 use App\TeamChallenge;
 use DataTables;
@@ -61,9 +60,6 @@ class ChallengeController extends Controller
                     $desc = '<p>' . $row->description . '</p>';
                     return $desc;
                 })
-                ->editColumn('idLevel', function ($row) {
-                    return $row->Level->name;
-                })
                 ->editColumn('idCategory', function ($row) {
                     return $row->Category->name;
                 })
@@ -71,7 +67,7 @@ class ChallengeController extends Controller
                 ->make(true);
         }
 
-        return view('admin.challenges.list');
+        return view('judge\challenges\list');
     }
 
 
@@ -114,7 +110,7 @@ class ChallengeController extends Controller
             abort('500', 'No se encontro el reto');
         }
 
-        return view('admin.challenges.detail', compact('challenge'));
+        return view('judge\challenges\detail', compact('challenge'));
     }
 
 
@@ -127,7 +123,7 @@ class ChallengeController extends Controller
      **/
     public function register()
     {
-        return view('admin.challenges.register');
+        return view('judge\challenges\register');
     }
 
 
@@ -150,8 +146,9 @@ class ChallengeController extends Controller
                 $request->all(),
                 [
                     'name' => 'required|max:40',
-                    'idLevel' => 'required',
-                    'idCategory' => 'required'
+                    'flag' => 'required',
+                    'idCategory' => 'required',
+                    'dificulty' => 'required',
                 ]
             );
 
@@ -162,15 +159,15 @@ class ChallengeController extends Controller
                     $validationErrors[$key][] = $error;
                 }
 
-                $resp["errors"] = $validationErrors;
+                $resp["validationErrors"] = $validationErrors;
                 throw new \Exception("Errores de Validacion");
             }
 
             $challenge = new Challenge();
 
-            $challenge->idLevel = $request->idLevel;
             $challenge->idCategory = $request->idCategory;
             $challenge->name = $request->name;
+            $challenge->dificulty = $request->dificulty;
             $challenge->description = $request->description;
             $challenge->hint = $request->hint;
             $challenge->flag = $request->flag;
@@ -200,7 +197,7 @@ class ChallengeController extends Controller
             abort('500', 'No se encontro el reto');
         }
 
-        return view('admin.challenges.edit', compact('challenge'));
+        return view('judge\challenges\edit', compact('challenge'));
     }
 
 
@@ -226,8 +223,9 @@ class ChallengeController extends Controller
                 $request->all(),
                 [
                     'name' => 'required|max:40',
-                    'idLevel' => 'required',
-                    'idCategory' => 'required'
+                    'flag' => 'required',
+                    'idCategory' => 'required',
+                    'dificulty' => 'required',
                 ]
             );
 
@@ -238,7 +236,7 @@ class ChallengeController extends Controller
                     $validationErrors[$key][] = $error;
                 }
 
-                $resp["errors"] = $validationErrors;
+                $resp["validationErrors"] = $validationErrors;
                 throw new \Exception("Errores de Validacion");
             }
 
@@ -248,9 +246,9 @@ class ChallengeController extends Controller
                 throw new \Exception("No se encontro el reto");
             }
 
-            $challenge->idLevel = $request->idLevel;
             $challenge->idCategory = $request->idCategory;
             $challenge->name = $request->name;
+            $challenge->dificulty = $request->dificulty;
             $challenge->description = $request->description;
             $challenge->hint = $request->hint;
             $challenge->flag = $request->flag;

@@ -6,6 +6,7 @@ use App\Team;
 use App\Judge;
 use App\Level;
 use App\CompetitionChallenge;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\Model;
 
 class Competition extends Model
@@ -37,5 +38,15 @@ class Competition extends Model
     {
         $user = User::find($idUser);
         return $user->Judge->Competitions;
+    }
+
+    static function getRouteID($id)
+    {
+        try {
+            $url_param = decrypt($id);
+            return $url_param;
+        } catch (DecryptException $ex) {
+            return 0;
+        }
     }
 }

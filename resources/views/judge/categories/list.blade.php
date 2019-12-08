@@ -5,9 +5,14 @@
     href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
+<style>
+    tbody tr {
+        cursor: pointer;
+    }
+</style>
 @endsection
 @section('content')
-<div class="col-lg-6">
+<div class="col-lg-12">
     <div class="card">
         <div class="header">
             <h2>Lista de Categorias<small>Seleccione una fila para ver detalles</small>
@@ -315,7 +320,6 @@
 {{-- <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script> --}}
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 <script>
-    let levelTable = null;
     let categoryTable = null;
     $(document).ready(function () {
 
@@ -515,7 +519,7 @@
                                 } else if(node2 !== undefined) {
                                     node2.addClass('is-invalid');
                                 }
-                                let= errores = "";
+                                let errores = "";
                                 errors[`${key}`].forEach(error=>{
                                     errores +=error + '\n';
                                 });

@@ -39,9 +39,15 @@ Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
 
     Route::get('/home', 'HomeController@judgeIndex')->name('judge.home');
 
-    //Rutas de Opciones
-    Route::get('/options', 'OptionController@show')->name('options');
-    Route::post('/options/update', 'OptionController@update')->name('options.update');
+    //Rutas de Opciones de Competicion
+    Route::get('/competitions/options', 'CompetitionController@options')->name('competitions.options');
+    Route::get('/competitions/register', 'CompetitionController@register')->name('competitions.register');
+    Route::post('/competitions/update', 'CompetitionController@update')->name('competitions.update');
+    Route::post('/competitions/store', 'CompetitionController@store')->name('competitions.store');
+
+    //Retos Competencia
+    Route::get('/competitionChallenge/list', 'CompetitionChallengeController@list')->name('competitionChallenge.list');
+
 
     // Rutas de Team
     Route::any('/teams/list', 'TeamController@list')->name('teams.list');

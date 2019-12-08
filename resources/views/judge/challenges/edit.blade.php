@@ -7,19 +7,20 @@
     <div class="card">
         <div class="header">
             <h2>
-                Agregar un nuevo Reto CTF
+                Modificar Reto CTF
                 <small>Llena todos los campos son necesarios</small>
             </h2>
         </div>
         <div class="body">
-            <form id="registerChallengeForm" action="{{ route('challenges.store') }}" method="POST">
+            <form id="editChallengeForm" action="{{ route('challenges.update') }}" method="POST">
                 @csrf
+                <input type="hidden" name="id" value="{{ $challenge->id }}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Nombre</label>
-                            <input type="text" name="name" class="form-control" placeholder="Ingrese Nombre del Reto"
-                                required maxlength="40">
+                            <input type="text" name="name" value="{{ $challenge->name }}" class="form-control" placeholder="Ingrese Nombre del Reto"
+                                maxlength="40">
                             <div class="invalid-feedback">
                                 Este Campo es necesario
                             </div>
@@ -28,9 +29,9 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Categoria</label>
-                            <select class="form-control" name="idCategory" required>
+                            <select class="form-control" name="idCategory" >
                                 @foreach (App\Category::getCategories() as $item)
-                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                <option value="{{$item->id}}" @if($challenge->idCategory == $item->id) selected @endif>{{$item->name}}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">
@@ -40,12 +41,9 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Nivel</label>
-                            <select class="form-control" name="idLevel" required>
-                                @foreach (App\Level::getLevels() as $item)
-                                <option value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                            </select>
+                            <label>Dificultad</label>
+                            <input type="text" class="form-control" name="dificulty" class="form-control" placeholder="Ingrese la Dificultad del Reto"
+                                maxlength="255" value="{{ $challenge->dificulty }}">
                             <div class="invalid-feedback">
                                 Este Campo es necesario
                             </div>
@@ -55,7 +53,7 @@
                         <div class="form-group">
                             <label>Descripcion</label>
                             <textarea id="description" name="description" placeholder="Descripcion del reto"
-                                class="form-control" rows="10"></textarea>
+							class="form-control" rows="10">{{ $challenge->description }}</textarea>
                             <div class="invalid-feedback">
                                 Este Campo es necesario
                             </div>
@@ -80,7 +78,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>FLAG</label>
-                            <input id="flag" name="flag" class="form-control" placeholder="FLAG del reto" type="text">
+							<input id="flag" name="flag" value="{{ $challenge->flag }}" class="form-control" placeholder="FLAG del reto" type="text">
                             <div class="invalid-feedback">
                                 Este Campo es necesario
                             </div>
@@ -90,7 +88,7 @@
                         <div class="form-group">
                             <label>Pista</label>
                             <textarea id="hint" name="hint" placeholder="Descripcion del reto" class="form-control"
-                                rows="5"></textarea>
+							rows="5">{{ $challenge->hint }}</textarea>
                             <div class="invalid-feedback">
                                 Este Campo es necesario
                             </div>
@@ -98,7 +96,7 @@
                     </div>
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-success pull-right">
-                            Guardar
+                            Actualizar
                             <i class="fa fa-save"></i>
                         </button>
                         <a href="{{ route('challenges.list') }}" class="btn btn-danger pull-right">
@@ -140,7 +138,7 @@
 
         loadFiles();
 
-        var formChallenge = document.getElementById('registerChallengeForm');
+        var formChallenge = document.getElementById('editChallengeForm');
         formChallenge.addEventListener('submit', function (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -162,7 +160,7 @@
                             swal({
                                 type: 'success',
                                 title: 'Correcto',
-                                text: 'Reto registrado con exito'
+                                text: 'Reto modificado con exito'
                             });
                             location.href = "{{ route('challenges.list') }}";
                         } else {
@@ -341,5 +339,11 @@
         return icon;
     }
 
+    $(document).on('keyup', 'input', function() {
+        let input = $(this);
+        if(input.hasClass('is-invalid')) {
+            input.removeClass('is-invalid');
+        }
+    });
 </script>
 @endsection
