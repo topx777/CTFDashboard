@@ -193,8 +193,6 @@
         $('.dataTable').on('click', 'tr', function () {
             var id = table.row(this).id();
             if (id) {
-                id = id.replace(/\D/g, '');
-                id = parseInt(id, 10);
                 var url = '{{ route("teams.detail", "") }}';
                 url += `/${id}`
                 window.location.href = url;

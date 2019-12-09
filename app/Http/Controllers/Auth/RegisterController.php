@@ -150,7 +150,7 @@ class RegisterController extends Controller
                             //Cambiar validacion
                             'name' => ['required', 'string', 'max:255',],
                             'lastname' => ['required', 'string', 'max:255'],
-                            'email' => ['required', 'string', 'email', 'max:255', 'unique:members'],
+                            'email' => ['required', 'string', 'email', 'max:255'],
                             'career' => ['required', 'string', 'max:255'],
                             'university' => ['required', 'string', 'max:255'],
                         ]

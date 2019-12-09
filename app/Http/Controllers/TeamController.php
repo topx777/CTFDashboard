@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\TeamsPositions;
+use App\Team;
+use App\User;
+use App\Member;
+use DataTables;
 use App\Challenge;
 use App\Competition;
-use App\Team;
 use App\TeamChallenge;
-use App\Member;
-use App\User;
 use Illuminate\Http\Request;
-use DataTables;
+use App\Events\TeamsPositions;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class TeamController extends Controller
@@ -56,8 +60,7 @@ class TeamController extends Controller
 
             return DataTables::of($data)
                 ->addColumn('DT_RowId', function ($row) {
-                    $row = $row->id;
-
+                    $row = encrypt($row->id);
                     return $row;
                 })
                 ->rawColumns(['action'])
@@ -116,7 +119,16 @@ class TeamController extends Controller
      **/
     public function detail(Request $request, $id)
     {
-        return view('admin.teams.detail', compact('id'));
+        $id_team = null;
+        try {
+            $id_team = decrypt($id);
+        } catch (DecryptException $ex) {
+            $id_team = 0;
+        }
+
+        $team = Team::find($id_team);
+
+        return view('judge.teams.detail', compact('team', 'id'));
     }
 
 
@@ -155,42 +167,157 @@ class TeamController extends Controller
     public function update(Request $request)
     {
         if ($request->isMethod('POST') && $request->ajax()) {
-            $resp["status"] = true;
+            $response["status"] = true;
             try {
-                $id = $request->id;
+                DB::beginTransaction();
+
+                //Esto valida si se esta intentando registrar un Equipo
+                $teamData = $request->teamData;
+
+                $id = decrypt($teamData["id"]);
+
                 $team = Team::find($id);
 
-                if (is_null($team)) {
-                    throw new \Exception("No se encontro al equipo");
-                }
+                if (is_null($team)) throw new \Exception("No se encontro el Equipo");
 
-                $validateUser = $request->validate([
-                    'username' => 'required|unique:users|max:255',
-                    'email' => 'required|unique:users|max:255|email',
-                    'password' => 'required'
-                ]);
+                $userData = $request->userData;
+
+                // En el caso de que sea equipo es una dinamica diferente de registro de credenciales
+                $validationUser = Validator::make(
+                    $userData,
+                    [
+                        'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($team->User->id),],
+                        'password' => ['required', 'string', 'min:8'],
+                    ]
+                );
 
 
-                if ($validateUser->fails()) {
-                    $validationErrors = [];
+                //Estos son arreglos de Errores por tipo de tabla
+                $validationErrors = [];
+                $validationErrorsUser = [];
+                $validationErrorsTeam = [];
+                $validationErrorsMember = [];
+                $validationErrorMembers = [];
 
-                    foreach ($validateUser->errors->all() as $error) {
-                        $validationErrors[] = $error;
+                //Si en los campos de la tabla user hay algun error de validacion los registra por nombre de campo
+                if ($validationUser->fails()) {
+                    foreach ($validationUser->getMessageBag()->getMessages() as $key => $error) {
+                        $validationErrorsUser[$key] = $error;
                     }
-                    $resp["validateErrors"] = $validationErrors;
-                    throw new Exception("Existen Errores de Validacion");
                 }
 
-                $team->username = $request->username;
-                $team->email = $request->email;
-                $team->password = Hash::make($request->password);
+
+                $membersData = [];
+                foreach ($request->membersData as $key => $memberData) {
+                    $membersData[] = $memberData;
+                }
+
+                $validationTeam = Validator::make(
+                    $teamData,
+                    [
+                        //Cambiar validacion
+                        'name' => ['required', 'string', 'max:255'],
+                        'couch' => ['required', 'string', 'max:255'],
+                        'phrase' => ['required', 'string', 'max:255'],
+                        'id' => ['required'],
+                    ]
+                );
+
+
+                $validationsMember = [];
+                foreach ($membersData as $key => $memberData) {
+                    $validationsMember[] = Validator::make(
+                        $memberData,
+                        [
+                            //Cambiar validacion
+                            'name' => ['required', 'string', 'max:255',],
+                            'lastname' => ['required', 'string', 'max:255'],
+                            'email' => ['required', 'string', 'email', 'max:255'],
+                            'career' => ['required', 'string', 'max:255'],
+                            'university' => ['required', 'string', 'max:255'],
+                        ]
+                    );
+                }
+
+                if ($validationTeam->fails()) {
+                    foreach ($validationTeam->getMessageBag()->getMessages() as $key => $error) {
+                        $validationErrorsTeam[$key] = $error;
+                    }
+                }
+                $nodosError = [];
+                $cont = 0;
+                $numNodo = 0;
+                foreach ($validationsMember as $validationMember) {
+                    if ($validationMember->fails()) {
+                        $nodosError[$cont] = $numNodo;
+                        $cont += 1;
+                        foreach ($validationMember->getMessageBag()->getMessages() as $key => $error) {
+
+
+                            $validationErrorsMember[$key] = $error;
+                        }
+
+                        $validationErrorMembers[] = $validationErrorsMember;
+                    }
+                    $numNodo += 1;
+                }
+
+                if (count($validationErrorsUser) > 0) {
+                    $response["errorsUser"] = $validationErrorsUser;
+                    throw new \Exception("Existen errores de credenciales");
+                }
+                if (count($validationErrors) > 0) {
+                    $response["errors"] = $validationErrors;
+                    throw new \Exception("Existen errores de validacion");
+                }
+
+                if (count($validationErrorsTeam) > 0) {
+                    $response["errorsTeam"] = $validationErrorsTeam;
+                    throw new \Exception("Existen errores de validacion de Equipo");
+                }
+                if (count($validationErrorMembers) > 0) {
+                    $response["errorsMembers"] = $validationErrorMembers;
+                    $response["nodosError"] = $nodosError;
+                    throw new \Exception("Existen errores de validacion de Miembros");
+                }
+
+
+                $team->name = $teamData["name"];
+                $team->phrase = $teamData["phrase"];
+                $team->couch = $teamData["couch"];
+                $team->teamPassword = $userData["password"];
 
                 $team->saveOrFail();
-            } catch (\Throwable $th) {
-                $resp["status"] = false;
-                $resp["msgError"] = $th->getMessage();
+
+                foreach ($team->Members as $member) {
+                    $member->delete();
+                }
+
+                foreach ($membersData as $key => $memberData) {
+                    $member = new Member;
+
+                    $member->idTeam = $team->id;
+                    $member->name = $memberData["name"];
+                    $member->lastname = $memberData["lastname"];
+                    $member->email = $memberData["email"];
+                    $member->career = $memberData["career"];
+                    $member->university = $memberData["university"];
+                    $member->saveOrFAil();
+                }
+
+                $user = $team->User;
+                $user->username = $userData["username"];
+                $user->password = Hash::make($userData["password"]);
+
+                $user->saveOrFail();
+
+                DB::commit();
+            } catch (\Throwable $ex) {
+                DB::rollBack();
+                $response["status"] = false;
+                $response["msgError"] = $ex->getMessage();
             } finally {
-                return response()->json($resp);
+                return response()->json($response);
             }
         } else {
             return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
@@ -211,18 +338,24 @@ class TeamController extends Controller
         if ($request->isMethod('POST') && $request->ajax()) {
             $resp["status"] = true;
             try {
-                $id = $request->id;
+                DB::beginTransaction();
+                $id = decrypt($request->id);
                 $team = Team::find($id);
-
-
-
                 if (is_null($team)) {
                     throw new \Exception("No se encontro al equipo");
                 }
+                $members = $team->Members;
+                foreach ($members as $member) {
+                    $member->delete();
+                }
+                $user = $team->User;
                 $team->delete();
+                $user->delete();
+                DB::commit();
             } catch (\Throwable $th) {
+                DB::rollBack();
                 $resp["status"] = false;
-                $resp["msgError"] = "Error, no se puede borrar este campo debido a que comparte su llave con otras tablas.";
+                $resp["msgError"] = $th->getMessage();
             } finally {
                 return response()->json($resp);
             }
