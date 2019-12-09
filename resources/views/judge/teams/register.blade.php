@@ -1,11 +1,12 @@
-@extends('judgeLayout.master') @section('content')
+@extends('judgeLayout.master')
+
+@section('style')
+<link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
+@endsection
+
+@section('content')
 <div class="col-12">
-    <form
-        id="userRegister"
-        method="POST"
-        action="{{ route('register') }}"
-        novalidate
-    >
+    <form id="userRegister" method="POST" action="{{ route('register') }}" enctype="multipart/form-data" novalidate>
         @csrf
         <div class="card">
             <div class="header">
@@ -13,48 +14,31 @@
             </div>
             <div class="body">
                 <div class="row">
+                    <input type="hidden" name="teamData[idCompetition]"
+                        value="{{ app('request')->has('competition') ? app('request')->input('competition') : 0 }}">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="">Nombre</label>
-                            <input
-                                name="teamData[name]"
-                                autofocus
-                                type="text"
-                                value="php"
-                                class="form-control"
-                                required
-                                maxlength="55"
-                            />
+                            <input name="teamData[name]" autofocus type="text" class="form-control" required
+                                maxlength="55" />
                             <div class="invalid-feedback">
                                 El campo nombre es obligatorio
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">Couch</label>
-                            <input
-                                name="teamData[couch]"
-                                type="text"
-                                class="form-control"
-                                value="not yet"
-                                required
-                                maxlength="55"
-                            />
+                            <input name="teamData[couch]" type="text" class="form-control" required maxlength="55" />
                             <div class="invalid-feedback">
                                 El campo couch es obligatorio
                             </div>
                         </div>
+
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label for="">Frase</label>
-                            <textarea
-                                name="teamData[phrase]"
-                                class="form-control"
-                                cols="30"
-                                rows="5"
-                                required
-                                maxlength="65535"
-                            >always bug</textarea>
+                            <textarea name="teamData[phrase]" class="form-control" cols="30" rows="5" required
+                                maxlength="65535"></textarea>
                             <div class="invalid-feedback">
                                 El campo Frase es obligatorio
                             </div>
@@ -72,15 +56,8 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="">Username</label>
-                            <input
-                                name="userData[username]"
-                                autofocus
-                                type="text"
-                                value="phpCode"
-                                class="form-control"
-                                required
-                                maxlength="40"
-                            />
+                            <input name="userData[username]" autofocus type="text" class="form-control" required
+                                maxlength="40" />
                             <div class="invalid-feedback">
                                 El campo username es obligatorio
                             </div>
@@ -91,22 +68,12 @@
                         <div class="form-group ">
                             <label for="">Password</label>
                             <div class="input-group">
-                                <input
-                                    id="password"
-                                    name="userData[password]"
-                                    type="text"
-                                    readonly
-                                    class="form-control"
-                                    required
-                                    maxlength="35"
-                                />
+                                <input id="password" name="userData[password]" type="text" readonly class="form-control"
+                                    required maxlength="35" />
                                 <div class="input-group-append">
-                                    <button
-                                        id="createPassword"
-                                        type="button"
-                                        class="btn btn-primary"
-                                    >
+                                    <button id="createPassword" type="button" class="btn btn-primary">
                                         <i class="fa fa-lock"></i>
+                                        Generar Pass
                                     </button>
                                 </div>
                             </div>
@@ -115,12 +82,7 @@
                             </div>
                         </div>
                     </div>
-                    <input
-                        id="admin"
-                        name="userData[admin]"
-                        type="hidden"
-                        value="false"
-                    />
+                    <input id="role" name="userData[role]" type="hidden" value="2" />
                 </div>
             </div>
         </div>
@@ -131,11 +93,7 @@
             <div class="body">
                 <ul id="ulMemberList" class="list-group"></ul>
                 <div>
-                    <button
-                        id="btnAddMember"
-                        class="btn btn-block btn-primary"
-                        type="button"
-                    >
+                    <button id="btnAddMember" class="btn btn-block btn-primary" type="button">
                         Añadir nuevo miembro
                     </button>
                 </div>
@@ -148,47 +106,57 @@
         </div>
     </form>
 </div>
-@endsection @section('script')
+@endsection
+
+@section('script')
+<script src="{{asset('vendor/sweetalert/sweetalert.min.js')}}"></script><!-- SweetAlert Plugin Js -->
 <script>
     var members = 0;
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         addMember();
-        createNewPassword();
+        // createNewPassword();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     });
 
 
-    $(document).on("keyup", "input", function() {
+    $(document).on("keyup", "input", function () {
         $(this).removeClass("is-invalid");
     });
 
     var form = document.getElementById("userRegister");
     form.addEventListener(
         "submit",
-        function(event) {
+        function (event) {
             event.preventDefault();
             event.stopPropagation();
             if (form.checkValidity() === true) {
                 let formURL = $(form).attr("action");
                 let formData = $(form).serialize();
-
-                console.log(formData);
                 $.ajax({
                     type: "POST",
                     url: formURL,
                     data: formData,
                     cache: false,
                     dataType: "JSON",
-                    success: function(response) {
-
+                    success: function (response) {
                         if (response.status) {
                             window.location.href = response.intended;
                         } else {
-
                             //codigo de validacion
-                            alert(response.msgError);
+                            swal({
+                                type: "error",
+                                title: "Error",
+                                text: response.msgError
+                            });
+
                             $("#userRegister").removeClass("was-validated");
-                            if(response.errorsUser !== undefined ) {
+                            if (response.errorsUser !== undefined) {
                                 let keys = Object.keys(response.errorsUser);
                                 let errors = response.errorsUser;
 
@@ -201,7 +169,7 @@
 
                                     if (node !== undefined) {
                                         node.addClass("is-invalid");
-                                        }
+                                    }
 
 
                                     let errores = "";
@@ -218,7 +186,8 @@
                                     }
                                 });
                             }
-                            else if(response.errorsTeam !== undefined){
+
+                            if (response.errorsTeam !== undefined) {
                                 //-------------------------------------
                                 let keysTeam = Object.keys(response.errorsTeam);
                                 let errorsTeam = response.errorsTeam;
@@ -232,7 +201,7 @@
 
                                     if (nodeTeam !== undefined) {
                                         nodeTeam.addClass("is-invalid");
-                                        }
+                                    }
 
 
                                     let erroresTeam = "";
@@ -249,66 +218,61 @@
                                     }
                                 });
                                 //-------------------------------------
-                              //  alert(response.msgError);
+                                //  alert(response.msgError);
                             }
-                            else if(response.errorsMembers !== undefined)
-                            {
-                                  //-------------------------------------
-                                  let keysMembers;
-                                  let errorsMember;
-                                  let nodeMember;
-                                  let arrayMembers = response.errorsMembers;
-                                  let nodesErrors = response.nodosError;
-                                  var cont =0 ;
-                                  arrayMembers.forEach(nodeMemberC => {
 
-                                     keysMembers = Object.keys(nodeMemberC);
-                                     errorsMember = nodeMemberC;
+                            if (response.errorsMembers !== undefined) {
+                                //-------------------------------------
+                                let keysMembers;
+                                let errorsMember;
+                                let nodeMember;
+                                let arrayMembers = response.errorsMembers;
+                                let nodesErrors = response.nodosError;
+                                var cont = 0;
+                                arrayMembers.forEach(nodeMemberC => {
 
-                                     keysMembers.forEach(key => {
-                                     nodeMember = $("#userRegister").find(
-                                        `input[name^="membersData[${nodesErrors[cont]}][${key}]"]`
-                                    );
+                                    keysMembers = Object.keys(nodeMemberC);
+                                    errorsMember = nodeMemberC;
+
+                                    keysMembers.forEach(key => {
+                                        nodeMember = $("#userRegister").find(
+                                            `input[name^="membersData[${nodesErrors[cont]}][${key}]"]`
+                                        );
 
 
 
-                                    if (nodeMember !== undefined) {
-                                        nodeMember.addClass("is-invalid");
+                                        if (nodeMember !== undefined) {
+                                            nodeMember.addClass("is-invalid");
                                         }
 
 
-                                    let erroresMember = "";
-                                    errorsMember[`${key}`].forEach(error => {
-                                        erroresMember += error + ". \n  ";
+                                        let erroresMember = "";
+                                        errorsMember[`${key}`].forEach(error => {
+                                            erroresMember += error + ". \n  ";
+                                        });
+
+                                        if (nodeMember !== undefined) {
+
+                                            $(nodeMember[0])
+                                                .parent()
+                                                .find(".invalid-feedback")
+                                                .html(erroresMember);
+                                        }
+
                                     });
-
-                                    if (nodeMember !== undefined) {
-
-                                      $(nodeMember[0])
-                                          .parent()
-                                          .find(".invalid-feedback")
-                                          .html(erroresMember);
-                                  }
-
-                                  });
-                                  cont++;
-                             });
-                            }
-                             else{
-                                swal({
-                                    type: "error",
-                                    title: "Error",
-                                    text: response.msgError
+                                    cont++;
                                 });
                             }
-
-
-
                             // fin de codigo de validacion
                         }
                     },
-                    error: function(err) {
+                    error: function (err) {
                         console.log(err);
+                        swal({
+                            type: "error",
+                            title: "Error Critico!!",
+                            text: "Error inesperado, intentelo nuevamente"
+                        });
                     }
                 });
             }
@@ -317,64 +281,65 @@
         false
     );
     // members team add
-    $("#btnAddMember").click(function(e) {
+    $("#btnAddMember").click(function (e) {
         addMember();
     });
 
     function addMember() {
-        let memberTemplate = `  <li id="m${members}" class="list-group-item my-1 p-0">
-                        <div class="d-flex flex-row">
-                            <div class="flex-fill p-2">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <div class="form-group">
-                                            <label for="">Nombres</label>
-                                            <input name="membersData[${members}][name]" type="text" class="form-control" required maxlength="40">
-                                            <div class="invalid-feedback">
-                                                El campo nombres es obligatorio
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Apellidos</label>
-                                            <input name="membersData[${members}][lastname]" type="text" class="form-control" required
-                                                maxlength="55">
-                                            <div class="invalid-feedback">
-                                                El campo apellidos es obligatorio
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label for="">Correo</label>
-                                            <input name="membersData[${members}][email]" type="text" class="form-control" required
-                                                maxlength="55">
-                                            <div class="invalid-feedback">
-                                                El campo apellidos es obligatorio
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Carrera</label>
-                                            <input name="membersData[${members}][career]" type="text" class="form-control" required
-                                                maxlength="50">
-                                            <div class="invalid-feedback">
-                                                El campo carrera es obligatorio
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="">Universidad</label>
-                                            <input name="membersData[${members}][university]" type="text" class="form-control" required maxlength="40">
-                                            <div class="invalid-feedback">
-                                                El campo universidad es obligatorio
-                                            </div>
-                                        </div>
-                                    </div>
+        let memberTemplate = `
+        <li id="m${members}" class="list-group-item my-1 p-0">
+            <div class="d-flex flex-row">
+                <div class="flex-fill p-2">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label for="">Nombres</label>
+                                <input name="membersData[${members}][name]" type="text" class="form-control" required maxlength="40">
+                                <div class="invalid-feedback">
+                                    El campo nombres es obligatorio
                                 </div>
                             </div>
-                            <button class="btn btn-danger" type="button" onclick="membersDelete('m${members}')">x</button>
+                            <div class="form-group">
+                                <label for="">Apellidos</label>
+                                <input name="membersData[${members}][lastname]" type="text" class="form-control" required
+                                    maxlength="55">
+                                <div class="invalid-feedback">
+                                    El campo apellidos es obligatorio
+                                </div>
+                            </div>
                         </div>
-                    </li>`;
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="">Correo</label>
+                                <input name="membersData[${members}][email]" type="text" class="form-control" required
+                                    maxlength="55">
+                                <div class="invalid-feedback">
+                                    El campo apellidos es obligatorio
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Carrera</label>
+                                <input name="membersData[${members}][career]" type="text" class="form-control" required
+                                    maxlength="50">
+                                <div class="invalid-feedback">
+                                    El campo carrera es obligatorio
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="">Universidad</label>
+                                <input name="membersData[${members}][university]" type="text" class="form-control" required maxlength="40">
+                                <div class="invalid-feedback">
+                                    El campo universidad es obligatorio
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-danger" type="button" onclick="membersDelete('m${members}')">x</button>
+            </div>
+        </li>`;
         members += 1;
         $("#ulMemberList").append(memberTemplate);
     }
@@ -384,12 +349,16 @@
         $(`#${id}`).remove();
     }
 
-    $("#createPassword").click(function() {
-       createNewPassword();
+    $("#createPassword").click(function () {
+        createNewPassword();
     });
 
-    function createNewPassword(){
-        var abecedario = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+    function createNewPassword() {
+        var abecedario = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+            "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D",
+            "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y",
+            "Z"
+        ];
         var letras = "";
         for (var i = 0; i < 10; i++) {
             letras +=

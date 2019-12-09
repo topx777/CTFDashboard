@@ -33,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/users/list';
+    protected $redirectTo = '/admin/judges/list';
 
     /**
      * Create a new controller instance.
@@ -46,10 +46,8 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-
         $response["status"] = true;
         try {
-
             DB::beginTransaction();
             if (!$request->ajax()) {
                 throw new \Exception("Error de peticion");
@@ -57,11 +55,13 @@ class RegisterController extends Controller
 
             $userData = $request->userData;
 
-            if ($userData["admin"] != "true") {
-                $this->redirectTo = "/admin/teams/list";
+            if ($userData["role"] == 1) {
+                $this->redirectTo = "/admin/judges/list";
+            } else if ($userData["role"] == 2) {
+                $this->redirectTo = "/judge/teams/list?competition=" . $request->teamData["idCompetition"];
             }
 
-            if ($userData["admin"] == "true") {
+            if ($userData["role"] == 1) {
                 $validationUser = Validator::make(
                     $userData,
                     [
@@ -91,7 +91,7 @@ class RegisterController extends Controller
                 }
             }
 
-            if ($userData['admin'] != "true") {
+            if ($userData['role'] == 2) {
                 $teamData = $request->teamData;
                 $membersData = [];
                 foreach ($request->membersData as $key => $memberData) {
@@ -105,7 +105,7 @@ class RegisterController extends Controller
                         'name' => ['required', 'string', 'max:255'],
                         'couch' => ['required', 'string', 'max:255'],
                         'phrase' => ['required', 'string', 'max:255'],
-
+                        'idCompetition' => ['required'],
                     ]
                 );
 
@@ -148,8 +148,8 @@ class RegisterController extends Controller
                     $numNodo += 1;
                 }
             }
-            if (count($validationErrorsUser) > 0) {
 
+            if (count($validationErrorsUser) > 0) {
                 $response["errorsUser"] = $validationErrorsUser;
                 throw new \Exception("Existen errores de validacion");
             }
@@ -171,28 +171,28 @@ class RegisterController extends Controller
 
             $user = new User;
             $user->username = $userData["username"];
-            if ($userData["admin"] == "true") {
+            if ($userData["role"] == 1) {
                 $user->email = $userData["email"];
                 $user->email_verified_at = Carbon::now()->timestamp;
             }
             $user->password = Hash::make($userData["password"]);
-            $user->admin = $userData["admin"] == "true" ? true : false;
-
+            $user->role = $userData["role"];
 
             $response["intended"] = $this->redirectPath();
 
             $user->saveOrFail();
 
-            if (!$user->admin) {
+            if ($user->role == 2) {
+
+                $idCompetition = decrypt($teamData["idCompetition"]);
+
                 $team = new Team;
                 $team->idUser = $user->id;
                 $team->name = $teamData["name"];
-                //    $team->score = $teamData["score"];
                 $team->phrase = $teamData["phrase"];
                 $team->couch = $teamData["couch"];
                 $team->teamPassword = $userData["password"];
-
-                // $team->avatar = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($team->name . $team->teamPassword))) . "&s=" . 40;
+                $team->idCompetition = $idCompetition;
 
                 $team->saveOrFail();
 
@@ -220,110 +220,6 @@ class RegisterController extends Controller
     }
 
     /**
-     *  Function Registro de usuarios
-     *
-     *  Function creacion y validacion de usuario administrador y usuario de equipo
-     *
-     * @param Request $request Request
-     * @return response()->json($array)
-     * @throws \Throwable $ex
-     **/
-    // public function register(Request $request)
-    // {
-    //     $response["status"] = true;
-    //     try {
-
-    //         DB::beginTransaction();
-
-    //         if (!$request->ajax()) {
-    //             throw new Exception("Error de peticion");
-    //         }
-
-    //         $userData = $request->userData;
-    //         $validationUser = $this->validator($userData);
-
-    //         $validationErrors = [];
-    //         if ($validationUser->fails()) {
-    //             foreach ($validationUser->errors()->toArray() as $key => $error) {
-    //                 $validationErrors[] = $error;
-    //             }
-    //         }
-
-    //         if (!$userData->has('admin')) {
-    //             $teamData = $request->teamData;
-    //             $membersData = [];
-    //             foreach ($request->membersData as $key => $memberData) {
-    //                 $membersData[] = $memberData;
-    //             }
-
-    //             $validationTeam = $this->validator($teamData);
-    //             $validationsMember = [];
-    //             foreach ($membersData as $key => $memberData) {
-    //                 $validationsMember[] = $this->validator($memberData);
-    //             }
-
-    //             if ($validationTeam->fails()) {
-    //                 foreach ($validationTeam->errors()->toArray() as $key => $error) {
-    //                     $validationErrors[] = $error;
-    //                 }
-    //             }
-
-    //             foreach ($validationsMember as $validationMember) {
-    //                 if ($validationMember->fails()) {
-    //                     $validationErrors[] = "Error de validacion de Miembros";
-    //                 }
-    //             }
-    //         }
-
-    //         if (count($validationErrors) > 0) {
-    //             $response["errors"] = $validationErrors;
-    //             throw new Exception("Existen errores de validacion");
-    //         }
-
-    //         $user = new User;
-    //         $user->username = $userData["username"];
-    //         $user->email = $userData["email"];
-    //         $user->email_verified_at = Carbon::now()->timestamp;
-    //         $user->password = Hash::make($userData["passsword"]);
-    //         $user->admin = $userData->has('admin') ? true : false;
-
-    //         $user->saveOrFail();
-
-    //         if (!$user->admin) {
-    //             $team = new Team;
-    //             $team->idUser = $user->id;
-    //             $team->name = $teamData["name"];
-    //             $team->score = $teamData["score"];
-    //             $team->phrase = $teamData["phrase"];
-    //             $team->avatar = $teamData["avatar"];
-    //             $team->couch = $teamData["couch"];
-    //             $team->teamPassword = $teamData["teamPassword"];
-
-    //             $team->saveOrFail();
-
-    //             foreach ($membersData as $key => $memberData) {
-    //                 $member = new Member;
-
-    //                 $member->idTeam = $team->id;
-    //                 $member->name = $memberData["name"];
-    //                 $member->lastname = $memberData["lastname"];
-    //                 $member->email = $memberData["email"];
-    //                 $member->career = $memberData["career"];
-    //                 $member->university = $memberData["university"];
-    //                 $member->saveOrFAil();
-    //             }
-
-    //             DB::commit();
-    //         }
-    //     } catch (\Throwable $ex) {
-    //         DB::rollBack();
-    //         $response["status"] = false;
-    //         $response["msgError"] = $ex->getMessage();
-    //     } finally {
-    //         return response()->json($response);
-    //     }
-    // }
-    /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
@@ -335,7 +231,6 @@ class RegisterController extends Controller
             'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-
         ]);
     }
 }
