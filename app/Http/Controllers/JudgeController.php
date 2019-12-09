@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Judge;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -51,7 +53,7 @@ class JudgeController extends Controller
         if ($request->ajax()) {
             $id = $request->id;
 
-            $judge = Judge::find($id);
+            $judge = Judge::with('User')->find($id);
 
             if (is_null($judge)) {
                 return response()->json(null);
@@ -117,7 +119,7 @@ class JudgeController extends Controller
      **/
     public function detail(Request $request, $id)
     {
-        return view('admin/judges/details');
+        return view('admin/judges/details',['id'=>$id]);
     }
 
     /**
@@ -131,47 +133,51 @@ class JudgeController extends Controller
      **/
     public function update(Request $request)
     {
-        // if ($request->isMethod('POST') && $request->ajax()) {
-        //     $resp["status"] = true;
-        //     try {
-        //         $id = $request->id;
-        //         $user = User::find($id);
+        if ($request->isMethod('POST') && $request->ajax()) {
+            $resp["status"] = true;
+            try {
+                $id = $request->judge['idJudge'];
+                $judge = Judge::with('User')->find($id);
 
-        //         if (is_null($user)) {
-        //             throw new \Exception("No se encontro al usuario");
-        //         }
+                if (is_null($judge)) {
+                    throw new \Exception("No se encontro al juez");
+                }
+                
+                $validateJudge = Validator::make(
+                    $request->judge,
+                    [
+                        'name' =>'required|max:40',
+                        'lastname' => 'required|max:55',
+                        'username' => 'required|unique:users|max:40',
+                        'email' => 'required|unique:users|max:55|email',
+                        'password' => 'required|max:35'
+                    ]
+                );
 
-        //         $validateUser = $request->validate([
-        //             'username' => 'required|unique:users|max:255',
-        //             'email' => 'required|unique:users|max:255|email',
-        //             'password' => 'required'
-        //         ]);
+                $validationErrorsJudge = [];
+                if ($validateJudge->fails()) {
+                    foreach ($validateJudge->getMessageBag()->getMessages() as $key => $error) {
+                        $validationErrorsJudge[$key] = $error;
+                    }
+                    $resp["errors"] = $validationErrorsJudge;
+                    throw new \Exception("Existen Errores de Validacion");
+                }
 
-
-        //         if ($validateUser->fails()) {
-        //             $validationErrors = [];
-
-        //             foreach ($validateUser->errors->all() as $error) {
-        //                 $validationErrors[] = $error;
-        //             }
-        //             $resp["validateErrors"] = $validationErrors;
-        //             throw new Exception("Existen Errores de Validacion");
-        //         }
-
-        //         $user->username = $request->username;
-        //         $user->email = $request->email;
-        //         $user->password = Hash::make($request->password);
-
-        //         $user->saveOrFail();
-        //     } catch (\Throwable $th) {
-        //         $resp["status"] = false;
-        //         $resp["msgError"] = $th->getMessage();
-        //     } finally {
-        //         return response()->json($resp);
-        //     }
-        // } else {
-        //     return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
-        // }
+                $judge->name=$request->name;
+                $judge->lastname=$request->lastname;
+                $judge->User->username=$request->username;
+                $judge->User->password=($request->password=='null')?$judge->User->password:Hash::make($request->password);
+                $judge->User->email=$request->email;
+                $judge->saveOrFail();
+            } catch (\Throwable $th) {
+                $resp["status"] = false;
+                $resp["msgError"] = $th->getMessage();
+            } finally {
+                return response()->json($resp);
+            }
+        } else {
+            return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
+        }
     }
 
       /**

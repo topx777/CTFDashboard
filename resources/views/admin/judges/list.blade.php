@@ -41,94 +41,6 @@
     </div>
 </div>
 
-<!-- larg modal -->
-<div id="detailModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title h4" id="myLargeModalLabel">Detalle de Usuario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <ul class="nav nav-tabs2 justify-content-end">
-                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab"
-                            href="#tabUserDetail">Detalle</a></li>
-                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabUserEdit">Editar</a></li>
-                    <li id="btnUserDelete" class="nav-item"><a class="nav-link">Eliminar</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane show vivify flipInX active" id="tabUserDetail">
-                        <div class="row pt-4 px-3">
-                            <div class="col-6 form-group">
-                                <strong class="text-white">Username:</strong>
-                                <span class="">username</span>
-                            </div>
-                            <div class="col-6 form-group">
-                                <strong class="text-white">Administrador:</strong>
-                                <label class="fancy-radio custom-color-green"><input name="gender4" value="female"
-                                        type="radio" checked="" disabled=""><span><i></i></span></label>
-                            </div>
-                            <div class="col-6 form-group">
-                                <strong class="text-white">Email:</strong>
-                                <span class="">miemail@ctf.comsegserwgrtw</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane vivify flipInX" id="tabUserEdit">
-                        <div class="pt-4 px-3">
-                            <form action="">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Username</label>
-                                            <input name="userData[username]" autofocus type="text" class="form-control"
-                                                required maxlength="40">
-                                            <div class="invalid-feedback">
-                                                El campo username es obligatorio
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <br>
-                                            <div class="fancy-checkbox">
-                                                <label><input name="admin"
-                                                        type="checkbox"><span>Administrador</span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Password</label>
-                                            <input name="password" type="password" value="userpass" class="form-control"
-                                                required maxlength="35">
-                                            <div class="invalid-feedback">
-                                                El campo password es obligatorio
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Email</label>
-                                            <input name="email" type="email" class="form-control" required
-                                                maxlength="55">
-                                            <div class="invalid-feedback">
-                                                El campo email es obligatorio
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-primary">Guardar</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 @section('script')
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
@@ -168,8 +80,10 @@
             if (id) {
                 id = id.replace(/\D/g, '');
                 id = parseInt(id, 10);
-                console.log('id ' + id);
-                $('#detailModal').modal('show');
+                var url = '{{ route("judges.detail", "") }}';
+                url+=`/${id}`
+                window.location.href=url;
+
             }
         });
     });

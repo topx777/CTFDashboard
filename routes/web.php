@@ -37,11 +37,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/judges/list','JudgeController@list')->name('judges.list');
     Route::get('/judges/register', 'JudgeController@register')->name('judges.register');
     Route::get('/judges/detail/{id}', 'JudgeController@detail')->name('judges.detail');
+    Route::get('/judges/get', 'JudgeController@get')->name('judges.get');
+    Route::post('/judges/update', 'JudgeController@update')->name('judges.update');
     
     // Route Competitions
     Route::get('/competitions/list', 'CompetitionsController@list')->name('competitions.list');
     Route::get('/competitions/detail/{id}','CompetitionsController@detail')->name('competitions.detail');
 });
+
+
 
 // Routes Juez
 Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {

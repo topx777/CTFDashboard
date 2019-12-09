@@ -20,40 +20,40 @@
                 <div class="tab-pane show vivify pullUp active" id="tabDetailJudge">
                     <div class="py-2">
                         <h5>Datos de Juez</h5>
-                        <div id="judgeData" class="row">
+                        <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
                                     <strong>Nombre:</strong>
-                                    <span name="name"></span>
+                                    <span id="dname"></span>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <strong>Apellidos:</strong>
-                                    <span name="lastname"></span>
+                                    <span id="dlastname"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="userData" class="py-2">
+                    <div class="py-2">
                         <h5>Credenciales de Juez</h5>
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
                                     <strong>Usuario:</strong>
-                                    <span name="username"></span>
+                                    <span id="dusername"></span>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
                                     <strong>Correo:</strong>
-                                    <span name="email"></span>
+                                    <span id="demail"></span>
                                 </div>
                             </div>
                         </div>
 
                     </div>
-                    <div class="py-2">
+                    {{-- <div class="py-2">
                         <h5>Competencias CTF</h5>
                         <div class="row">
                             <div class="col-8">
@@ -63,18 +63,19 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="tab-pane vivify pullUp" id="tabEditTeam">
-                    <form action="" id="formUseUpdate" novalidate>
+                    <form action="" id="formJudgeUpdate" novalidate>
                         @csrf
                         <div class="py-2">
                             <h6>Datos de Juez</h6>
+                            <input id="idJudge" type="hidden" name="judge[idJudge]" value="">
                             <div id="teamDataRegister" class="row">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="">Nombre</label>
-                                        <input name="judge[name]" class="form-control" type="text" maxlength="40"
+                                        <label for="name">Nombre</label>
+                                        <input id="name" name="judge[name]" class="form-control" type="text" maxlength="40"
                                             required>
                                         <div class="invalid-feedback">
                                             El campo nombre es obligatorio
@@ -83,8 +84,8 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="">Apellido</label>
-                                        <input name="judge[lastname]" class="form-control" type="text" maxlength="55"
+                                        <label for="lastname">Apellido</label>
+                                        <input id="lastname" name="judge[lastname]" class="form-control" type="text" maxlength="55"
                                             required>
                                         <div class="invalid-feedback">
                                             El campo apellido es obligatorio
@@ -95,19 +96,20 @@
                         </div>
                         <div class="py-2">
                             <h6>Credenciales de Juez</h6>
+                            <input id="idUser" type="hidden" name="judge[idUser]">
                             <div id="userDataRegister" class="row">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label for="">Usuario</label>
-                                        <input name="judge[username]" class="form-control" type="text" maxlength="40"
+                                        <label for="username">Usuario</label>
+                                        <input id="username" name="judge[username]" class="form-control" type="text" maxlength="40"
                                             required>
                                         <div class="invalid-feedback">
                                             El campo usuario es obligatorio
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Password</label>
-                                        <input name="judge[password]" class="form-control" type="text" maxlength="35"
+                                        <label for="password" >Password</label>
+                                        <input id="password" value="null" name="judge[password]" class="form-control" type="password" maxlength="35"
                                             required>
                                         <div class="invalid-feedback">
                                             El campo password es obligatorio
@@ -116,16 +118,14 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="`form-group">
-                                        <label for="">Correo</label>
-                                        <input name="judge[email]" class="form-control" type="password" maxlength="55"
+                                        <label for="email">Correo</label>
+                                        <input id="email" name="judge[email]" class="form-control" type="text" maxlength="55"
                                             required>
                                         <div class="invalid-feedback">
-                                            El campo contraseña es obligatorio
+                                            El campo correo es obligatorio
                                         </div>
                                     </div>
                                 </div>
-
-                                <input id="admin" name="userData[admin]" type="hidden" value="false" />
                             </div>
                         </div>
                         <div>
@@ -147,6 +147,50 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        setDetails();
     })
+
+    function setDetails() {
+        $.get("{{route('judges.get')}}", {
+            id: {{$id}}
+        },
+            function (data, textStatus, jqXHR) {
+                // Detail
+                $('#dname').html(data.name);
+                $('#dlastname').html(data.lastname);
+                $('#dusername').html(data.user.username);
+                $('#demail').html(data.user.email);
+                // Edit
+                $('#idJudge').val(data.id);
+                $('#name').val(data.name);
+                $('#lastname').val(data.lastname);
+
+                $('#idUser').val(data.user.id);
+                $('#username').val(data.user.username);
+                $('#email').val(data.user.email);
+            },
+            "JSON"
+        );
+      }
+      
+    var form = document.getElementById('formJudgeUpdate');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (form.checkValidity() === true) {
+
+            $.ajax({
+                type: "POST",
+                url: "{{route('judges.update')}}",
+                data: $('#formJudgeUpdate').serialize(),
+                dataType: "JSON",
+                success: function (response) {
+                    
+                }
+            });
+        }
+        form.classList.add('was-validated');
+    }, false);
 </script>
 @endsection
