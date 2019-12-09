@@ -1,16 +1,45 @@
 @extends('adminLayout.master')
 @section('style')
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/dataTables.bootstrap4.min.css')}}">
-<link rel="stylesheet"
-    href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
+<link rel="stylesheet" href="{{asset('vendor/bootstrap-multiselect/bootstrap-multiselect.css')}}">
+<link rel="stylesheet" href="{{asset('vendor/multi-select/css/multi-select.css')}}">
+<link rel="stylesheet" href="{{asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.css')}}">
 @endsection
 @section('content')
 <div class="col-lg-12">
+<div class="card">
+    <div class="header">
+        <h2>Habilitar competencia Principal 
+            <small>Seleccione Competencias</small>
+        </h2>
+    </div>
+    <div class="body">
+        <div class="row">
+            <div class="col-4">
+                <div class="multiselect_div">
+                    <select id="selectCompetition" name="multiselect4[]" class="multiselect multiselect-custom"
+                        multiple="multiple">
+                        @foreach ($competitions as $competition)
+                        <option value="{{$competition->id}}">{{$competition->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-info">Enviar</button>
+            </div>
+        </div>
+        <small>*Las competencias seleccionadas no seran deshabilitadas</small>
+    </div>
+</div>
+</div>
+<div class="col-lg-12">
     <div class="card">
         <div class="header">
-            <h2>Lista de usuarios<small>Seleccione una fila para ver detalles</small>
+            <h2>Lista de Competencias<small>Seleccione una competencia para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
@@ -45,98 +74,13 @@
         </div>
     </div>
 </div>
-
-<!-- larg modal -->
-<div id="detailModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title h4" id="myLargeModalLabel">Detalle de Usuario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <ul class="nav nav-tabs2 justify-content-end">
-                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#tabUserDetail">Detalle</a></li>
-                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabUserEdit">Editar</a></li>
-                    <li id="btnUserDelete" class="nav-item"><a class="nav-link">Eliminar</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane show vivify flipInX active" id="tabUserDetail">
-                        <div class="row pt-4 px-3">
-                            <div class="col-6 form-group">
-                                <strong class="text-white">Username:</strong>
-                                <span class="">username</span>
-                            </div>
-                            <div class="col-6 form-group">
-                                <strong class="text-white">Administrador:</strong>
-                                <label class="fancy-radio custom-color-green"><input name="gender4" value="female"
-                                        type="radio" checked="" disabled=""><span><i></i></span></label>
-                            </div>
-                            <div class="col-6 form-group">
-                                <strong class="text-white">Email:</strong>
-                                <span class="">miemail@ctf.comsegserwgrtw</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane vivify flipInX" id="tabUserEdit">
-                        <div class="pt-4 px-3">
-                            <form action="">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Username</label>
-                                            <input name="userData[username]" autofocus type="text" class="form-control"
-                                                required maxlength="40">
-                                            <div class="invalid-feedback">
-                                                El campo username es obligatorio
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <br>
-                                            <div class="fancy-checkbox">
-                                                <label><input name="admin"
-                                                        type="checkbox"><span>Administrador</span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Password</label>
-                                            <input name="password" type="password" value="userpass" class="form-control"
-                                                required maxlength="35">
-                                            <div class="invalid-feedback">
-                                                El campo password es obligatorio
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Email</label>
-                                            <input name="email" type="email" class="form-control" required
-                                                maxlength="55">
-                                            <div class="invalid-feedback">
-                                                El campo email es obligatorio
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-primary">Guardar</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 @section('script')
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script><!-- Multi Select Plugin Js -->
+<script src="{{asset('vendor/bootstrap-multiselect/bootstrap-multiselect.js')}}"></script>
+<script src="{{asset('vendor/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/buttons.colVis.min.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/buttons.html5.min.js')}}"></script>
@@ -151,6 +95,12 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        
+        $('#selectCompetition').multiselect({
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 200
+        });
 
         var table = $('.dataTable').DataTable({
             language: {
@@ -161,47 +111,54 @@
             ajax: "{{ route('competitions.list') }}",
             columns: [
                 { data: 'name', name: 'name' },
-                { data: 'state', name: 'state' },
-                { data: 'masterDisabled', name: 'masterDisabled' },
-                { data: 'difuculty', name: 'difuculty' },
-                { data: 'gameMode', name: 'gameMode' },
+                { data: 'state', name: 'state',render: function (state) { return (state == 0)?'<span class="badge badge-danger">No Iniciado</span>':'<span class="badge badge-success">En Juego</span>' } },
+                { data: 'masterDisabled', name: 'masterDisabled', render: function (disabled) { return (disabled == 1)?'<i class="icon-ban text-danger font-weight-bold"></i>&nbsp;Desahabilitado':'<i class="icon-check text-success font-weight-bold"></i>&nbsp;Habilitado'}},
+                { data: 'dificulty', name: 'dificulty',render: function (dificulty) { 
+                                                                                    var badge;
+                                                                                        if(dificulty==0)
+                                                                                            badge ='<span class="badge badge-info">facil</span>';
+                                                                                        if(dificulty== 1)
+                                                                                            badge ='<span class="badge badge-success">medio</span>';
+                                                                                        if(dificulty== 2)
+                                                                                            badge ='<span class="badge badge-warning">dificil</span>';
+                                                                                        if(dificulty== 3)
+                                                                                            badge ='<span class="badge badge-danger">extremo</span>';
+                                                                                    return badge;}},
+                { data: 'gameMode', name: 'gameMode',render: function (mode) { return (mode == 0)?'<i class="icon-user font-weight-bold"></i>&nbsp;Presencial':'<i class="icon-globe font-weight-bold"></i>&nbsp;Remoto' } },
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });
-        
+
         // row id 
         $('.dataTable').on('click', 'tr', function () {
             var id = table.row(this).id();
             if (id) {
                 id = id.replace(/\D/g, '');
                 id = parseInt(id, 10);
-                console.log('id ' + id);
-                $('#detailModal').modal('show');
+                var url = '{{ route("competitions.detail", "") }}';
+                url+=`/${id}`
+                window.location.href=url;
+
             }
         });
 
-        // confirm delete user
-        $('#btnUserDelete').click(function (e) {
-            e.preventDefault();
-            showConfirmMessage();
-
-        });
-        function showConfirmMessage() {
-            swal({
-                title: "Esta seguro de eliminar al usuario?",
-                text: "Esta accion no se puede deshacer!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#dc3545",
-                confirmButtonText: "Si, eliminar!",
-                closeOnConfirm: false,
-                cancelButtonText: 'Cancelar'
-            }, function () {
-                swal("Deleted!", "El usuario a sido eliminado", "success");
-            });
-        }
 
 
     });
+
+    function setItemsCompetition() {
+        $.get("{{route('competitions.list')}}",
+            function (data, textStatus, jqXHR) {
+                var list='';
+                data.data.forEach(competition => {
+                    list+=`<option value="${competition.id}">${competition.name}</option>`
+                });
+                console.log(list)
+                $('#selectCompetition').html(list);
+            },
+            "JSON"
+        );
+    }
+
 </script>
 @endsection
