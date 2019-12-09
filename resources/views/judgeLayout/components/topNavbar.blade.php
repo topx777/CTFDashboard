@@ -3,7 +3,7 @@
 
         <div class="navbar-left">
             <div class="navbar-btn">
-                <a href="{{ route('admin.home') }}"><img src="{{asset('images/icon.svg')}}" alt="CTFDashboard" class="img-fluid logo"></a>
+                <a href="{{ route('judge.home') }}"><img src="{{asset('images/icon.svg')}}" alt="CTFDashboard" class="img-fluid logo"></a>
                 <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
             </div>
             <ul class="nav navbar-nav">
@@ -19,7 +19,7 @@
                         class="icon-menu">
                         {{ auth()->user()->username }}
                         </a>
-                        
+
                     </li>
                     <li>
                         <a href="{{ route('logout') }}"

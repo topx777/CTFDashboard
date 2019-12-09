@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Level;
 use DataTables;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class LevelController extends Controller
 {
@@ -22,17 +23,30 @@ class LevelController extends Controller
     {
         if ($request->ajax()) {
 
-            if ($request->has('search') && !is_null($request->search["value"])) {
-                $search = $request->search["value"];
+            if ($request->has('competition')) {
 
-                $data = Level::where('name', 'LIKE', "%$search%")->get();
+                $id_competition = null;
+                try {
+                    $id_competition = decrypt($request->competition);
+                } catch (DecryptException $ex) {
+                    $id_competition = 0;
+                }
+
+                if ($request->has('search') && !is_null($request->search["value"])) {
+                    $search = $request->search["value"];
+
+                    $data = Level::where('name', 'LIKE', "%$search%")
+                        ->where('idCompetition', $id_competition)->orderBy('order', 'asc')->get();
+                } else {
+                    $data = Level::where('idCompetition', $id_competition)->orderBy('order', 'asc')->get();
+                }
             } else {
-                $data = Level::all();
+                $data = Level::where('id', 0)->get();
             }
 
             return DataTables::of($data)
                 ->addColumn('DT_RowId', function ($row) {
-                    $btn = $row->id;
+                    $btn = encrypt($row->id);
                     return $btn;
                 })
                 ->editColumn('hintDiscount', function (Level $level) {
@@ -56,7 +70,11 @@ class LevelController extends Controller
     public function get(Request $request)
     {
         if ($request->ajax()) {
-            $id = $request->id;
+            try {
+                $id = decrypt($request->id);
+            } catch (DecryptException $th) {
+                $id = 0;
+            }
 
             $level = Level::find($id);
 
@@ -93,6 +111,8 @@ class LevelController extends Controller
                         'name' => 'required|max:25',
                         'score' => 'required|numeric|min:0',
                         'hintDiscount' => 'required|numeric|max:100|min:0',
+                        'order' => 'required|numeric',
+                        'idCompetition' => 'required',
                     ]
                 );
 
@@ -106,9 +126,13 @@ class LevelController extends Controller
                     throw new \Exception("Problemas de Validación");
                 }
 
+                $id_competition = decrypt($request->idCompetition);
+
+                $level->idCompetition = $id_competition;
                 $level->name = $request->name;
                 $level->score = $request->score;
                 $level->hintDiscount = (float) round(($request->hintDiscount / 100), 2);
+                $level->order = $request->order;
 
                 $level->saveOrFail();
             } catch (\Throwable $ex) {
@@ -154,6 +178,7 @@ class LevelController extends Controller
                         'name' => 'required|max:25',
                         'score' => 'required|numeric|min:0',
                         'hintDiscount' => 'required|numeric|max:100|min:0',
+                        'order' => 'required|numeric',
                     ]
                 );
 
@@ -170,6 +195,7 @@ class LevelController extends Controller
                 $level->name = $request->name;
                 $level->score = $request->score;
                 $level->hintDiscount = (float) round(($request->hintDiscount / 100), 2);
+                $level->order = $request->order;
 
                 $level->saveOrFail();
             } catch (\Throwable $ex) {
@@ -201,7 +227,7 @@ class LevelController extends Controller
                     throw new \Exception("Nivel no encontrado");
                 }
 
-                $id = $request->id;
+                $id = decrypt($request->id);
 
                 $level = Level::find($id);
 
