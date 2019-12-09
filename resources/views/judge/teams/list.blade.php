@@ -5,6 +5,11 @@
     href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
+<style>
+    tbody tr {
+        cursor: pointer;
+    }
+</style>
 @endsection
 @section('content')
 <div class="col-lg-12">
@@ -193,8 +198,6 @@
                 var url = '{{ route("teams.detail", "") }}';
                 url += `/${id}`
                 window.location.href = url;
-
-
             }
         });
 
