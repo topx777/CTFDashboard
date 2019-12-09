@@ -187,7 +187,13 @@
                 dataType: "JSON",
                 success: function (response) {
                     if (response.status) {
-                        window.location.href = response.intended;
+                        swal({
+                            title: "Correcto",
+                            text: "Nivel eliminado correctamente",
+                            type: 'success'
+                        });
+                        setDetails();
+                        $("#formJudgeUpdate").removeClass("was-validated");
                     } else {
                         $("#formJudgeUpdate").removeClass("was-validated");
 
@@ -200,21 +206,9 @@
                                 node = $("#formJudgeUpdate").find(
                                     `input[name^="judge[${key}]"]`
                                 );
-                                if (key == "password") {
-                                    node2 = $("#userRegister").find(
-                                        `input[name^="userData[${key}_confirmation]"]`
-                                    );
-                                }
                                 if (node !== undefined) {
                                     node.addClass("is-invalid");
                                 }
-                                if (
-                                    node2 !== undefined &&
-                                    key == "password"
-                                ) {
-                                    node2.addClass("is-invalid");
-                                }
-
                                 let errores = "";
                                 errors[`${key}`].forEach(error => {
                                     errores += error + ". \n  ";

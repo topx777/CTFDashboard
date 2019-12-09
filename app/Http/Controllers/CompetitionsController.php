@@ -108,6 +108,54 @@ class CompetitionsController extends Controller
             return response()->json($response);
         }
     }
+
+    /**
+     * deshabilita una lista de competencias
+     *
+     * deshabilita una lista de competencias
+     *
+     * @param Array $request->competitions arreglo de competiciones
+     * @return JSON
+     **/
+    public function disableList(Request $request)
+    {
+        $response["status"] = true;
+        try {
+
+            if (!$request->ajax()) {
+                throw new \Exception("Error de peticion");
+            }
+            $competitionsEnable=[];
+            foreach ($request->competitions as $key => $competitionId) {
+                $competition = Competition::find($competitionId);
+                if (!is_null($competition)) {
+                    $competition->masterDisabled=0;
+                    $competition->saveOrFail();
+                    $competition->fresh();
+                    $competitionsEnable[]=$competition;
+                }
+            }
+            $competitionsEnable=collect($competitionsEnable);
+
+            $allCompetition=Competition::all();
+            $competitionsDisable=$allCompetition->diff($competitionsEnable);
+
+            foreach ($competitionsDisable as $key => $competition) {
+                $competition->masterDisabled=1;
+                $competition->saveOrFail();
+            }
+
+
+        } catch (\Throwable $ex) {
+            $response["status"] = false;
+            $response["msgError"] = $ex->getMessage();
+        } 
+        
+        finally {
+            return response()->json($response);
+        }
+    }
+
   
 
 }

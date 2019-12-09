@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/competitions/detail/{id}','CompetitionsController@detail')->name('competitions.detail');
     Route::get('/competitions/get', 'CompetitionsController@get')->name('competitions.get');
     Route::post('/competitions/disable', 'CompetitionsController@disable')->name('competitions.disable');
+    Route::post('/competitions/disable/list', 'CompetitionsController@disableList')->name('competitions.disable.list');
 
 });
 

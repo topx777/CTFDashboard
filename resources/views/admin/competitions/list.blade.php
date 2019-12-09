@@ -17,22 +17,29 @@
         </h2>
     </div>
     <div class="body">
-        <div class="row">
-            <div class="col-4">
-                <div class="multiselect_div">
-                    <select id="selectCompetition" name="multiselect4[]" class="multiselect multiselect-custom"
-                        multiple="multiple">
-                        @foreach ($competitions as $competition)
-                        <option value="{{$competition->id}}">{{$competition->name}}</option>
-                        @endforeach
-                    </select>
+        <form id="formDisableCompetitions" action="" novalidate>
+            @csrf
+            <div class="row">
+                <div class="col-4">
+                    <div class="multiselect_div">
+                        <select id="selectCompetition" name="competitions[]" class="multiselect multiselect-custom"
+                            multiple="multiple" required>
+                            @foreach ($competitions as $competition)
+                            <option value="{{$competition->id}}">{{$competition->name}}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">
+                            Necesita seleccionar competencias
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-info">Enviar</button>
                 </div>
             </div>
-            <div class="col-4">
-                <button class="btn btn-info">Enviar</button>
-            </div>
-        </div>
-        <small>*Las competencias seleccionadas no seran deshabilitadas</small>
+            <br>
+            <small>*Solo seran habilitadas las competencias seleccionadas</small>
+        </form>
     </div>
 </div>
 </div>
@@ -89,6 +96,7 @@
 {{-- <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script> --}}
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 <script>
+    var table;
     $(document).ready(function () {
         $.ajaxSetup({
             headers: {
@@ -99,10 +107,12 @@
         $('#selectCompetition').multiselect({
             enableFiltering: true,
             enableCaseInsensitiveFiltering: true,
-            maxHeight: 200
+            maxHeight: 200,
+            filterPlaceholder:'Buscar',
+            nonSelectedText: 'Seleccione Competencias' 
         });
 
-        var table = $('.dataTable').DataTable({
+        table = $('.dataTable').DataTable({
             language: {
                 url: "{{asset('lenguage/Spanish.json')}}"
             },
@@ -160,5 +170,36 @@
         );
     }
 
+
+    var form = document.getElementById('formDisableCompetitions');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (form.checkValidity() === true) {
+            $.ajax({
+                type: "POST",
+                url: "{{route('competitions.disable.list')}}",
+                data: $('#formDisableCompetitions').serialize(),
+                dataType: "JSON",
+                success: function (response) {
+                    table.ajax.reload();
+                    if (response.status) {
+                        swal({
+                            title: "Correcto",
+                            text: "Cambio de estado correctamente",
+                            type: 'success'
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: response.msgError,
+                            type: "error",
+                        });
+                    }
+                }
+            });
+        }
+        form.classList.add('was-validated');
+    }, false);
 </script>
 @endsection

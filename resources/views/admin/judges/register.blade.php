@@ -108,63 +108,65 @@
                     dataType: "JSON",
                     success: function (response) {
                         console.log(response);
-                        // if (response.status) {
-                        //     window.location.href = response.intended;
-                        // } else {
-                        //     $("#userRegister").removeClass("was-validated");
-                        //     if (response.errorsUser !== undefined) {
-                        //         let keys = Object.keys(response.errorsUser);
-                        //         let errors = response.errorsUser;
+                        if (response.status) {
+                            window.location.href = response.intended;
+                        } else {
+                            $("#userRegister").removeClass("was-validated");
 
-                        //         let node, node2;
-                        //         keys.forEach(key => {
-                        //             node = $("#userRegister").find(
-                        //                 `input[name^="userData[${key}]"]`
-                        //             );
-                        //             if (key == "password") {
-                        //                 node2 = $("#userRegister").find(
-                        //                     `input[name^="userData[${key}_confirmation]"]`
-                        //                 );
-                        //             }
+                            if (response.errorsUser !== undefined) {
+                                let keys = Object.keys(response.errorsUser);
+                                let errors = response.errorsUser;
 
-                        //             if (node !== undefined) {
-                        //                 node.addClass("is-invalid");
-                        //             }
-                        //             if (
-                        //                 node2 !== undefined &&
-                        //                 key == "password"
-                        //             ) {
-                        //                 node2.addClass("is-invalid");
-                        //             }
+                                let node, node2;
+                                
+                                keys.forEach(key => {
+                                    node = $("#userRegister").find(
+                                        `input[name^="userData[${key}]"]`
+                                    );
+                                    if (key == "password") {
+                                        node2 = $("#userRegister").find(
+                                            `input[name^="userData[${key}_confirmation]"]`
+                                        );
+                                    }
 
-                        //             let errores = "";
-                        //             errors[`${key}`].forEach(error => {
-                        //                 errores += error + ". \n  ";
-                        //             });
+                                    if (node !== undefined) {
+                                        node.addClass("is-invalid");
+                                    }
+                                    if (
+                                        node2 !== undefined &&
+                                        key == "password"
+                                    ) {
+                                        node2.addClass("is-invalid");
+                                    }
 
-                        //             if (node !== undefined) {
-                        //                 if (key == "password") {
-                        //                     $(node2[0])
-                        //                         .parent()
-                        //                         .find(".invalid-feedback")
-                        //                         .html(errores);
-                        //                 }
-                        //                 $(node[0])
-                        //                     .parent()
-                        //                     .find(".invalid-feedback")
-                        //                     .html(errores);
-                        //             }
-                        //         });
-                        //     } else {
-                        //         swal({
-                        //             type: "error",
-                        //             title: "Error",
-                        //             text: response.msgError
-                        //         });
-                        //     }
+                                    let errores = "";
+                                    errors[`${key}`].forEach(error => {
+                                        errores += error + ". \n  ";
+                                    });
+
+                                    if (node !== undefined) {
+                                        if (key == "password") {
+                                            $(node2[0])
+                                                .parent()
+                                                .find(".invalid-feedback")
+                                                .html(errores);
+                                        }
+                                        $(node[0])
+                                            .parent()
+                                            .find(".invalid-feedback")
+                                            .html(errores);
+                                    }
+                                });
+                            } else {
+                                swal({
+                                    type: "error",
+                                    title: "Error",
+                                    text: response.msgError
+                                });
+                            }
 
 
-                        // }
+                        }
                     },
                     error: function (err) {
                         console.log(err);
