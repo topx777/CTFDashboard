@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\TeamsPositions;
 use App\Challenge;
+use App\Competition;
 use App\Team;
 use App\TeamChallenge;
 use App\Member;
 use App\User;
-use App\Option;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -125,11 +125,23 @@ class TeamController extends Controller
      *
      * Funcion para mostrar la vista de registro de los equipos (Administrador)
      *
-     * @return view
+     * @param \Illuminate\Http\Request $request Solicitud
+     * @return \Illuminate\Contracts\Support\Renderable
      **/
-    public function register()
+    public function register(Request $request)
     {
-        return view('admin.teams.register');
+        $competition_id = null;
+        if ($request->has('competition')) {
+            try {
+                $competition_id = decrypt($request->competition);
+            } catch (DecryptException $ex) {
+                $competition_id = 0;
+            }
+        }
+
+        $competition = Competition::find($competition_id);
+
+        return view('judge.teams.register', compact('competition'));
     }
     /**
      * Funcion para Modificar equipo

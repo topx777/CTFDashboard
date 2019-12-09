@@ -13,12 +13,13 @@
             <h2>Lista de Equipos en CTF<small>Seleccione un item para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-                <li><a href="{{ route('teams.register') }}" class="btn btn-primary text-white">Registrar</a></li>
+                <li><a href="{{ route('teams.register', ["competition" => app('request')->has('competition') ? app('request')->input('competition') : 0]) }}" class="btn btn-primary text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>
             </ul>
         </div>
         <div class="body">
+            <input type="hidden" id="idCompetition" value="{{ app('request')->has('competition') ? app('request')->input('competition') : 0 }}">
             <div class="table-responsive">
                 <table class="table table-striped table-hover dataTable js-exportable">
                     <thead>
@@ -57,7 +58,8 @@
 
             <div class="modal-body">
                 <ul class="nav nav-tabs2 justify-content-end">
-                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#tabUserDetail">Detalle</a></li>
+                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab"
+                            href="#tabUserDetail">Detalle</a></li>
                     <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabUserEdit">Editar</a></li>
                     <li id="btnUserDelete" class="nav-item"><a class="nav-link">Eliminar</a></li>
                 </ul>
@@ -149,18 +151,37 @@
             }
         });
 
+        let idCompetition = $('#idCompetition').val();
+
         var table = $('.dataTable').DataTable({
             language: {
                 url: "{{asset('lenguage/Spanish.json')}}"
             },
             processing: true,
             serverSide: true,
-            ajax: "{{ route('teams.list') }}",
-            columns: [
-                { data: 'name', name: 'name' },
-                { data: 'couch', name: 'couch' },
-                { data: 'phrase', name: 'phrase' },
-                { data: 'DT_RowId', name: 'DT_RowId', visible: false }
+            ajax: {
+                url: "{{ route('teams.list') }}",
+                data: {
+                    competition: idCompetition
+                }
+            },
+            columns: [{
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'couch',
+                    name: 'couch'
+                },
+                {
+                    data: 'phrase',
+                    name: 'phrase'
+                },
+                {
+                    data: 'DT_RowId',
+                    name: 'DT_RowId',
+                    visible: false
+                }
             ]
         });
         // row id
@@ -170,8 +191,8 @@
                 id = id.replace(/\D/g, '');
                 id = parseInt(id, 10);
                 var url = '{{ route("teams.detail", "") }}';
-                url+=`/${id}`
-                window.location.href=url;
+                url += `/${id}`
+                window.location.href = url;
 
 
             }
@@ -180,11 +201,9 @@
         // confirm delete user
         $('#btnUserDelete').click(function (e) {
             e.preventDefault();
-
-
             showConfirmMessage();
-
         });
+
         function showConfirmMessage() {
             swal({
                 title: `Esta seguro de eliminar al usuario`,
@@ -197,12 +216,11 @@
                 cancelButtonText: 'Cancelar'
             }, function () {
 
-
-
             });
         }
 
 
     });
+
 </script>
 @endsection
