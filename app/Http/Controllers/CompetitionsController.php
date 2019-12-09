@@ -35,7 +35,8 @@ class CompetitionsController extends Controller
                     return $row;
                 })->make(true);
         }
-        return view('admin.competitions.list');
+        $competitions=Competition::all();
+        return view('admin.competitions.list',compact('competitions'));
     }
 
      /**
@@ -50,7 +51,7 @@ class CompetitionsController extends Controller
         if ($request->ajax()) {
             $id = $request->id;
 
-            $competition = Competition::find($id);
+            $competition = Competition::with(['Judge'])->find($id);
 
             if (is_null($competition)) {
                 return response()->json(null);
@@ -72,9 +73,41 @@ class CompetitionsController extends Controller
      **/
     public function detail(Request $request, $id)
     {
-        return view('admin/competitions/details');
+        return view('admin/competitions/details',['id'=>$id]);
     }
 
+    /**
+     * Deshabilitacion maestra de competicion
+     *
+     * Deshabilita o habilita una copetencia 
+     *
+     * @param Int $request->id id de competencia
+     * @param Int $request->disable nuevo estado
+     * @return JSON
+     **/
+    public function disable(Request $request)
+    {
+        $response["status"] = true;
+        try {
+
+            if (!$request->ajax()) {
+                throw new \Exception("Error de peticion");
+            }
+            $id = $request->id;
+            $competition = Competition::find($id);
+
+            if (is_null($competition)) {
+                throw new \Exception("Error, no se pudo encontrar la competicion");
+            }
+            $competition->masterDisabled=$request->disable;
+            $competition->saveOrFail();
+        } catch (\Throwable $ex) {
+            $response["status"] = false;
+            $response["msgError"] = $ex->getMessage();
+        } finally {
+            return response()->json($response);
+        }
+    }
   
 
 }

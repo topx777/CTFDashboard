@@ -39,10 +39,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/judges/detail/{id}', 'JudgeController@detail')->name('judges.detail');
     Route::get('/judges/get', 'JudgeController@get')->name('judges.get');
     Route::post('/judges/update', 'JudgeController@update')->name('judges.update');
+    Route::post('/judges/delete', 'JudgeController@delete')->name('judges.delete');
+
     
     // Route Competitions
     Route::get('/competitions/list', 'CompetitionsController@list')->name('competitions.list');
     Route::get('/competitions/detail/{id}','CompetitionsController@detail')->name('competitions.detail');
+    Route::get('/competitions/get', 'CompetitionsController@get')->name('competitions.get');
+    Route::post('/competitions/disable', 'CompetitionsController@disable')->name('competitions.disable');
+
 });
 
 

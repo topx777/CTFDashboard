@@ -14,7 +14,7 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="">Nombres</label>
-                            <input id="username" name="judge[name]" autofocus type="text"
+                            <input id="username" name="judgeData[name]" autofocus type="text"
                                 class="form-control username" required maxlength="40" />
                             <div class="invalid-feedback">
                                 El campo nombre es obligatorio
@@ -24,7 +24,7 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label for="">Apellidos</label>
-                            <input name="judge[lastname]" type="text" class="form-control" required maxlength="55" />
+                            <input name="judgeData[lastname]" type="text" class="form-control" required maxlength="55" />
                             <div class="invalid-feedback">
                                 El campo apellidos es obligatorio
                             </div>
@@ -40,7 +40,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="">Nombre Usuario</label>
-                                    <input name="judge[username]" type="text" class="form-control" required maxlength="40" />
+                                    <input name="userData[username]" type="text" class="form-control" required maxlength="40" />
                                     <div class="invalid-feedback">
                                         El campo nombre usuario es obligatorio
                                     </div>
@@ -49,7 +49,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="">Correo</label>
-                                    <input name="judge[email]" type="email" class="form-control" required maxlength="55" />
+                                    <input name="userData[email]" type="email" class="form-control" required maxlength="55" />
                                     <div class="invalid-feedback">
                                         El campo correo es obligatorio
                                     </div>
@@ -57,13 +57,23 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="">password</label>
-                                    <input name="judge[password]" type="password" class="form-control password" required maxlength="35" />
+                                    <label for="">Contraseña</label>
+                                    <input name="userData[password]" type="password" class="form-control password" required minlength="8" maxlength="35" />
                                     <div class="invalid-feedback">
                                         El campo password es obligatorio
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="">Confirmar Contraseña</label>
+                                    <input name="userData[password_confirmation]" type="password" class="form-control password" required minlength="8" maxlength="35" />
+                                    <div class="invalid-feedback">
+                                        El campo password es obligatorio
+                                    </div>
+                                </div>
+                            </div>
+                            <input id="role" name="userData[role]" type="hidden" value="1" />
                         </div>
                     </div>
                 </div>
@@ -97,63 +107,64 @@
                     cache: false,
                     dataType: "JSON",
                     success: function (response) {
-                        if (response.status) {
-                            window.location.href = response.intended;
-                        } else {
-                            $("#userRegister").removeClass("was-validated");
-                            if (response.errorsUser !== undefined) {
-                                let keys = Object.keys(response.errorsUser);
-                                let errors = response.errorsUser;
+                        console.log(response);
+                        // if (response.status) {
+                        //     window.location.href = response.intended;
+                        // } else {
+                        //     $("#userRegister").removeClass("was-validated");
+                        //     if (response.errorsUser !== undefined) {
+                        //         let keys = Object.keys(response.errorsUser);
+                        //         let errors = response.errorsUser;
 
-                                let node, node2;
-                                keys.forEach(key => {
-                                    node = $("#userRegister").find(
-                                        `input[name^="userData[${key}]"]`
-                                    );
-                                    if (key == "password") {
-                                        node2 = $("#userRegister").find(
-                                            `input[name^="userData[${key}_confirmation]"]`
-                                        );
-                                    }
+                        //         let node, node2;
+                        //         keys.forEach(key => {
+                        //             node = $("#userRegister").find(
+                        //                 `input[name^="userData[${key}]"]`
+                        //             );
+                        //             if (key == "password") {
+                        //                 node2 = $("#userRegister").find(
+                        //                     `input[name^="userData[${key}_confirmation]"]`
+                        //                 );
+                        //             }
 
-                                    if (node !== undefined) {
-                                        node.addClass("is-invalid");
-                                    }
-                                    if (
-                                        node2 !== undefined &&
-                                        key == "password"
-                                    ) {
-                                        node2.addClass("is-invalid");
-                                    }
+                        //             if (node !== undefined) {
+                        //                 node.addClass("is-invalid");
+                        //             }
+                        //             if (
+                        //                 node2 !== undefined &&
+                        //                 key == "password"
+                        //             ) {
+                        //                 node2.addClass("is-invalid");
+                        //             }
 
-                                    let errores = "";
-                                    errors[`${key}`].forEach(error => {
-                                        errores += error + ". \n  ";
-                                    });
+                        //             let errores = "";
+                        //             errors[`${key}`].forEach(error => {
+                        //                 errores += error + ". \n  ";
+                        //             });
 
-                                    if (node !== undefined) {
-                                        if (key == "password") {
-                                            $(node2[0])
-                                                .parent()
-                                                .find(".invalid-feedback")
-                                                .html(errores);
-                                        }
-                                        $(node[0])
-                                            .parent()
-                                            .find(".invalid-feedback")
-                                            .html(errores);
-                                    }
-                                });
-                            } else {
-                                swal({
-                                    type: "error",
-                                    title: "Error",
-                                    text: response.msgError
-                                });
-                            }
+                        //             if (node !== undefined) {
+                        //                 if (key == "password") {
+                        //                     $(node2[0])
+                        //                         .parent()
+                        //                         .find(".invalid-feedback")
+                        //                         .html(errores);
+                        //                 }
+                        //                 $(node[0])
+                        //                     .parent()
+                        //                     .find(".invalid-feedback")
+                        //                     .html(errores);
+                        //             }
+                        //         });
+                        //     } else {
+                        //         swal({
+                        //             type: "error",
+                        //             title: "Error",
+                        //             text: response.msgError
+                        //         });
+                        //     }
 
 
-                        }
+                        // }
                     },
                     error: function (err) {
                         console.log(err);

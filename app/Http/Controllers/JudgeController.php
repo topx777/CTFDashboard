@@ -142,8 +142,8 @@ class JudgeController extends Controller
                     [
                         'name' => 'required|max:40',
                         'lastname' => 'required|max:55',
-                        'username' => 'required|unique:users|max:40',
-                        'email' => 'required|unique:users|max:55|email',
+                        'username' => 'required|max:40',
+                        'email' => 'required|max:55|email',
                         'password' => 'required|max:35'
                     ]
                 );
@@ -160,11 +160,11 @@ class JudgeController extends Controller
                     throw new \Exception("Existen Errores de Validacion");
                 }
 
-                $judge->name = $request->name;
-                $judge->lastname = $request->lastname;
-                $judge->User->username = $request->username;
-                $judge->User->password = ($request->password == 'null') ? $judge->User->password : Hash::make($request->password);
-                $judge->User->email = $request->email;
+                $judge->name = $request->judge['name'];
+                $judge->lastname = $request->judge['lastname'];
+                $judge->User->username = $request->judge['username'];
+                $judge->User->password = ($request->judge['password'] == 'null') ? $judge->User->password : Hash::make($request->judge['password']);
+                $judge->User->email = $request->judge['email'];
                 $judge->saveOrFail();
             } catch (\Throwable $th) {
                 $resp["status"] = false;
