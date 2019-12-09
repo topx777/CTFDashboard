@@ -15,33 +15,30 @@ class JudgeController extends Controller
      * function list
      *
      * lista los jueces de CTf
-     *  
+     *
      * @return View
      * @throws conditon
      **/
     public function list(Request $request)
     {
         if ($request->ajax()) {
-            if($request->has('search') && !is_null($request->search['value'])) {
+            if ($request->has('search') && !is_null($request->search['value'])) {
                 $search = $request->search['value'];
                 $data = Judge::where('name', 'LIKE', "%{$search}%");
-
-            }
-            else {
-                $data=Judge::all();
+            } else {
+                $data = Judge::all();
             }
 
             return DataTables::of($data)
-                ->addColumn('DT_RowId', function($row)
-                {
-                    $row=$row->id;
+                ->addColumn('DT_RowId', function ($row) {
+                    $row = $row->id;
                     return $row;
                 })->make(true);
         }
         return view('admin.judges.list');
     }
 
-     /**
+    /**
      * Obtener un juez
      *
      * Funcion para obtener un juez por ID (Administrador)
@@ -75,24 +72,21 @@ class JudgeController extends Controller
     public function store(Request $request)
     {
         if ($request->isMethod('POST') && $request->ajax()) {
-            $resp['status']=true;
+            $resp['status'] = true;
             try {
-                $judge =new Judge();
-                $validation= Validator::make(
-                    $request->all(),[
+                $judge = new Judge();
+                $validation = Validator::make(
+                    $request->all(),
+                    [
                         'name' => 'required|max:40'
                     ]
                 );
 
                 if ($validation->fails()) {
-                    $resp['validationErrors']= $validation->errors()->all();
+                    $resp['validationErrors'] = $validation->errors()->all();
                     throw new \Exception('Problemas de validacion');
                 }
-
-
-            } catch (\Throwable $th) {
-
-            }
+            } catch (\Throwable $th) { }
         }
     }
 
@@ -119,7 +113,7 @@ class JudgeController extends Controller
      **/
     public function detail(Request $request, $id)
     {
-        return view('admin/judges/details',['id'=>$id]);
+        return view('admin/judges/details', ['id' => $id]);
     }
 
     /**
@@ -142,11 +136,11 @@ class JudgeController extends Controller
                 if (is_null($judge)) {
                     throw new \Exception("No se encontro al juez");
                 }
-                
+
                 $validateJudge = Validator::make(
                     $request->judge,
                     [
-                        'name' =>'required|max:40',
+                        'name' => 'required|max:40',
                         'lastname' => 'required|max:55',
                         'username' => 'required|unique:users|max:40',
                         'email' => 'required|unique:users|max:55|email',
@@ -159,15 +153,18 @@ class JudgeController extends Controller
                     foreach ($validateJudge->getMessageBag()->getMessages() as $key => $error) {
                         $validationErrorsJudge[$key] = $error;
                     }
+                }
+
+                if (count($validationErrorsJudge) > 0) {
                     $resp["errors"] = $validationErrorsJudge;
                     throw new \Exception("Existen Errores de Validacion");
                 }
 
-                $judge->name=$request->name;
-                $judge->lastname=$request->lastname;
-                $judge->User->username=$request->username;
-                $judge->User->password=($request->password=='null')?$judge->User->password:Hash::make($request->password);
-                $judge->User->email=$request->email;
+                $judge->name = $request->name;
+                $judge->lastname = $request->lastname;
+                $judge->User->username = $request->username;
+                $judge->User->password = ($request->password == 'null') ? $judge->User->password : Hash::make($request->password);
+                $judge->User->email = $request->email;
                 $judge->saveOrFail();
             } catch (\Throwable $th) {
                 $resp["status"] = false;
@@ -180,7 +177,7 @@ class JudgeController extends Controller
         }
     }
 
-      /**
+    /**
      * Funcion para Eliminar el juez
      *
      * Eliminar el juez
@@ -211,7 +208,4 @@ class JudgeController extends Controller
             return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
         }
     }
-
-
-
 }
