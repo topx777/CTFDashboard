@@ -5,6 +5,11 @@
     href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert.css')}}" />
+<style>
+    tbody tr {
+        cursor: pointer;
+    }
+</style>
 @endsection
 @section('content')
 <!-- level list -->
@@ -44,41 +49,7 @@
         </div>
     </div>
 </div>
-<!-- Categories list -->
-<div class="col-lg-6">
-    <div class="card">
-        <div class="header">
-            <h2>Lista de Categorias<small>Seleccione una fila para ver detalles</small>
-            </h2>
-            <ul class="header-dropdown dropdown">
-                <li><a data-toggle="modal" data-target="#registerCategoryModal"
-                        class="btn btn-success text-white">Registrar</a></li>
-                <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
-                </li>
-            </ul>
-        </div>
-        <div class="body">
-            <div class="table-responsive">
-                <table id="categoryTable" class="table table-striped table-hover dataTable1 js-exportable">
-                    <thead>
-                        <tr>
-                            <th>Categoria</th>
-                            <th>Descripcion</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Categoria</th>
-                            <th>Descripcion</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- Register level modal -->
 <div id="registerlevelModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -107,7 +78,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Puntaje</label>
-                                        <input name="score" type="text" class="form-control" required
+                                        <input name="score" type="text" class="form-control entero" required
                                             autocomplete="false" />
                                         <div class="invalid-feedback">
                                             El campo es obligatorio
@@ -120,71 +91,29 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>Porcentaje de Descuento</label>
-                                        <input name="hintDiscount" type="text" class="form-control" required />
+                                        <input name="hintDiscount" type="text" class="form-control decimal" required />
+                                        <div class="invalid-feedback">
+                                            El campo es obligatorio
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Orden</label>
+                                        <input name="order" type="text" class="form-control entero" required />
                                         <div class="invalid-feedback">
                                             El campo es obligatorio
                                         </div>
                                     </div>
                                 </div>
+                                <input type="hidden" id="idCompetition" name="idCompetition" value="{{ app('request')->has('competition') ? app('request')->input('competition') : 0 }}">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Register category modal -->
-<div id='registerCategoryModal' class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title h4" id="myLargeModalLabel">Nueva Categoria</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="tab-pane vivify flipInX">
-                    <div class="pt-4 px-3">
-                        <form id="registerCategoryForm" action="{{ route('categories.store') }}" method="POST">
-                            @csrf
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="">Nombre Categoria</label>
-                                        <input name="name" autofocus type="text" class="form-control"
-                                            required  maxlength="40">
-                                        <div class="invalid-feedback">
-                                            El campo es obligatorio
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="">Descripcion</label>
-                                        <textarea type="text" name="description" class="form-control"
-                                            rows="3"></textarea>
-                                        <div class="invalid-feedback">
-                                            El campo es obligatorio
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <button class="btn btn-primary">Guardar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- larg level modal -->
 <div id="detaillevelModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -219,6 +148,10 @@
                                 <strong class="text-white">Porcentaje descuento:</strong>
                                 <span id="levelHintDiscount"></span>
                             </div>
+                            <div class="col-6 form-group">
+                                <strong class="text-white">Orden:</strong>
+                                <span id="levelOrder"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane vivify flipInX" id="tabUserEdit">
@@ -238,7 +171,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Puntaje</label>
-                                            <input name="score" type="text" class="form-control" required
+                                            <input name="score" type="text" class="form-control entero" required
                                                 autocomplete="false" />
                                             <div class="invalid-feedback">
                                                 El campo es obligatorio
@@ -251,13 +184,19 @@
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>Porcentaje de Descuento</label>
-                                            <input name="hintDiscount" type="text" class="form-control" required />
+                                            <input name="hintDiscount" type="text" class="form-control decimal" required />
+                                            <div class="invalid-feedback">
+                                                El campo es obligatorio
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Orden</label>
+                                            <input name="order" type="text" class="form-control entero" required />
                                             <div class="invalid-feedback">
                                                 El campo es obligatorio
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </form>
                         </div>
@@ -268,79 +207,6 @@
     </div>
 </div>
 
-<!-- larg category modal -->
-<div id="detailcategoryModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title h4" id="myLargeModalLabel">Detalle de Categoria</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <ul class="nav nav-tabs2 justify-content-end">
-                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab"
-                            href="#tabUserDetail1">Detalle</a></li>
-                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabUserEdit1">Editar</a></li>
-                    <li class="nav-item"><a id="btnCategoryDelete" class="nav-link">Eliminar</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane show vivify flipInX active" id="tabUserDetail1">
-                        <div class="row pt-4 px-3">
-                            <div class="col-6 form-group">
-                                <strong class="text-white">Nombre Categoria:</strong>
-                                <span id="categoryName" class=""></span>
-                            </div>
-                            <div class="col-12 form-group">
-                                <strong class="text-white">Descripcion:</strong>
-                                <span id="categoryDescription"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane vivify flipInX" id="tabUserEdit1">
-                        <div class="pt-4 px-3">
-                            <form id="updateCategoryForm" action="{{ route('categories.update') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="id" id="categoryID">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Nombre categoria</label>
-                                            <input name="name" autofocus type="text" class="form-control"
-                                                required maxlength="40">
-                                            <div class="invalid-feedback">
-                                                El campo es obligatorio
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="">Descripcion</label>
-                                            <textarea name="description" type="text" class="form-control" placeholder="Ingrese descripcion"
-                                                rows="4"></textarea>
-                                            <div class="invalid-feedback">
-                                                El campo es obligatorio
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <button class="btn btn-primary">Guardar</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 @section('script')
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
@@ -363,6 +229,8 @@
             ValidarInput('integer', element);
         });
 
+        let idCompetition = $('#idCompetition').val();
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -375,7 +243,12 @@
             },
             processing: true,
             serverSide: true,
-            ajax: "{{ route('levels.list') }}",
+            ajax: {
+                url: "{{ route('levels.list') }}",
+                data: {
+                    competition: idCompetition
+                }
+            },
             columns: [{
                     data: 'name',
                     name: 'name'
@@ -400,9 +273,6 @@
         $('#levelTable').on('click', 'tr', function () {
             var id = levelTable.row(this).id();
             if (id) {
-                id = id.replace(/\D/g, '');
-                id = parseInt(id, 10);
-
                 CargarNivel(id);
             }
         });
@@ -429,11 +299,13 @@
                     $('#levelName').html(data.name);
                     $('#levelScore').html(`#${data.score}`);
                     $('#levelHintDiscount').html(`${(parseFloat(data.hintDiscount) * 100).toFixed(2)}%`);
+                    $('#levelOrder').html(`#${data.order}`);
 
                     $('#updateLevelForm').find('input[name=id]').val(data.id);
                     $('#updateLevelForm').find('input[name=name]').val(data.name);
                     $('#updateLevelForm').find('input[name=score]').val(`${data.score}`);
                     $('#updateLevelForm').find('input[name=hintDiscount]').val(`${(parseFloat(data.hintDiscount) * 100).toFixed(2)}`);
+                    $('#updateLevelForm').find('input[name=order]').val(`${data.order}`);
                 },
                 error: function (err) {
                     console.log(err);
@@ -486,48 +358,7 @@
                                     });
                                     levelTable.ajax.reload();
                                     $('#detaillevelModal').modal('hide');
-                                } else {
-                                    swal({
-                                        title: "Error!",
-                                        text: response.msgError,
-                                        type: "error",
-                                    });
-                                }
-                            },
-                            error: function (err) {
-                                swal({
-                                    title: "Error!",
-                                    text: "Error desconocido, intente nuevamente!",
-                                    type: "error",
-                                });
-                                console.log(err);
-                            },
-                            complete: function () {
-                                trigger.prop('disable', false);
-                            }
-                        });
 
-                        break;
-                    case 'categoria':
-                    trigger.prop('disabled', true);
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ route('categories.delete') }}",
-                            data: {
-                                id: id,
-                                _token: "{{ csrf_token() }}"
-                            },
-                            dataType: "JSON",
-                            cache: false,
-                            success: function (response) {
-                                if (response.status) {
-                                    swal({
-                                        title: "Correcto",
-                                        text: "Categoria eliminado correctamente",
-                                        type: 'success'
-                                    });
-                                    categoryTable.ajax.reload();
-                                    $('#detailcategoryModal').modal('hide');
                                 } else {
                                     swal({
                                         title: "Error!",
@@ -585,6 +416,7 @@
 
                         $('#registerlevelModal').modal('hide');
                         levelTable.ajax.reload();
+                        $(form).removeClass('was-validated');
                     } else {
                         $(form).removeClass('was-validated');
                         if (response.validationErrors !== undefined) {
@@ -717,11 +549,13 @@
         modal.find('#levelName').html('');
         modal.find('#levelScore').html('');
         modal.find('#levelHintDiscount').html('');
+        modal.find('#levelOrder').html('');
 
         modal.find('#updateLevelForm').find('input[name=id]').val('');
         modal.find('#updateLevelForm').find('input[name=name]').val('');
         modal.find('#updateLevelForm').find('input[name=score]').val('');
         modal.find('#updateLevelForm').find('input[name=hintDiscount]').val('');
+        modal.find('#updateLevelForm').find('input[name=order]').val('');
 
         formUpdLevel.reset();
         formUpdLevel.classList.remove('was-validated')

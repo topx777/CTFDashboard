@@ -31,7 +31,6 @@ class TeamController extends Controller
         if ($request->ajax()) {
 
             if ($request->has('competition')) {
-
                 $id_competition = null;
                 try {
                     $id_competition = decrypt($request->competition);
@@ -48,13 +47,7 @@ class TeamController extends Controller
                     $data = Team::where('idCompetition', $id_competition)->get();
                 }
             } else {
-                if ($request->has('search') && !is_null($request->search["value"])) {
-                    $search = $request->search["value"];
-
-                    $data = Team::where('name', 'LIKE', "%$search%")->get();
-                } else {
-                    $data = Team::all();
-                }
+                $data = Team::where('id', 0)->get();
             }
 
 

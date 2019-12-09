@@ -34,17 +34,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::post('/users/delete', 'UserController@delete')->name('users.delete');
 
     // Route Judge
-    Route::get('/judges/list','JudgeController@list')->name('judges.list');
+    Route::get('/judges/list', 'JudgeController@list')->name('judges.list');
     Route::get('/judges/register', 'JudgeController@register')->name('judges.register');
     Route::get('/judges/detail/{id}', 'JudgeController@detail')->name('judges.detail');
     Route::get('/judges/get', 'JudgeController@get')->name('judges.get');
     Route::post('/judges/update', 'JudgeController@update')->name('judges.update');
     Route::post('/judges/delete', 'JudgeController@delete')->name('judges.delete');
 
-    
+
     // Route Competitions
     Route::get('/competitions/list', 'CompetitionsController@list')->name('competitions.list');
-    Route::get('/competitions/detail/{id}','CompetitionsController@detail')->name('competitions.detail');
+    Route::get('/competitions/detail/{id}', 'CompetitionsController@detail')->name('competitions.detail');
     Route::get('/competitions/get', 'CompetitionsController@get')->name('competitions.get');
     Route::post('/competitions/disable', 'CompetitionsController@disable')->name('competitions.disable');
     Route::post('/competitions/disable/list', 'CompetitionsController@disableList')->name('competitions.disable.list');
@@ -66,6 +66,9 @@ Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
 
     //Retos Competencia
     Route::get('/competitionChallenge/list', 'CompetitionChallengeController@list')->name('competitionChallenge.list');
+    Route::get('/competitionChallenge/register', 'CompetitionChallengeController@register')->name('competitionChallenge.register');
+    Route::post('/competitionChallenge/store', 'CompetitionChallengeController@store')->name('competitionChallenge.store');
+    Route::post('/competitionChallenge/delete', 'CompetitionChallengeController@delete')->name('competitionChallenge.delete');
 
 
     // Rutas de Team
@@ -98,7 +101,7 @@ Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
     Route::any('/challenges/list', 'ChallengeController@list')->name('challenges.list');
     Route::get('/challenges/register', 'ChallengeController@register')->name('challenges.register');
     Route::post('/challenges/store', 'ChallengeController@store')->name('challenges.store');
-    Route::get('/challenges/get/{$id}', 'ChallengeController@get')->name('challenges.get');
+    Route::get('/challenges/get', 'ChallengeController@get')->name('challenges.get');
     Route::get('/challenges/detail/{id}', 'ChallengeController@detail')->name('challenges.detail');
     Route::get('/challenges/edit/{id}', 'ChallengeController@edit')->name('challenges.edit');
     Route::post('/challenges/update', 'ChallengeController@update')->name('challenges.update');

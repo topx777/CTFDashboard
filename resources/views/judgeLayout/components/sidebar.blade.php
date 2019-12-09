@@ -1,6 +1,6 @@
 <div id="left-sidebar" class="sidebar">
     <div class="navbar-brand">
-        <a href="#"><img src="{{asset('images/icon.svg')}}" alt="Oculux Logo"
+        <a href="{{ route('judge.home') }}"><img src="{{asset('images/icon.svg')}}" alt="CTF Upds"
                 class="img-fluid logo"><span>CTFUPDS</span></a>
         <button type="button" class="btn-toggle-offcanvas btn btn-sm float-right"><i
                 class="lnr lnr-menu icon-close"></i></button>

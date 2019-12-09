@@ -25,6 +25,7 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Descripcion</th>
+                            <th>Flag</th>
                             <th>Pista</th>
                             <th>Dificultad</th>
                             <th>Categoria</th>
@@ -35,6 +36,7 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Descripcion</th>
+                            <th>Flag</th>
                             <th>Pista</th>
                             <th>Dificultad</th>
                             <th>Categoria</th>
@@ -77,6 +79,7 @@
             columns: [
                 { data: 'name', name: 'name' },
                 { data: 'description', name: 'description' },
+                { data: 'flag', name: 'flag' },
                 { data: 'hint', name: 'hint' },
                 { data: 'dificulty', name: 'dificulty' },
                 { data: 'idCategory', name: 'idCategory' },

@@ -18,19 +18,20 @@
             <h2>Lista de retos de la Competencia<small>Seleccione un item para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
-                <li><a href="{{ route('challenges.register') }}" class="btn btn-primary text-white">Registrar</a></li>
+                <li><a href="{{ route('competitionChallenge.register', ["idCompetition" => app('request')->has('competition') ? app('request')->input('competition') : 0 ]) }}" class="btn btn-primary text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>
             </ul>
         </div>
         <div class="body">
+            <input type="hidden" id="idCompetition" value="{{ app('request')->has('competition') ? app('request')->input('competition') : 0 }}">
             <div class="table-responsive">
-                <table class="table table-striped table-hover dataTable js-exportable">
+                <table id="challengesTable" class="table table-striped table-hover dataTable js-exportable">
                     <thead>
                         <tr>
                             <th> </th>
-                            <th>Nombre</th>
-                            <th>Descripcion</th>
+                            <th>Reto</th>
+                            <th>Bandera</th>
                             <th>Pista</th>
                             <th>Nivel</th>
                             <th>Categoria</th>
@@ -39,8 +40,8 @@
                     <tfoot>
                         <tr>
                             <th> </th>
-                            <th>Nombre</th>
-                            <th>Descripcion</th>
+                            <th>Reto</th>
+                            <th>Bandera</th>
                             <th>Pista</th>
                             <th>Nivel</th>
                             <th>Categoria</th>
@@ -72,23 +73,31 @@
             }
         });
 
-        var table = $('.dataTable').DataTable({
+        let idCompetition = $("#idCompetition").val();
+
+        var table = $('#challengesTable').DataTable({
             language: {
                 url: "{{asset('lenguage/Spanish.json')}}"
             },
             processing: true,
             serverSide: true,
-            ajax: "{{ route('challenges.list') }}",
+            ajax: {
+                url: "{{ route('competitionChallenge.list') }}",
+                data: {
+                    idCompetition: idCompetition
+                }
+            },
             columns: [
                 { data: 'action', name: 'action'},
-                { data: 'name', name: 'name' },
-                { data: 'description', name: 'description' },
+                { data: 'idChallenge', name: 'idChallenge' },
+                { data: 'flag', name: 'flag' },
                 { data: 'hint', name: 'hint' },
                 { data: 'idLevel', name: 'idLevel' },
-                { data: 'idCategory', name: 'idCategory' },
+                { data: 'category', name: 'category' },
                 { data: 'DT_RowId', name: 'DT_RowId', visible: false }
             ]
         });
+
 
         // confirm delete user
         $(document).on('click', '.deleteChallenge', function (e) {
@@ -111,7 +120,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('challenges.delete') }}",
+                    url: "{{ route('competitionChallenge.delete') }}",
                     data: {
                         _token: "{{ csrf_token() }}",
                         id: id
