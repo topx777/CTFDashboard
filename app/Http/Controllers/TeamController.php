@@ -374,7 +374,7 @@ class TeamController extends Controller
         $membersTeam = Member::select('name', 'lastName', 'email', 'career', 'university')
             ->where('idTeam', $teamData->id)
             ->get();
-        $options = Option::select('rules', 'startTime', 'endTime')->first();
+        $options = Competition::select('rules', 'startTime', 'endTime')->first();
         return view('team.dashboard', compact('teamData', 'membersTeam', 'options'));
     }
 
