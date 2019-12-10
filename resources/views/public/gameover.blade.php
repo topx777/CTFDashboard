@@ -96,8 +96,6 @@
     <script src="{{asset('bundles/libscripts.bundle.js')}}"></script>
     <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
     <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
-    <script src="{{asset('js/scoreboard.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
     <script>
         // $(function () {
         //     $.ajaxSetup({
