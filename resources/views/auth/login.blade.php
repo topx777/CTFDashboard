@@ -77,7 +77,9 @@
                     <button type="submit" class="btn btn-secondary btn-round btn-block">INICIAR</button>
                     @if (isset($reference_comp) && !is_null($reference_comp))
                     <div class="bottom">
-                    <span class="helper-text m-b-10" style="font-size: 18px;"><i class="fa fa-code"></i> <a href="#">Registrar mi Equipo</a></span>
+                    <span class="helper-text m-b-10" style="font-size: 18px;">
+                        <i class="fa fa-code"></i> 
+                        <a href="{{ route('guest.register', ["ref" => app('request')->has('ref') ? app('request')->input('ref') : 0]) }}">Registrar mi Equipo</a></span>
                     </div>
                     @endif
                 </form>
@@ -92,6 +94,10 @@
 <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
 <script>
+$(document).on('onscroll', 'body', function(e) {
+    e.preventDefault();
+})
+
 $(document).on('submit', '#loginForm', function (e) {
     e.preventDefault();
 
