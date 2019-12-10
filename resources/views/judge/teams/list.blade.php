@@ -18,6 +18,7 @@
             <h2>Lista de Equipos en CTF<small>Seleccione un item para ver detalles</small>
             </h2>
             <ul class="header-dropdown dropdown">
+                <li><a target="_blank" href="{{ route('teams.printCredentials', ["competition" => app('request')->has('competition') ? app('request')->input('competition') : 0]) }}" class="btn btn-success text-white"> <i class="fa fa-fw fa-print"></i> Imprimir Credenciales</a></li>
                 <li><a href="{{ route('teams.register', ["competition" => app('request')->has('competition') ? app('request')->input('competition') : 0]) }}" class="btn btn-primary text-white">Registrar</a></li>
                 <li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a>
                 </li>

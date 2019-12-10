@@ -48,7 +48,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
     Route::get('/competitions/get', 'CompetitionsController@get')->name('competitions.get');
     Route::post('/competitions/disable', 'CompetitionsController@disable')->name('competitions.disable');
     Route::post('/competitions/disable/list', 'CompetitionsController@disableList')->name('competitions.disable.list');
-
 });
 
 
@@ -63,6 +62,8 @@ Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
     Route::get('/competitions/register', 'CompetitionController@register')->name('competitions.register');
     Route::post('/competitions/update', 'CompetitionController@update')->name('competitions.update');
     Route::post('/competitions/store', 'CompetitionController@store')->name('competitions.store');
+    Route::post('/competitions/reset', 'CompetitionController@reset')->name('competitions.reset');
+    Route::post('/competitions/delete', 'CompetitionController@delete')->name('competitions.delete');
 
     //Retos Competencia
     Route::get('/competitionChallenge/list', 'CompetitionChallengeController@list')->name('competitionChallenge.list');
@@ -78,6 +79,7 @@ Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
     Route::get('/teams/detail/{id}', 'TeamController@detail')->name('teams.detail');
     Route::post('/teams/update', 'TeamController@update')->name('teams.update');
     Route::post('/teams/delete', 'TeamController@delete')->name('teams.delete');
+    Route::get('/teams/printCredentials', 'TeamController@printCredentials')->name('teams.printCredentials');
 
 
     //Rutas de Level AJAX
@@ -86,7 +88,6 @@ Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
     Route::get('/levels/get', 'LevelController@get')->name('levels.get');
     Route::post('/levels/update', 'LevelController@update')->name('levels.update');
     Route::post('/levels/delete', 'LevelController@delete')->name('levels.delete');
-
     Route::get('/levels/getAll', 'LevelController@getAll')->name('levels.getAll');
 
     //Rutas de Category AJAX

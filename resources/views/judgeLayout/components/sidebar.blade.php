@@ -39,10 +39,11 @@
                         <li class="{{ (\App\Competition::getRouteID(app('request')->input('competition')) == $competency->id) ? 'active open' : '' }}">
                             <a href="#" class="has-arrow"><i class="icon-star"></i><span>{{ $competency->name }}</span></a>
                             <ul>
-                                <li><a href="{{ route('competitions.options', ["competition" => encrypt($competency->id)]) }}"><i class="fa fa-cogs"></i><span>Opciones</span></a></li>
-                                <li><a href="{{ route('teams.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-users"></i><span>Equipos</span></a></li>
-                                <li><a href="{{ route('levels.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-puzzle"></i><span>Niveles</span></a></li>
-                                <li><a href="{{ route('competitionChallenge.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-flag"></i><span>Retos</span></a></li>
+                                <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('competitions.options', ["competition" => encrypt($competency->id)]) }}"><i class="fa fa-cogs"></i><span>Opciones</span></a></li>
+                                <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('teams.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-users"></i><span>Equipos</span></a></li>
+                                <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('levels.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-puzzle"></i><span>Niveles</span></a></li>
+                                <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('competitionChallenge.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-flag"></i><span>Retos</span></a></li>
+                                <li><a style="padding: 4px 10px 4px 45px;" href="#"><i class="fa fa-list-ol"></i><span>Posiciones</span></a></li>
                             </ul>
                         </li>
                         @endforeach

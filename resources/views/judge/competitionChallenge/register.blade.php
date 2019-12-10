@@ -195,7 +195,7 @@
                             title: "Correcto",
                             text: "Reto Agregrado Correctamente!"
                         });
-                        window.location.href = "{{ route('competitionChallenge.list', ['idCompetition' => app('request')->has('idCompetition') ? app('request')->input('idCompetition') : 0]) }}";
+                        window.location.href = "{{ route('competitionChallenge.list', ['competition' => app('request')->has('idCompetition') ? app('request')->input('idCompetition') : 0]) }}";
                     } else {
                         swal({
                             type: "error",

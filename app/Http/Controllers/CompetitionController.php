@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Throwable;
 use Carbon\Carbon;
 use App\Competition;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class CompetitionController extends Controller
 {
@@ -177,6 +178,98 @@ class CompetitionController extends Controller
             }
         } else {
             return response()->json(["status" => false, "msgError" => "Error al procesar la peticion"]);
+        }
+    }
+
+
+    /**
+     * Funcion Reinicio de Competencia
+     *
+     * Esta funcion sirve para reiniciar lso contadores y los puntajes de retos de
+     * todos los equipos de esta competencia
+     *
+     * @param \Illuminate\Http\Request $request Peticion, con $request->id
+     * @return JSON respuesta JSON
+     * @throws \Throwable
+     **/
+    public function reset(Request $request)
+    {
+        $resp["status"] = true;
+        try {
+            DB::beginTransaction();
+            if (!$request->ajax() || !$request->isMethod('POST')) throw new \Exception("Error al procesar la peticion");
+            if (!$request->has('id')) throw new \Exception("No se encontro la competicion");
+
+            $competition = Competition::find($request->id);
+            if (is_null($competition)) throw new \Exception("No se encontro la competicion");
+
+            foreach ($competition->Teams as $team) {
+                foreach ($team->Challenges as $challenge) {
+                    $challenge->delete();
+                }
+                $team->score = 0;
+                $team->saveOrFail();
+            }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $resp["status"] = false;
+            $resp["msgError"] = $th->getMessage();
+        } finally {
+            return response()->json($resp);
+        }
+    }
+
+    /**
+     * Funcion Eliminar la Competencia
+     *
+     * Esta funcion sirve para la competencia completamente
+     *
+     * @param \Illuminate\Http\Request $request Peticion, con $request->id
+     * @return JSON respuesta JSON
+     * @throws \Throwable
+     **/
+    public function delete(Request $request)
+    {
+        $resp["status"] = true;
+        try {
+            DB::beginTransaction();
+            if (!$request->ajax() || !$request->isMethod('POST')) throw new \Exception("Error al procesar la peticion");
+            if (!$request->has('id')) throw new \Exception("No se encontro la competicion");
+
+            $competition = Competition::find($request->id);
+            if (is_null($competition)) throw new \Exception("No se encontro la competicion");
+
+            foreach ($competition->Teams as $team) {
+                foreach ($team->Challenges as $challenge) {
+                    $challenge->delete();
+                }
+                foreach ($team->Members as $member) {
+                    $member->delete();
+                }
+                $user = $team->User;
+                $team->delete();
+                $user->delete();
+            }
+
+            foreach ($competition->Challenges as $challenge) {
+                $challenge->delete();
+            }
+
+            foreach ($competition->Levels as $level) {
+                $level->delete();
+            }
+
+            $competition->delete();
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $resp["status"] = false;
+            $resp["msgError"] = $th->getMessage();
+        } finally {
+            return response()->json($resp);
         }
     }
 }

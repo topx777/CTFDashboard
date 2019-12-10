@@ -164,6 +164,7 @@
             </div>
         </div>
 
+        <div id="particles-js" style="display: none;"></div>
     </div>
 
     <!-- Javascript -->

@@ -6,16 +6,19 @@ use App\Team;
 use App\User;
 use App\Member;
 use DataTables;
+use PDF;
 use App\Challenge;
 use App\Competition;
 use App\TeamChallenge;
 use Illuminate\Http\Request;
 use App\Events\TeamsPositions;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Throwable;
 
 class TeamController extends Controller
 {
@@ -422,5 +425,35 @@ class TeamController extends Controller
             $teamObj[$key]->flag = TeamChallenge::where('finish', true)->where('idTeam', $team->id)->count();
         }
         return response()->json(['teamsScoreBoard' => $teamObj]);
+    }
+
+
+    /**
+     * Funcion Imprimir credenciales
+     *
+     * En esta funcion se genera un PDF con todas las credenciales de los equipos de la competicion
+     *
+     * @param \Illuminate\Http\Request $request Peticion
+     * @return PDF
+     * @throws \Throwable
+     **/
+    public function printCredentials(Request $request)
+    {
+        try {
+            if (!$request->has('competition')) throw new \Exception("Error, no se encontro la competicion");
+
+            $id_competition = decrypt($request->competition);
+
+            $competition = Competition::find($id_competition);
+            if (is_null($competition)) throw new \Exception("Error, no se encontro la competicion");
+
+            $teams = $competition->Teams;
+
+            $pdf = PDF::loadView('judge.teams.teamspdf', compact('teams'));
+
+            return $pdf->stream();
+        } catch (\Throwable $th) {
+            abort(500, $th->getMessage());
+        }
     }
 }
