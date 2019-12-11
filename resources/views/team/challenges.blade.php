@@ -43,17 +43,18 @@
             $('#divLevels').html('');
             levels.forEach(level => {
                 let vlevel = '';
-                vlevel += `
+                if(level.challenges.length > 0) {
+                    vlevel += `
                     <div class="level py-2">
                         <div class="col-12">
                             <h5 class=" text-info ">${level.name}</h5>
-
-                                <hr class=" bg-info">
+                            <hr class="bg-info">
                         </div>
                         <div class="row">`;
-                level.challenges.forEach(challenge => {
-                    vlevel += `<div class="col-12 col-sm-4 col-md-3">
-                                <a href="challenge/${challenge.id}">
+                        level.challenges.forEach(challenge => {
+                            vlevel += `
+                            <div class="col-12 col-sm-4 col-md-3">
+                                <a href="${(level.lock)?'#':`challenge/${challenge.id}`}">
                                     <div class="card">
                                         <div class="${(level.lock)?'disable':''} body" style="min-height: 150px;">
                                             <div class="header">
@@ -65,15 +66,16 @@
                                         </div>
                                     </div>
                                 </a>
-                                </div>`;
-                });
-                level += `</div>
+                            </div>`;
+                        });
+                    vlevel += `
+                        </div>
                     </div>`;
-                $('#divLevels').append(vlevel);
-            });
 
+                    $('#divLevels').append(vlevel);
+                }
+            });
         }
     }
-
 </script>
 @endsection

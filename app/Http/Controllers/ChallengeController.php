@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Events\TeamsPositions;
 use App\Challenge;
+use App\CompetitionChallenge;
+use App\Events\ECompetitionScoreUpdate;
 use App\Team;
 use App\TeamChallenge;
 use DataTables;
 use Carbon\Carbon;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -306,35 +309,35 @@ class ChallengeController extends Controller
             DB::beginTransaction();
 
             $id_challenge = $request->has('id_challenge') ? $request->id_challenge : null;
-            $team = Team::where('idUser', auth()->user()->id)->first();
+            $team = auth()->user()->Team;
 
             $id_team = !is_null($team) ? $team->id : null;
 
             if (is_null($id_challenge) || is_null($id_team)) throw new \Exception("No se encontro el equipo, intentar nuevamente");
 
-            $team_challenge = TeamChallenge::where('idChallenge', $id_challenge)->where('idTeam', $id_team)->first();
+            $team_challenge = TeamChallenge::where('idCompetitionChallenge', $id_challenge)->where('idTeam', $id_team)->first();
 
             if (is_null($team_challenge)) {
                 $team_challenge = new TeamChallenge();
                 $team_challenge->idTeam = $id_team;
-                $team_challenge->idChallenge = $id_challenge;
+                $team_challenge->idCompetitionChallenge = $id_challenge;
             }
 
             $flag = $request->flag;
-            $challenge = Challenge::where('id', $id_challenge)->first();
+            $challenge = CompetitionChallenge::find($id_challenge);
 
             if (is_null($challenge)) {
                 throw new \Exception("No se encontro el reto");
             }
 
-            if ($flag != $challenge->flag) {
+            if (trim($flag) != trim($challenge->Challenge->flag)) {
                 throw new \Exception("La flag no corresponde");
             }
 
             $team_challenge->time = Carbon::now();
             $team_challenge->finish = true;
 
-            $countDiscountPoints = TeamChallenge::where('finish', true)->Where('idChallenge', $challenge->id)->count();
+            $countDiscountPoints = TeamChallenge::where('finish', true)->Where('idCompetitionChallenge', $challenge->id)->count();
             $team_challenge->score = ($challenge->Level->score - $countDiscountPoints) > 0 ? $challenge->Level->score - $countDiscountPoints : 0;
 
             $team_challenge->saveOrFail();
@@ -344,7 +347,7 @@ class ChallengeController extends Controller
 
             $team->saveOrFail();
 
-            \event(new TeamsPositions());
+            \event(new ECompetitionScoreUpdate(auth()->user()->Team->Competition->id));
 
             DB::commit();
             //recuperar de la base de datos la bandera */
@@ -359,7 +362,14 @@ class ChallengeController extends Controller
 
     public function showTeamChallenge($id)
     {
-        $challenge = Challenge::find($id);
+        $id_competition = null;
+        try {
+            $id_competition = decrypt($id);
+        } catch (DecryptException $ex) {
+            $id_competition = 0;
+        }
+
+        $challenge = CompetitionChallenge::find($id_competition);
         return view('team.challenge', compact('challenge'));
     }
 }

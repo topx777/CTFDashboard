@@ -123,14 +123,26 @@ Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
 
 // Routes Team que no son administradores
 Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
+
     Route::get('/dashboard', 'TeamController@dashboard')->name('team.dashboard');
-    Route::get('/retos', 'TeamController@challenges')->name('team.challenges');
+
+    // Obtener los Retos del Equipo
+    Route::get('/challenges', 'TeamController@challenges')->name('team.challenges');
+    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');
+    //
+
     /* esto es para retornar el json de los datos de challenge */
-    Route::get('/retoJson', 'TeamController@getLevelChallenge')->name('team.getLevelChallenges');
+    Route::get('/challengesGet', 'TeamController@getLevelChallenge')->name('team.getLevelChallenges');
+
+
+
     Route::get('/scoreboard', function () {
         return view('team.scoreBoard');
     })->name('team.tablescore');
-    Route::get('/teamChallenges', 'TeamChallengeController@list')->name('team.teamChallenges');
+
+
+
+    // Funcionalidad
     /* esto es para ver la vista de retos */
     Route::get('/challenge/{id}', 'ChallengeController@showTeamChallenge')->name('team.showChallenge');
     /* ruta para editar si utiliza la ayuda */

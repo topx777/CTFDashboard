@@ -10,6 +10,7 @@
 
 @section('content')
 
+@if(isset($challenge) && !is_null($challenge))
 <div id="hintModal" class="modal fade" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
@@ -70,9 +71,9 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="card-value float-right text-muted"><i class="fa fa-key"></i></div>
-                            <h3 class="mb-1">{{ $challenge->Category->name }}</h3>
-                            <p class="lead">{{ $challenge->name }}</p>
-                            <input type="hidden" value="{{ $challenge->id }}" id="id_challenge">
+                            <h3 class="mb-1">{{ $challenge->Challenge->Category->name }}</h3>
+                            <p class="lead">{{ $challenge->Challenge->name }}</p>
+                            <input type="hidden" value="{{ encrypt($challenge->id) }}" id="id_challenge">
                         </div>
                     </div>
                 </div>
@@ -84,7 +85,7 @@
             <div class="body">
                 <blockquote class="blockquote mb-0">
                     <h4 class="text-cyan">DESCRIPCION</h4>
-                    <p>{!! $challenge->description !!}</p>
+                    <p>{!! $challenge->Challenge->description !!}</p>
                 </blockquote>
             </div>
         </div>
@@ -92,7 +93,7 @@
     <div class="col-lg-12">
         <form id="updateTeamForm" action="{{ route('teamschallenge.update') }}" method="POST">
             <div class="table-responsive">
-                <table class="table table-hover table-custom spacing8">
+                <table class="table table-hover table-custom spacing">
                     <thead>
                         <tr>
                             <th>NIVEL</th>
@@ -110,6 +111,7 @@
         </form>
     </div>
 </div>
+@endif
 @endsection @section('script')
 <script src="{{asset('bundles/datatablescripts.bundle.js')}}"></script>
 <script src="{{asset('vendor/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>
@@ -123,6 +125,7 @@
 <script src="{{asset('js/pages/tables/jquery-datatable.js')}}"></script> --}}
 <script src="{{asset('js/pages/ui/dialogs.js')}}"></script>
 
+@if(isset($challenge) && !is_null($challenge))
 <script>
     var id_challenge = null;
     //Codigo AJX CONEXION DE PARTE DEL SERVIDOR
@@ -159,7 +162,7 @@
                             ${challenge.Level.name}
                         </td>
                         <td>
-                            ${challenge.name}
+                            ${challenge.Challenge.name}
                         </td>
                         <td>
                             ${challenge.Level.score}
@@ -168,8 +171,8 @@
                             ${challenge.TeamChallenge !== null ? challenge.TeamChallenge.score : 0}
                         </td>
                         <td class="text-center">
-                            <button id="hint_${challenge.id}" ${challenge.hint === null ? 'disabled' : ''} type="button" data-score="${challenge.Level.score}" data-hint="${challenge.Level.hintDiscount}" data-id="${challenge.id}" class="btn ${challenge.TeamChallenge !== null ? (challenge.TeamChallenge.whithHint == 1 ? 'btn-info help-enabled' : 'btn-danger help-disabled') : 'btn-danger help-disabled'}">
-                                <i class="fa ${challenge.hint === null ? 'fa-ban' : (challenge.TeamChallenge !== null ? (challenge.TeamChallenge.whithHint == 1 ? 'fa-question' : 'fa-ambulance') : 'fa-ambulance')} fa-2x"></i>
+                            <button id="hint_${challenge.id}" ${challenge.Challenge.hint === null ? 'disabled' : ''} type="button" data-score="${challenge.Level.score}" data-hint="${challenge.Level.hintDiscount}" data-id="${challenge.id}" class="btn ${challenge.TeamChallenge !== null ? (challenge.TeamChallenge.whithHint == 1 ? 'btn-info help-enabled' : 'btn-danger help-disabled') : 'btn-danger help-disabled'}">
+                                <i class="fa ${challenge.Challenge.hint === null ? 'fa-ban' : (challenge.TeamChallenge !== null ? (challenge.TeamChallenge.whithHint == 1 ? 'fa-question' : 'fa-ambulance') : 'fa-ambulance')} fa-2x"></i>
                             </button>
                         </td>
                         <td class="text-center">
@@ -242,7 +245,6 @@
             closeOnConfirm: false,
             cancelButtonText: 'No no quiero yo puedo solo'
         }, function () {
-            var t = true;
             $.ajax({
                 url: "{{ route('teamschallenge.update') }}",
                 method: "POST",
@@ -363,4 +365,5 @@
         $('#hintText').html('');
     });
 </script>
+@endif
 @endsection

@@ -9,6 +9,7 @@ use DataTables;
 use PDF;
 use App\Challenge;
 use App\Competition;
+use App\CompetitionChallenge;
 use App\TeamChallenge;
 use Illuminate\Http\Request;
 use App\Events\TeamsPositions;
@@ -394,14 +395,25 @@ class TeamController extends Controller
     public function getLevelChallenge(Request $request)
     {
         $id = $request->id_challenge;
-        $challenge = Challenge::find($id);
 
-        $team = Team::where('idUser', auth()->user()->id)->first();
+        try {
+            $id = decrypt($id);
+        } catch (DecryptException $ex) {
+            $id = 0;
+        }
+
+        $challenge = CompetitionChallenge::find($id);
+        if (is_null($challenge)) return response()->json(['challenges' => []]);
+
+        $team = auth()->user()->Team;
 
         $challengesLevel[] = $challenge;
         $challengesLevel[0]->Level = $challenge->Level;
+        $challengesLevel[0]->Challenge = $challenge->Challenge;
 
-        $team_challenge = TeamChallenge::where('idTeam', $team->id)->where('idChallenge', $challenge->id)->first();
+        $team_challenge = TeamChallenge::where('idTeam', $team->id)
+            ->where('idCompetitionChallenge', $challenge->id)
+            ->first();
 
         $challengesLevel[0]->TeamChallenge = $team_challenge;
         // $challengesLevel = Challenge::where('idLevel', $challenge->idLevel)->get();
