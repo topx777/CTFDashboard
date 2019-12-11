@@ -34,6 +34,7 @@ class TeamChallengeController extends Controller
                 ->leftjoin('teams_challenges', 'competition_challenges.id', '=', 'teams_challenges.idCompetitionChallenge')
                 ->select('competition_challenges.id', 'challenges.name', 'challenges.idCategory', 'teams_challenges.finish')
                 ->where('competition_challenges.idLevel', $level->id)
+                ->where('teams_challenges.idTeam', auth()->user()->Team->id)
                 ->get();
 
             $level->challengesTotal = CompetitionChallenge::where('idLevel', $level->id)->count();
