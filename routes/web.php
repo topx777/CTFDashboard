@@ -136,9 +136,7 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
 
 
 
-    Route::get('/scoreboard', function () {
-        return view('team.scoreBoard');
-    })->name('team.tablescore');
+    Route::get('/scoreboard', 'TeamController@scoreboardView')->name('team.tablescore');
 
 
 

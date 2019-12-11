@@ -9,6 +9,9 @@
     tbody tr {
         cursor: pointer;
     }
+    .flip-list-move {
+            transition: transform 1s;
+        }
 
 </style>
 @endsection

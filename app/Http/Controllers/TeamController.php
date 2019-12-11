@@ -467,4 +467,19 @@ class TeamController extends Controller
             abort(500, $th->getMessage());
         }
     }
+
+    /**
+     * Vista scoreboard de equipo
+     *
+     * Funcion de retorno de vista de una competencia
+     *
+     * @param Request $request peticion
+     * @return View
+     * @throws conditon
+     **/
+    public function scoreboardView(Request $request)
+    {
+        $id=auth()->user()->Team->Competition->id;
+        return view('team.scoreBoard',compact('id'));
+    }
 }
