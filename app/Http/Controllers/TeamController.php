@@ -12,7 +12,6 @@ use App\Competition;
 use App\CompetitionChallenge;
 use App\TeamChallenge;
 use Illuminate\Http\Request;
-use App\Events\TeamsPositions;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;

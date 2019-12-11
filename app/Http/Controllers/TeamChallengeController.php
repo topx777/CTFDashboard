@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Events\TeamsPositions;
 use App\Level;
 use App\Challenge;
 use App\Category;
@@ -144,7 +143,7 @@ class TeamChallengeController extends Controller
             $team->score = ($team->score - $totalDiscount) > 0 ? ($team->score - $totalDiscount) : 0;
             $team->saveOrFail();
 
-            \event(new ECompetitionScoreUpdate(auth()->user()->Team->Competition->id));
+            broadcast(new ECompetitionScoreUpdate(auth()->user()->Team->Competition->id));
 
             DB::commit();
         } catch (\Throwable $ex) {
