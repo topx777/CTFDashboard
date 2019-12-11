@@ -44,8 +44,7 @@
         <span class="orange"></span>
     </div>
 
-    <div class="auth-main particles_js">
-
+    <div class="auth-main align-items-start particles_js">
         <div class="container p-5">
             <div id="teamDashboardScore">
                 <div class="row clearfix">
@@ -68,7 +67,7 @@
                                         </tr>
                                     </thead>
                                     <tbody is="transition-group" name="flip-list">
-                                        <tr v-for="team in teams" v-bind:key="team.id">
+                                        <tr class="team" v-for="team in teams" v-bind:key="team.id">
                                             <td class="w60 text-center">
                                                 @{{ team.position }}
                                             </td>
