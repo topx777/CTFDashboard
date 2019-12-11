@@ -24227,7 +24227,7 @@ var app = new Vue({
         var equal = true;
 
         for (var i = 0; i < _this.teams.length; i++) {
-          if (_this.teams[i].id != e.competition.scoreboard[i].id) {
+          if (_this.teams[i].id != e.competition.scoreboard[i].id || _this.teams[i].score != e.competition.scoreboard[i].score) {
             equal = false;
           }
         }

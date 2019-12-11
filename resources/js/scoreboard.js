@@ -43,7 +43,7 @@ const app = new Vue({
         if (this.teams.length==e.competition.scoreboard.length) {
           var equal=true;
           for (let i = 0; i < this.teams.length; i++) {
-            if (this.teams[i].id!=e.competition.scoreboard[i].id) {
+            if (this.teams[i].id!=e.competition.scoreboard[i].id || this.teams[i].score != e.competition.scoreboard[i].score) {
               equal=false;
             }
           }
