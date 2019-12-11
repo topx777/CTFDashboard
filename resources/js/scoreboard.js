@@ -1,7 +1,17 @@
 import Echo from 'laravel-echo'
 
+window.Axios = require('axios');
 window.Vue = require('vue');
 window.Pusher = require('pusher-js');
+
+window.Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+let token=document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+  window.Axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
@@ -19,11 +29,22 @@ window.Echo = new Echo({
 const app = new Vue({
     el: '#flip-list-demo',
     data: {
-      items: [1,2,3,4,5,6,7,8,9]
+      teams: []
+    },
+    created(){
+      this.fetchScore();
+      window.Echo.channel('Copetition.ScoreBoard.1')
+      .listen('ECompetitionScoreUpdate', (e)=>{
+        this.teams=e.competition.scoreboard;
+        console.log(e);
+      });
     },
     methods: {
-      shuffle: function () {
-        this.items = _.shuffle(this.items)
+      fetchScore(){
+        Axios.get('competitions/positions').then(response =>{
+          console.log(response)
+          this.teams=response.data.scoreboard
+        })
       }
     }
   })

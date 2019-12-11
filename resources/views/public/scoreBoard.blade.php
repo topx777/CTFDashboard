@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- VENDOR CSS -->
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css')}}">
@@ -56,7 +58,6 @@
                         </div>
                         <div class="col-12">
                             <div id="flip-list-demo" class="table-responsive">
-                                <button v-on:click="shuffle">Shuffle</button>
                                 <table class="table table-hover table-custom spacing8 text-white">
                                     <thead>
                                         <tr class="font-18">
@@ -67,18 +68,18 @@
                                         </tr>
                                     </thead>
                                     <tbody is="transition-group" name="flip-list">
-                                        <tr v-for="item in items" v-bind:key="item">
+                                        <tr v-for="team in teams" v-bind:key="team.id">
                                             <td class="w60 text-center">
-                                                @{{ item }}
+                                                @{{ team.position }}
                                             </td>
                                             <td class="text-left">
-                                                <span>N0mb13-Equ1p0</span>
+                                                <span>@{{team.name}}</span>
                                             </td>
                                             <td class="w40 px-5 text-center">
-                                                4
+                                                @{{team.flags}}
                                             </td>
                                             <td class="w40 px-5 text-center">
-                                                22520
+                                                @{{team.score}}
                                             </td>
                                         </tr>
                                     </tbody>

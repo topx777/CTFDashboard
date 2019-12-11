@@ -25,7 +25,11 @@ class DatabaseSeeder extends Seeder
             JudgesSeeder::class,
             CompetitionsSeeder::class,
             TeamsSeeder::class,
-            MembersSeeder::class,    
+            MembersSeeder::class,
+
+            CategoriesSeeder::class, 
+            ChallengesSeeder::class,
+            LevelsSeeder::class,   
         ]);
         // $this->call(CategoriesSeeder::class);
         // $this->call(LevelsSeeder::class);

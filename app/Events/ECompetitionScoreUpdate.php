@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Competition;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -15,19 +16,20 @@ class ECompetitionScoreUpdate implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /** @var Competition $competition  Competicion de la que se extraeran datos*/
-    private $competition;
+    private $idCompetition;
 
     /** @var Array $competitionScore Arreglo de Equipos con posicion puntuacion y orden*/
-    public $competitionScore;
+    public $competition;
     /**
      * Create a new event instance.
      *
      * @return void
      */
 
-    public function __construct($competition)
+    public function __construct($idCompetition)
     {
-        $this->competition=$competition;
+        $this->idCompetition=$idCompetition;
+        $this->competition=Competition::scoreboard($idCompetition);
     }
 
     /**
@@ -37,6 +39,6 @@ class ECompetitionScoreUpdate implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel("Copetition.ScoreBoard.{$this->competition->id}");
+        return new Channel("Copetition.ScoreBoard.{$this->idCompetition}");
     }
 }

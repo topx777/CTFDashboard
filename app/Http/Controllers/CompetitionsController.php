@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Competition;
+use App\Events\ECompetitionScoreUpdate;
 use Yajra\DataTables\Facades\DataTables;
 
 class CompetitionsController extends Controller
 {
+    public function TeamsPositions(Request $request)
+    {
+        broadcast(new ECompetitionScoreUpdate(1));
+        return response()->json(Competition::scoreboard(1));
+    }
         /**
      * function list
      *

@@ -52,6 +52,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function () {
 
 
 
+
 // Routes Juez
 Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
 
@@ -140,6 +141,7 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
 
 //Routes Public
 Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScore'); //Datos score json table positions
+Route::get('/competitions/positions', 'CompetitionsController@TeamsPositions');
 Route::get('/scoreboard', function () {
     return view('public.scoreBoard');
 });
