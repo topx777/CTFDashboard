@@ -29,11 +29,13 @@ class TeamChallengeController extends Controller
         // $lockeds = [];
         foreach ($levels as $key => $level) {
             $level->challenges = DB::table('competition_challenges')
-                ->leftJoin('challenges', 'competition_challenges.idChallenge', '=', 'challenges.id')
-                ->leftjoin('teams_challenges', 'competition_challenges.id', '=', 'teams_challenges.idCompetitionChallenge')
                 ->select('competition_challenges.id', 'challenges.name', 'challenges.idCategory', 'teams_challenges.finish')
+                ->leftJoin('challenges', 'competition_challenges.idChallenge', '=', 'challenges.id')
+                ->leftjoin('teams_challenges', function ($q) {
+                    $q->on('competition_challenges.id', '=', 'teams_challenges.idCompetitionChallenge')
+                        ->where('teams_challenges.idTeam', '=', auth()->user()->Team->id);
+                })
                 ->where('competition_challenges.idLevel', $level->id)
-                ->where('teams_challenges.idTeam', auth()->user()->Team->id)
                 ->get();
 
             $level->challengesTotal = CompetitionChallenge::where('idLevel', $level->id)->count();
