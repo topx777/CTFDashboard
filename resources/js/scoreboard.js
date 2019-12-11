@@ -37,7 +37,7 @@ const app = new Vue({
     },
     mounted()
     {
-      window.Echo.channel('Copetition.ScoreBoard.1')
+      window.Echo.channel(`Copetition.ScoreBoard.${window.CompetitionId}`)
       .listen('ECompetitionScoreUpdate', (e)=>{
 
         if (this.teams.length==e.competition.scoreboard.length) {
@@ -58,7 +58,7 @@ const app = new Vue({
     },
     methods: {
       fetchScore(){
-        Axios.get('competitions/positions').then(response =>{
+        Axios.get(`/competitions/positions/${window.CompetitionId}`).then(response =>{
             this.teams=response.data.scoreboard
 
         })

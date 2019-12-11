@@ -141,10 +141,8 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
 
 //Routes Public
 Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScore'); //Datos score json table positions
-Route::get('/competitions/positions', 'CompetitionsController@TeamsPositions');
-Route::get('/scoreboard', function () {
-    return view('public.scoreBoard');
-});
+Route::get('/competitions/positions/{id}', 'CompetitionsController@TeamsPositions');
+Route::get('/scoreboard/{id}','CompetitionsController@TeamsPositionsPublic');
 Route::get('/timer', function () {
     return view('public.timer');
 });

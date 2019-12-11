@@ -9,11 +9,36 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CompetitionsController extends Controller
 {
-    public function TeamsPositions(Request $request)
+
+    /**Competition Teams positions
+     * 
+     *
+     * Posiciones de equipos en una competencoa
+     *
+     * @param INt $id id de Competencia
+     * @return Json
+     **/
+    public function TeamsPositions(Request $request,$id)
     {
-        broadcast(new ECompetitionScoreUpdate(1));
-        return response()->json(Competition::scoreboard(1));
+        broadcast(new ECompetitionScoreUpdate($id));
+        return response()->json(Competition::scoreboard($id));
     }
+
+
+    /**
+     * TeamsPositionsPublic
+     *
+     * Vista de posiciones de una competencia 
+     *
+     * @param Int $id Id de Competencia
+     * @return View
+     **/
+    public function TeamsPositionsPublic(Request $request,$id)
+    {
+        return view('public.scoreBoard', compact('id'));
+    }
+
+
         /**
      * function list
      *

@@ -24222,7 +24222,7 @@ var app = new Vue({
   mounted: function mounted() {
     var _this = this;
 
-    window.Echo.channel('Copetition.ScoreBoard.1').listen('ECompetitionScoreUpdate', function (e) {
+    window.Echo.channel("Copetition.ScoreBoard.".concat(window.CompetitionId)).listen('ECompetitionScoreUpdate', function (e) {
       if (_this.teams.length == e.competition.scoreboard.length) {
         var equal = true;
 
@@ -24244,7 +24244,7 @@ var app = new Vue({
     fetchScore: function fetchScore() {
       var _this2 = this;
 
-      Axios.get('competitions/positions').then(function (response) {
+      Axios.get("/competitions/positions/".concat(window.CompetitionId)).then(function (response) {
         _this2.teams = response.data.scoreboard;
       });
     }
