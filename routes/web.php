@@ -148,3 +148,5 @@ Route::get('/scoreboard', function () {
 Route::get('/timer', function () {
     return view('public.timer');
 });
+
+Route::get('/guest/register', 'HomeController@registerTeam')->name('guest.register')->middleware('guest');

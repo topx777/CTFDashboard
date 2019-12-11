@@ -25,4 +25,16 @@ class HomeController extends Controller
     {
         return view('judge.home');
     }
+
+
+    /**
+     * Muestra el registro de invitado por competencia
+     * 
+     * @param Request $request Peticion
+     * @return Renderable
+     */
+    public function registerTeam(Request $request)
+    {
+        return view('auth.register');
+    }
 }

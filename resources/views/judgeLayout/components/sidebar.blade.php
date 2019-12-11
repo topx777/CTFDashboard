@@ -37,7 +37,7 @@
                     <ul>
                         @foreach (auth()->user()->Judge->Competitions as $competency)
                         <li class="{{ (\App\Competition::getRouteID(app('request')->input('competition')) == $competency->id) ? 'active open' : '' }}">
-                            <a href="#" class="has-arrow"><i class="icon-star"></i><span>{{ $competency->name }}</span></a>
+                            <a href="#" class="has-arrow"><span>{{ $competency->name }}</span></a>
                             <ul>
                                 <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('competitions.options', ["competition" => encrypt($competency->id)]) }}"><i class="fa fa-cogs"></i><span>Opciones</span></a></li>
                                 <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('teams.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-users"></i><span>Equipos</span></a></li>
