@@ -30,9 +30,8 @@
                         <ul id="main-menu" class="metismenu">
                             <li class="header">Menu</li>
                             <li class="{{( Route::currentRouteName() =='team.dashboard')?'active open':''}}"><a href="{{route('team.dashboard')}}"><i class="icon-home"></i><span>Home</span></a></li>
-                            <li class="{{( Route::currentRouteName() =='team.challenges')?'active open':''}}"><a href="{{route('team.challenges')}}"><i class="icon-layers"></i><span>Retos</span></a></li>     
-                            <li class="{{( Route::currentRouteName() =='team.tablescore')?'active open':''}}"><a href="{{route('team.tablescore')}}"><i class="icon-bar-chart"></i><span>Tabla de Posiciones</span></a></li> 
-                                           
+                            <li class="{{( Route::currentRouteName() =='team.challenges')?'active open':''}}"><a href="{{route('team.challenges')}}"><i class="icon-layers"></i><span>Retos</span></a></li>
+                            <li class="{{( Route::currentRouteName() =='team.tablescore')?'active open':''}}"><a href="{{route('team.tablescore')}}"><i class="icon-bar-chart"></i><span>Tabla de Posiciones</span></a></li>
                         </ul>
                     </nav>
                 </div>

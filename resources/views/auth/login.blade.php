@@ -76,11 +76,13 @@
                     </div>
                     <button type="submit" class="btn btn-secondary btn-round btn-block">INICIAR</button>
                     @if (isset($reference_comp) && !is_null($reference_comp))
+                    @if($reference_comp->gameMode == 1)
                     <div class="bottom">
                     <span class="helper-text m-b-10" style="font-size: 18px;">
-                        <i class="fa fa-code"></i> 
+                        <i class="fa fa-code"></i>
                         <a href="{{ route('guest.register', ["ref" => app('request')->has('ref') ? app('request')->input('ref') : 0]) }}">Registrar mi Equipo</a></span>
                     </div>
+                    @endif
                     @endif
                 </form>
             </div>

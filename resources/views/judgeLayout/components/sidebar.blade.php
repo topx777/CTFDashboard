@@ -43,7 +43,7 @@
                                 <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('teams.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-users"></i><span>Equipos</span></a></li>
                                 <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('levels.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-puzzle"></i><span>Niveles</span></a></li>
                                 <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('competitionChallenge.list', ["competition" => encrypt($competency->id)]) }}"><i class="icon-flag"></i><span>Retos</span></a></li>
-                                <li><a style="padding: 4px 10px 4px 45px;" href="#"><i class="fa fa-list-ol"></i><span>Posiciones</span></a></li>
+                                <li><a style="padding: 4px 10px 4px 45px;" href="{{ route('teams.scoreboard', ["competition" => encrypt($competency->id)]) }}"><i class="fa fa-list-ol"></i><span>Posiciones</span></a></li>
                             </ul>
                         </li>
                         @endforeach

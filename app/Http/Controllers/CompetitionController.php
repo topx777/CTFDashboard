@@ -272,4 +272,30 @@ class CompetitionController extends Controller
             return response()->json($resp);
         }
     }
+
+
+    /**
+     * Funcion Posiciones Equipo
+     *
+     * Vista de posiciones de una competencia
+     *
+     * @param Int $id Id de Competencia
+     * @return View
+     **/
+    public function teamPositions(Request $request)
+    {
+        $id = null;
+        try {
+            if (!$request->has('competition')) {
+                throw new \Exception("No se encontro la competencia");
+            }
+            $id = decrypt($request->competition);
+        } catch (\Throwable $ex) {
+            $id = 0;
+        }
+
+        $competition = Competition::find($id);
+
+        return view('judge.teams.scoreBoard', compact('id', 'competition'));
+    }
 }
