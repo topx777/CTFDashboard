@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -59,7 +60,11 @@ class RegisterController extends Controller
             if ($userData["role"] == 1) { // Redireccionamiento en caso que se registre exitosamente un juez
                 $this->redirectTo = "/admin/judges/list";
             } else if ($userData["role"] == 2) { // En el caso de que sea un equipo
-                $this->redirectTo = "/judge/teams/list?competition=" . $request->teamData["idCompetition"];
+                if (!$request->has('external')) {
+                    $this->redirectTo = "/judge/teams/list?competition=" . $request->teamData["idCompetition"];
+                } else {
+                    $this->redirectTo = "/team/dashboard";
+                }
             }
 
             //En el caso de Juez si requerira el email en User y la confirmacion
@@ -73,13 +78,23 @@ class RegisterController extends Controller
                     ]
                 );
             } else { // En el caso de que sea equipo es una dinamica diferente de registro de credenciales
-                $validationUser = Validator::make(
-                    $userData,
-                    [
-                        'username' => ['required', 'string', 'max:255', 'unique:users'],
-                        'password' => ['required', 'string', 'min:8'],
-                    ]
-                );
+                if (!$request->has('external')) {
+                    $validationUser = Validator::make(
+                        $userData,
+                        [
+                            'username' => ['required', 'string', 'max:255', 'unique:users'],
+                            'password' => ['required', 'string', 'min:8'],
+                        ]
+                    );
+                } else {
+                    $validationUser = Validator::make(
+                        $userData,
+                        [
+                            'username' => ['required', 'string', 'max:255', 'unique:users'],
+                            'password' => ['required', 'string', 'min:8', 'confirmed'],
+                        ]
+                    );
+                }
             }
 
             //Estos son arreglos de Errores por tipo de tabla
@@ -257,6 +272,10 @@ class RegisterController extends Controller
             }
 
             DB::commit();
+
+            if ($request->has('external')) {
+                Auth::loginUsingId($user->id);
+            }
         } catch (\Throwable $ex) {
             DB::rollBack();
             $response["status"] = false;

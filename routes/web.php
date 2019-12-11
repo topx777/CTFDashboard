@@ -82,6 +82,8 @@ Route::group(['prefix' => 'judge', 'middleware' => ['judge']], function () {
     Route::post('/teams/delete', 'TeamController@delete')->name('teams.delete');
     Route::get('/teams/printCredentials', 'TeamController@printCredentials')->name('teams.printCredentials');
 
+    Route::get('/scoreboard', 'CompetitionController@teamPositions')->name('teams.scoreboard');
+
 
     //Rutas de Level AJAX
     Route::any('/levels/list', 'LevelController@list')->name('levels.list');
@@ -142,7 +144,7 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
 //Routes Public
 Route::get('/teamsScore', 'TeamController@dataScoreBoard')->name('team.teamsScore'); //Datos score json table positions
 Route::get('/competitions/positions/{id}', 'CompetitionsController@TeamsPositions');
-Route::get('/scoreboard/{id}','CompetitionsController@TeamsPositionsPublic');
+Route::get('/scoreboard/{id}', 'CompetitionsController@TeamsPositionsPublic')->name('scoreboard');
 Route::get('/timer', function () {
     return view('public.timer');
 });
