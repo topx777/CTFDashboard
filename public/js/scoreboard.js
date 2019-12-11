@@ -24233,7 +24233,6 @@ var app = new Vue({
         }
 
         if (equal == false) {
-          console.log(e);
           _this.teams = e.competition.scoreboard;
         }
       } else {
@@ -24246,7 +24245,6 @@ var app = new Vue({
       var _this2 = this;
 
       Axios.get('competitions/positions').then(function (response) {
-        console.log(response);
         _this2.teams = response.data.scoreboard;
       });
     }

@@ -48,7 +48,6 @@ const app = new Vue({
             }
           }
           if (equal==false) {
-            console.log(e)
             this.teams=e.competition.scoreboard
           }
         }
@@ -60,7 +59,6 @@ const app = new Vue({
     methods: {
       fetchScore(){
         Axios.get('competitions/positions').then(response =>{
-            console.log(response)
             this.teams=response.data.scoreboard
 
         })
