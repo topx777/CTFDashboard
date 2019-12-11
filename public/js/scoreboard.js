@@ -24217,12 +24217,28 @@ var app = new Vue({
     teams: []
   },
   created: function created() {
+    this.fetchScore();
+  },
+  mounted: function mounted() {
     var _this = this;
 
-    this.fetchScore();
     window.Echo.channel('Copetition.ScoreBoard.1').listen('ECompetitionScoreUpdate', function (e) {
-      _this.teams = e.competition.scoreboard;
-      console.log(e);
+      if (_this.teams.length == e.competition.scoreboard.length) {
+        var equal = true;
+
+        for (var i = 0; i < _this.teams.length; i++) {
+          if (_this.teams[i].id != e.competition.scoreboard[i].id) {
+            equal = false;
+          }
+        }
+
+        if (equal == false) {
+          console.log(e);
+          _this.teams = e.competition.scoreboard;
+        }
+      } else {
+        _this.teams = e.competition.scoreboard;
+      }
     });
   },
   methods: {
