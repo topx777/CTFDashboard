@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Events\TeamsPositions;
 use App\Challenge;
 use App\CompetitionChallenge;
 use App\Events\ECompetitionScoreUpdate;
@@ -347,7 +346,7 @@ class ChallengeController extends Controller
 
             $team->saveOrFail();
 
-            \event(new ECompetitionScoreUpdate(auth()->user()->Team->Competition->id));
+            broadcast(new ECompetitionScoreUpdate(auth()->user()->Team->Competition->id));
 
             DB::commit();
             //recuperar de la base de datos la bandera */
