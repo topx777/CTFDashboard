@@ -23,7 +23,7 @@ class CompetitionController extends Controller
      **/
     public function register()
     {
-        return view('judge\competitions\register');
+        return view('judge.competitions.register');
     }
 
 

@@ -20,7 +20,7 @@ class TeamsSeeder extends Seeder
             'name' => 'TEAM1',
             'score' => 0,
             'phrase' => 'Fr453 T34M.1',
-            'avatar' => 'avatar',
+            'avatar' => 'default.jpeg',
             'couch' => 'Couch Team1',
             'teamPassword' => 'team1abc',
             'idCompetition' => 1
@@ -32,7 +32,7 @@ class TeamsSeeder extends Seeder
             'name' => 'TEAM2',
             'score' => 0,
             'phrase' => 'Fr453 T34M.2',
-            'avatar' => 'avatar',
+            'avatar' => 'default.jpeg',
             'couch' => 'Couch Team2',
             'teamPassword' => 'team1abc',
             'idCompetition' => 1
@@ -44,7 +44,7 @@ class TeamsSeeder extends Seeder
             'name' => 'TEAM3',
             'score' => 0,
             'phrase' => 'Fr453 T34M.3',
-            'avatar' => 'avatar',
+            'avatar' => 'default.jpeg',
             'couch' => 'Couch Team3',
             'teamPassword' => 'team1abc',
             'idCompetition' => 1
@@ -56,7 +56,7 @@ class TeamsSeeder extends Seeder
             'name' => 'TEAM4',
             'score' => 0,
             'phrase' => 'Fr453 T34M.4',
-            'avatar' => 'avatar',
+            'avatar' => 'default.jpeg',
             'couch' => 'Couch Team4',
             'teamPassword' => 'team1abc',
             'idCompetition' => 1

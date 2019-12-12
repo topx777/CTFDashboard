@@ -21,7 +21,7 @@ class FileController extends Controller
      **/
     public function list()
     {
-        return view('judge\files\list');
+        return view('judge.files.list');
     }
 
     /**

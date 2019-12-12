@@ -251,6 +251,7 @@ class RegisterController extends Controller
                 $team = new Team;
                 $team->idUser = $user->id;
                 $team->name = $teamData["name"];
+                $team->avatar='default.jpeg';
                 $team->phrase = $teamData["phrase"];
                 $team->couch = $teamData["couch"];
                 $team->teamPassword = $userData["password"];

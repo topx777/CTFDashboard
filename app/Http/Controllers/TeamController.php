@@ -321,6 +321,66 @@ class TeamController extends Controller
     }
 
     /**
+     * Funcion modificar Equipo
+     *
+     * modificar password, frase, o avatar
+     *
+     * @param Request $request 
+     * @return JSON
+     **/
+    public function updatePassPhrasAvatar(Request $request)
+    {
+        if ($request->isMethod('POST') && $request->ajax()) {
+            $resp["status"] = true;
+            try {
+
+                $team = Team::with('User')->find($request->id);
+
+                if (is_null($team)) {
+                    throw new \Exception("No se encontro al Equipo");
+                }
+
+                $validateTeam = Validator::make(
+                    $request->team,
+                    [
+                        'password' => 'required|max:40',
+                        'phrase' => 'required|max:65535'
+                    ]
+                );
+
+                $validationErrorsTeam = [];
+                if ($validateTeam->fails()) {
+                    foreach ($validateTeam->getMessageBag()->getMessages() as $key => $error) {
+                        $validationErrorsTeam[$key] = $error;
+                    }
+                }
+
+                if (count($validationErrorsTeam) > 0) {
+                    $resp["errors"] = $validationErrorsTeam;
+                    throw new \Exception("Existen Errores de Validacion");
+                }
+                if ($request->hasFile('avatar')) {
+                    $path=$request->avatar->store('images', 'public');
+                    $team->avatar=$path;
+                }
+                $team->phrase=$request->team['phrase'];
+                $team->teamPassword=$request->team['password'];
+                $team->User->password=Hash::make($request->team['password']);
+                $team->saveOrFail();
+                
+
+            } catch (\Throwable $th) {
+                $resp["status"] = false;
+                $resp["msgError"] = $th->getMessage();
+            } finally {
+                return response()->json($resp);
+            }
+        } else {
+            return response()->json(['status' => false, 'msgError' => 'Error al procesar la peticion']);
+        }
+    }
+
+    /**
      * Funcion para Eliminar el equipo
      *
      * Eliminar el equipo

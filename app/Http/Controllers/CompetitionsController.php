@@ -104,7 +104,7 @@ class CompetitionsController extends Controller
      **/
     public function detail(Request $request, $id)
     {
-        return view('admin/competitions/details',['id'=>$id]);
+        return view('admin.competitions.details',['id'=>$id]);
     }
 
     /**

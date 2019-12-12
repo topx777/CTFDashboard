@@ -149,6 +149,8 @@ Route::group(['prefix' => 'team', 'middleware' => ['team']], function () {
     Route::post('/flag', 'ChallengeController@enterFlag')->name('challenge.flag');
 
     Route::get('/getHint', 'TeamChallengeController@getHint')->name('team.getHint');
+
+    Route::post('/updatemydata','TeamController@updatePassPhrasAvatar')->name('team.updatemydata');
 });
 
 //Routes Public

@@ -69,7 +69,7 @@ class ChallengeController extends Controller
                 ->make(true);
         }
 
-        return view('judge\challenges\list');
+        return view('judge.challenges.list');
     }
 
 
@@ -112,7 +112,7 @@ class ChallengeController extends Controller
             abort('500', 'No se encontro el reto');
         }
 
-        return view('judge\challenges\detail', compact('challenge'));
+        return view('judge.challenges.detail', compact('challenge'));
     }
 
 
@@ -125,7 +125,7 @@ class ChallengeController extends Controller
      **/
     public function register()
     {
-        return view('judge\challenges\register');
+        return view('judge.challenges.register');
     }
 
 
@@ -199,7 +199,7 @@ class ChallengeController extends Controller
             abort('500', 'No se encontro el reto');
         }
 
-        return view('judge\challenges\edit', compact('challenge'));
+        return view('judge.challenges.edit', compact('challenge'));
     }
 
 

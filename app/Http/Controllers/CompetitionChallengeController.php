@@ -108,7 +108,7 @@ class CompetitionChallengeController extends Controller
 
         $competition = Competition::find($id_competition);
 
-        return view('judge\competitionChallenge\register', compact('id_competition', 'competition'));
+        return view('judge.competitionChallenge.register', compact('id_competition', 'competition'));
     }
 
 

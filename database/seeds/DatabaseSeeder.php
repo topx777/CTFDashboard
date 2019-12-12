@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
             MembersSeeder::class,
 
             CategoriesSeeder::class, 
-            ChallengesSeeder::class,
             LevelsSeeder::class,   
         ]);
         // $this->call(CategoriesSeeder::class);
