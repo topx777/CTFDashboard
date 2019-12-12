@@ -16,7 +16,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ChallengesTeamCompetition
+class ChallengesTeamCompetition implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
