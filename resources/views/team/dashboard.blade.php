@@ -148,6 +148,7 @@
                                 <div class="invalid-feedback">
                                     Campo password requerido
                                 </div>
+                                <small>*Para mantener la contraseña, no modifique este campo.</small>
                             </div>
                             <div class="form-group">
                                 <label for="">Frase de Equipo:</label>
@@ -175,6 +176,7 @@
 </div>
 @endsection
 @section('script')
+<script src="{{asset('vendor/sweetalert/sweetalert.min.js')}}"></script><!-- SweetAlert Plugin Js -->
 <script src="{{asset('vendor/dropify/js/dropify.js')}}"></script>
 <script>
     $(function () {
@@ -196,6 +198,7 @@
                 processData: false,
                 contentType: false,
                 success: function (response) {
+                    form.reset();
                     if (response.status) {
                         swal({
                             title: "Correcto",
@@ -251,6 +254,9 @@
                         title: "Error Critico!!",
                         text: "Error inesperado, intentelo nuevamente"
                     });
+                },
+                complete: function () {
+                    location.reload();
                 }
             });
         }

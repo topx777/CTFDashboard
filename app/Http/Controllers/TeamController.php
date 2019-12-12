@@ -363,9 +363,14 @@ class TeamController extends Controller
                     $path=$request->avatar->store('images', 'public');
                     $team->avatar=$path;
                 }
+                if($request->team['password']!='novalue')
+                {
+                    $team->teamPassword=$request->team['password'];
+                    $user=User::find($team->idUser);
+                    $user->password=Hash::make($request->team['password']);
+                    $user->saveOrFail();
+                }
                 $team->phrase=$request->team['phrase'];
-                $team->teamPassword=$request->team['password'];
-                $team->User->password=Hash::make($request->team['password']);
                 $team->saveOrFail();
                 
 
