@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Challenge;
-use App\CompetitionChallenge;
-use App\Events\ECompetitionScoreUpdate;
 use App\Team;
-use App\TeamChallenge;
 use DataTables;
+use App\Challenge;
 use Carbon\Carbon;
-use Illuminate\Contracts\Encryption\DecryptException;
+use App\TeamChallenge;
+use Illuminate\Http\Request;
+use App\CompetitionChallenge;
 use Illuminate\Support\Facades\DB;
+use App\Events\ECompetitionScoreUpdate;
+use App\Events\ChallengesTeamCompetition;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class ChallengeController extends Controller
 {
@@ -320,6 +321,14 @@ class ChallengeController extends Controller
                 $team_challenge = new TeamChallenge();
                 $team_challenge->idTeam = $id_team;
                 $team_challenge->idCompetitionChallenge = $id_challenge;
+            } else {
+                if ($team_challenge->finish) {
+                    throw new \Exception("El reto ya ha sido resuelto no es necesario obtener la ayuda");
+                }
+            }
+
+            if (!$request->has('flag')) {
+                throw new \Exception("No se encontro la bandera");
             }
 
             $flag = $request->flag;
@@ -346,7 +355,8 @@ class ChallengeController extends Controller
 
             $team->saveOrFail();
 
-            broadcast(new ECompetitionScoreUpdate(auth()->user()->Team->Competition->id));
+            broadcast(new ECompetitionScoreUpdate(auth()->user()->Team->idCompetition));
+            broadcast(new ChallengesTeamCompetition(auth()->user()->Team->idCompetition, auth()->user()->Team->id));
 
             DB::commit();
             //recuperar de la base de datos la bandera */

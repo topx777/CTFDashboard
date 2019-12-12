@@ -104,7 +104,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/CTFDashboard/resources/js/login.js */"./resources/js/login.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\CTFDashboard\resources\js\login.js */"./resources/js/login.js");
 
 
 /***/ })

@@ -24260,7 +24260,7 @@ var app = new Vue({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/CTFDashboard/resources/js/scoreboard.js */"./resources/js/scoreboard.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\CTFDashboard\resources\js\scoreboard.js */"./resources/js/scoreboard.js");
 
 
 /***/ })
