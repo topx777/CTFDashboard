@@ -130,8 +130,15 @@ class CompetitionChallengeController extends Controller
                     throw new \Exception("No se encontro la competencia");
                 }
 
-                $id_competition = decrypt($request->idCompetition);
+                if (!$request->has('idChallenge')) {
+                    throw new \Exception("No se encontro el reto");
+                }
 
+                if (!$request->has('idLevel')) {
+                    throw new \Exception("No se encontro el nivel");
+                }
+
+                $id_competition = decrypt($request->idCompetition);
                 $competition = Competition::findOrFail($id_competition);
                 $challenge = Challenge::findOrFail($request->idChallenge);
                 $level = Level::findOrFail($request->idLevel);

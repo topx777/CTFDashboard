@@ -8,6 +8,7 @@ use App\Challenge;
 use App\Category;
 use App\Competition;
 use App\CompetitionChallenge;
+use App\Events\ChallengesTeamCompetition;
 use App\Events\ECompetitionScoreUpdate;
 use App\Team;
 use App\TeamChallenge;
@@ -136,17 +137,30 @@ class TeamChallengeController extends Controller
                 $team_challenge->idTeam = $team->id;
                 $team_challenge->score = 0;
                 $team_challenge->time = Carbon::now();
+            } else {
+                if ($team_challenge->whithHint) {
+                    throw new \Exception("La ayuda ya ha sido desbloqueada en este reto");
+                }
+                if ($team_challenge->finish) {
+                    throw new \Exception("El reto ya ha sido resuelto no es necesario obtener la ayuda");
+                }
             }
             $team_challenge->whithHint = true;
             $team_challenge->saveOrFail();
 
-            $resp["hint"] = $team_challenge->CompetitionChallenge->Challenge->hint;
-
             $totalDiscount = $team_challenge->CompetitionChallenge->Level->hintDiscount * $team_challenge->CompetitionChallenge->Level->score;
-            $team->score = ($team->score - $totalDiscount) > 0 ? ($team->score - $totalDiscount) : 0;
+
+            if ($totalDiscount > $team->score) {
+                throw new \Exception("No tienes suficientes puntos");
+            }
+
+            $team->score = $team->score - $totalDiscount;
             $team->saveOrFail();
 
-            broadcast(new ECompetitionScoreUpdate(auth()->user()->Team->Competition->id));
+            $resp["hint"] = $team_challenge->CompetitionChallenge->Challenge->hint;
+
+            broadcast(new ECompetitionScoreUpdate(auth()->user()->Team->idCompetition));
+            broadcast(new ChallengesTeamCompetition(auth()->user()->Team->idCompetition, auth()->user()->Team->id));
 
             DB::commit();
         } catch (\Throwable $ex) {

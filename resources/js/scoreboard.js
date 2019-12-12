@@ -6,11 +6,11 @@ window.Pusher = require('pusher-js');
 
 window.Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-let token=document.head.querySelector('meta[name="csrf-token"]');
+let token = document.head.querySelector('meta[name="csrf-token"]');
 if (token) {
-  window.Axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.Axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 window.Echo = new Echo({
@@ -29,39 +29,37 @@ window.Echo = new Echo({
 const app = new Vue({
     el: '#flip-list-demo',
     data: {
-      teams: []
+        teams: []
     },
-    created(){
-      this.fetchScore();
-      
-    },
-    mounted()
-    {
-      window.Echo.channel(`Copetition.ScoreBoard.${window.CompetitionId}`)
-      .listen('ECompetitionScoreUpdate', (e)=>{
+    created() {
+        this.fetchScore();
 
-        if (this.teams.length==e.competition.scoreboard.length) {
-          var equal=true;
-          for (let i = 0; i < this.teams.length; i++) {
-            if (this.teams[i].id!=e.competition.scoreboard[i].id || this.teams[i].score != e.competition.scoreboard[i].score) {
-              equal=false;
-            }
-          }
-          if (equal==false) {
-            this.teams=e.competition.scoreboard
-          }
-        }
-        else{
-          this.teams=e.competition.scoreboard
-        }
-      });
+    },
+    mounted() {
+        window.Echo.channel(`Copetition.ScoreBoard.${window.CompetitionId}`)
+            .listen('ECompetitionScoreUpdate', (e) => {
+
+                if (this.teams.length == e.competition.scoreboard.length) {
+                    var equal = true;
+                    for (let i = 0; i < this.teams.length; i++) {
+                        if (this.teams[i].id != e.competition.scoreboard[i].id || this.teams[i].score != e.competition.scoreboard[i].score) {
+                            equal = false;
+                        }
+                    }
+                    if (equal == false) {
+                        this.teams = e.competition.scoreboard
+                    }
+                } else {
+                    this.teams = e.competition.scoreboard
+                }
+            });
     },
     methods: {
-      fetchScore(){
-        Axios.get(`/competitions/positions/${window.CompetitionId}`).then(response =>{
-            this.teams=response.data.scoreboard
+        fetchScore() {
+            Axios.get(`/competitions/positions/${window.CompetitionId}`).then(response => {
+                this.teams = response.data.scoreboard
 
-        })
-      }
+            })
+        }
     }
-  })
+})

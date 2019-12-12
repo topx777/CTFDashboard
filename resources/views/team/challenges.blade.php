@@ -19,7 +19,13 @@
 </div>
 @endsection
 @section('script')
-
+<script>
+    window.CompetitionId = {{auth()->user()->Team->idCompetition}};
+</script>
+<script>
+    window.TeamId = {{auth()->user()->Team->id}};
+</script>
+<script src="{{asset('js/teamsChallenge.js')}}"></script>
 <script>
     $(document).ready(function () {
         $.ajaxSetup({
@@ -31,11 +37,9 @@
                 _token: "{{csrf_token()}}"
             },
             function (data, textStatus, jqXHR) {
-                console.log(data);
                 setLevelsChallenges(data.level)
             }
         );
-
     });
 
     function setLevelsChallenges(levels) {

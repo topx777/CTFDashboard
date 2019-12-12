@@ -23,6 +23,7 @@ class CreateTeamsChallengesTable extends Migration
             $table->boolean('finish')->default(false);
             $table->foreign('idTeam')->references('id')->on('teams');
             $table->foreign('idCompetitionChallenge')->references('id')->on('competition_challenges');
+            $table->unique(['idTeam', 'idCompetitionChallenge']);
             $table->timestamps();
         });
     }
