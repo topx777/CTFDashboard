@@ -24,7 +24,5 @@ window.Echo = new Echo({
 
 window.Echo.channel(`TeamChallenge.Levels.${window.CompetitionId}.${window.TeamId}`)
     .listen('ChallengesTeamCompetition', (e) => {
-        console.log(e);
-        console.log('hola');
-        alert('hola');
+        setLevelsChallenges(e.levels.level);
     });

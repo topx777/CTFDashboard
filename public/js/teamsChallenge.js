@@ -10008,9 +10008,7 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   disableStats: true
 });
 window.Echo.channel("TeamChallenge.Levels.".concat(window.CompetitionId, ".").concat(window.TeamId)).listen('ChallengesTeamCompetition', function (e) {
-  console.log(e);
-  console.log('hola');
-  alert('hola');
+  setLevelsChallenges(e.levels.level);
 });
 
 /***/ }),
