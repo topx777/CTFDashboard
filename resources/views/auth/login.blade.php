@@ -95,6 +95,12 @@
 <script src="{{asset('bundles/libscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script>
 <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script>
+
+
+<!-- jQuery -->
+<script src="{{ asset('plugins/jquery/jquery.min. ') }}"></script>
+
+
 <script>
 $(document).on('onscroll', 'body', function(e) {
     e.preventDefault();
